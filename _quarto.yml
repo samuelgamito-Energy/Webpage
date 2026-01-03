@@ -4,7 +4,7 @@ project:
 
 website:
   title: "SAMUEL GAMITO"
-navbar:
+  navbar:
     background: "#0f172a"
     foreground: "#ffffff"
     left:
@@ -14,8 +14,8 @@ navbar:
         text: Energy Flash
       - href: dashboards.qmd
         text: Market Intelligence
-      - href: sector.qmd           <--- NUEVA PESTAÑA
-        text: Sector Analytics     <--- NOMBRE PROFESIONAL
+      - href: sector.qmd
+        text: Sector Analytics
     right:
       - icon: linkedin
         href: https://www.linkedin.com/in/samuel-gamito-matellan/
