@@ -1,0 +1,55 @@
+---
+title: "SECTOR ANALYTICS | SPAIN"
+subtitle: "Ranking CNMC y Cuotas de Mercado (Electricidad)"
+format:
+  html:
+    page-layout: full
+    toc: true
+---
+
+## 📉 Market Snapshot (YTD)
+
+Resumen ejecutivo del mercado eléctrico nacional.
+
+::: {layout-ncol=3}
+
+### 🏢 Total Players
+**324**
+*Comercializadoras Activas*
+
+### ⚡ Volumen Total
+**220 TWh**
+*Energía gestionada (Est.)*
+
+### 🔄 Churn Rate
+**11.5%**
+*Tasa de cambio de compañía*
+
+:::
+
+---
+
+## 🏆 Top 10 Leaders (Volumen)
+
+*Tabla provisional - Aquí cargaremos tus datos reales más adelante.*
+
+| Rank | Grupo Empresarial | Cuota (%) | Tendencia |
+|------|-------------------|-----------|-----------|
+| 1    | IBERDROLA         | 32.4%     | 🔻        |
+| 2    | ENDESA            | 21.8%     | ➖        |
+| 3    | NATURGY           | 14.2%     | 🔻        |
+| 4    | TOTALENERGIES     | 6.1%      | 🔼        |
+| 5    | REPSOL            | 5.3%      | 🔼        |
+
+: *Fuente: CNMC Data (Última actualización: Q4 2025)*
+
+---
+
+## 🔎 Explorador de Comercializadoras
+
+> *Próximamente: Buscador interactivo con datos detallados de clientes y energía por CIF.*
+
+::: {.callout-tip}
+### Nota Metodológica
+Los datos mostrados corresponden a los informes A6 de la CNMC y están procesados para agrupar matrices empresariales.
+:::

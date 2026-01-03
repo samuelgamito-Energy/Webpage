@@ -1,24 +1,45 @@
 [
   {
-    "objectID": "posts/2026-01-welcome/index.html",
-    "href": "posts/2026-01-welcome/index.html",
-    "title": "Informe Enero 2026",
+    "objectID": "sector.html",
+    "href": "sector.html",
+    "title": "SECTOR ANALYTICS | SPAIN",
     "section": "",
-    "text": "Sistema operativo."
+    "text": "Resumen ejecutivo del mercado eléctrico nacional.\n\n\n\n\n\n\n\n324 Comercializadoras Activas\n\n\n\n220 TWh Energía gestionada (Est.)\n\n\n\n11.5% Tasa de cambio de compañía"
   },
   {
-    "objectID": "posts/2026-01-welcome/index.html#informe-mensual",
-    "href": "posts/2026-01-welcome/index.html#informe-mensual",
-    "title": "Informe Enero 2026",
+    "objectID": "sector.html#market-snapshot-ytd",
+    "href": "sector.html#market-snapshot-ytd",
+    "title": "SECTOR ANALYTICS | SPAIN",
     "section": "",
-    "text": "Sistema operativo."
+    "text": "Resumen ejecutivo del mercado eléctrico nacional.\n\n\n\n\n\n\n\n324 Comercializadoras Activas\n\n\n\n220 TWh Energía gestionada (Est.)\n\n\n\n11.5% Tasa de cambio de compañía"
   },
   {
-    "objectID": "dashboards.html",
-    "href": "dashboards.html",
-    "title": "MARKET INTELLIGENCE",
+    "objectID": "sector.html#top-10-leaders-volumen",
+    "href": "sector.html#top-10-leaders-volumen",
+    "title": "SECTOR ANALYTICS | SPAIN",
+    "section": "🏆 Top 10 Leaders (Volumen)",
+    "text": "🏆 Top 10 Leaders (Volumen)\nTabla provisional - Aquí cargaremos tus datos reales más adelante.\n\nFuente: CNMC Data (Última actualización: Q4 2025)\n\n\nRank\nGrupo Empresarial\nCuota (%)\nTendencia\n\n\n\n\n1\nIBERDROLA\n32.4%\n🔻\n\n\n2\nENDESA\n21.8%\n➖\n\n\n3\nNATURGY\n14.2%\n🔻\n\n\n4\nTOTALENERGIES\n6.1%\n🔼\n\n\n5\nREPSOL\n5.3%\n🔼"
+  },
+  {
+    "objectID": "sector.html#explorador-de-comercializadoras",
+    "href": "sector.html#explorador-de-comercializadoras",
+    "title": "SECTOR ANALYTICS | SPAIN",
+    "section": "🔎 Explorador de Comercializadoras",
+    "text": "🔎 Explorador de Comercializadoras\n\nPróximamente: Buscador interactivo con datos detallados de clientes y energía por CIF.\n\n\n\n\n\n\n\nNota Metodológica\n\n\n\nLos datos mostrados corresponden a los informes A6 de la CNMC y están procesados para agrupar matrices empresariales."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "SAMUEL GAMITO",
     "section": "",
-    "text": "Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.\n\n\n\n\n\n🗺️ Expansión Territorial\n\n\nVisualización geoespacial de la cartera de clientes de Alumbra. Análisis de densidad de consumo y penetración regional.\n\n ABRIR MAPA INTERACTIVO  \n\n\n\n\n\n📊 Benchmarking FNEE\n\n\nDashboard estratégico basado en datos de la CNMC. Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.\n\n ACCEDER AL DASHBOARD"
+    "text": "“Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.”\n\nSoy Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México…). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.\nActualmente liderando la expansión de Greening Group como CEO para el Sur de Europa.\n\n\n\n\n\n\nEstructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).\n\n\n\nExtracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.\n\n\n\nGestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).\n\n\n\nOptimización de RoI en activos de generación renovable y estrategias de comercialización B2B."
+  },
+  {
+    "objectID": "index.html#energy-strategy-mathematics",
+    "href": "index.html#energy-strategy-mathematics",
+    "title": "SAMUEL GAMITO",
+    "section": "",
+    "text": "“Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.”\n\nSoy Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México…). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.\nActualmente liderando la expansión de Greening Group como CEO para el Sur de Europa.\n\n\n\n\n\n\nEstructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).\n\n\n\nExtracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.\n\n\n\nGestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).\n\n\n\nOptimización de RoI en activos de generación renovable y estrategias de comercialización B2B."
   },
   {
     "objectID": "blog.html",
@@ -35,17 +56,24 @@
     "text": "An�lisis mensual."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "SAMUEL GAMITO",
+    "objectID": "dashboards.html",
+    "href": "dashboards.html",
+    "title": "MARKET INTELLIGENCE",
     "section": "",
-    "text": "“Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.”\n\nSoy Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México…). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.\nActualmente liderando la expansión de Greening Group como CEO para el Sur de Europa.\n\n\n\n\n\n\nEstructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).\n\n\n\nExtracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.\n\n\n\nGestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).\n\n\n\nOptimización de RoI en activos de generación renovable y estrategias de comercialización B2B."
+    "text": "Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.\n\n\n\n\n\n🗺️ Expansión Territorial\n\n\nVisualización geoespacial de la cartera de clientes de Alumbra. Análisis de densidad de consumo y penetración regional.\n\n ABRIR MAPA INTERACTIVO  \n\n\n\n\n\n📊 Benchmarking FNEE\n\n\nDashboard estratégico basado en datos de la CNMC. Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.\n\n ACCEDER AL DASHBOARD"
   },
   {
-    "objectID": "index.html#energy-strategy-mathematics",
-    "href": "index.html#energy-strategy-mathematics",
-    "title": "SAMUEL GAMITO",
+    "objectID": "posts/2026-01-welcome/index.html",
+    "href": "posts/2026-01-welcome/index.html",
+    "title": "Informe Enero 2026",
     "section": "",
-    "text": "“Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.”\n\nSoy Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México…). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.\nActualmente liderando la expansión de Greening Group como CEO para el Sur de Europa.\n\n\n\n\n\n\nEstructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).\n\n\n\nExtracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.\n\n\n\nGestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).\n\n\n\nOptimización de RoI en activos de generación renovable y estrategias de comercialización B2B."
+    "text": "Sistema operativo."
+  },
+  {
+    "objectID": "posts/2026-01-welcome/index.html#informe-mensual",
+    "href": "posts/2026-01-welcome/index.html#informe-mensual",
+    "title": "Informe Enero 2026",
+    "section": "",
+    "text": "Sistema operativo."
   }
 ]
