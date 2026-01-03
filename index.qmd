@@ -1,0 +1,26 @@
+---
+title: "Samuel Gamito"
+about:
+  template: jolla
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/samuel-gamito-matellan/
+    - icon: envelope
+      text: Contacto
+      href: mailto:gamito@yahoo.com
+---
+
+## CEO Spain & Italy | Greening Smart Energy
+
+Ingeniero Matemático con más de 19 años de experiencia ejecutiva en mercados energéticos internacionales. Especialista en trading, estructuración de PPAs y gestión de riesgos financieros.
+
+Actualmente liderando la estrategia y expansión de **Greening Group** en el sur de Europa.
+
+### Enfoque Estratégico ("Army of One")
+* **Mercados:** Optimización de P&L y análisis de volatilidad regulatoria.
+* **Datos:** Decisiones basadas en modelos matemáticos y extracciones masivas (CNMC/REE).
+* **Ejecución:** Transformación de datos complejos en EBITDA real.
+
+---
+> *"La complejidad técnica no sirve si no se traduce en margen operativo."*

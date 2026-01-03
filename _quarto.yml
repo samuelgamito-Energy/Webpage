@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Samuel Gamito | Energy Strategy"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: about.qmd
+        text: Visión
+    right:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/samuel-gamito-matellan/
+      - icon: github
+        href: https://github.com/samuelgamito-Energy
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
