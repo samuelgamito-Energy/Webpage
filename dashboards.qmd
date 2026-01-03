@@ -1,0 +1,40 @@
+---
+title: "MARKET INTELLIGENCE"
+format:
+  html:
+    page-layout: full
+---
+
+Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.
+
+<br>
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card-executive">
+  <h3>🗺️ Expansión Territorial</h3>
+  <p style="color: #94a3b8; margin-bottom: 2rem;">
+    Visualización geoespacial de la cartera de clientes de Alumbra. 
+    Análisis de densidad de consumo y penetración regional.
+  </p>
+  <a href="mapa.html" target="_blank" class="btn btn-primary">
+    ABRIR MAPA INTERACTIVO <i class="fa-solid fa-arrow-up-right-from-square"></i>
+  </a>
+</div>
+:::
+
+::: {.g-col-12 .g-col-md-6}
+<div class="card-executive">
+  <h3>📊 Benchmarking FNEE</h3>
+  <p style="color: #94a3b8; margin-bottom: 2rem;">
+    Dashboard estratégico basado en datos de la CNMC. 
+    Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.
+  </p>
+  <a href="fnee.html" target="_blank" class="btn btn-primary">
+    ACCEDER AL DASHBOARD <i class="fa-solid fa-chart-line"></i>
+  </a>
+</div>
+:::
+
+:::

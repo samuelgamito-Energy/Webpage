@@ -1,26 +1,51 @@
 ---
-title: "Samuel Gamito"
+title: "SAMUEL GAMITO"
+image: profile.jpg
 about:
-  template: jolla
+  template: trestles
+  image-shape: round
+  image-width: 15em
   links:
     - icon: linkedin
       text: LinkedIn
       href: https://www.linkedin.com/in/samuel-gamito-matellan/
     - icon: envelope
-      text: Contacto
+      text: Email
       href: mailto:gamito@yahoo.com
 ---
 
-## CEO Spain & Italy | Greening Smart Energy
+## ENERGY STRATEGY & MATHEMATICS
 
-Ingeniero Matemático con más de 19 años de experiencia ejecutiva en mercados energéticos internacionales. Especialista en trading, estructuración de PPAs y gestión de riesgos financieros.
+> *"Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."*
 
-Actualmente liderando la estrategia y expansión de **Greening Group** en el sur de Europa.
+Soy **Ingeniero Matemático** y Ejecutivo C-Level especializado en mercados energéticos (España e Italia). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
 
-### Enfoque Estratégico ("Army of One")
-* **Mercados:** Optimización de P&L y análisis de volatilidad regulatoria.
-* **Datos:** Decisiones basadas en modelos matemáticos y extracciones masivas (CNMC/REE).
-* **Ejecución:** Transformación de datos complejos en EBITDA real.
+Actualmente liderando la expansión de **Greening Group** como CEO para el Sur de Europa.
 
 ---
-> *"La complejidad técnica no sirve si no se traduce en margen operativo."*
+
+### ÁREAS DE EXPERTISE
+
+::: {.grid}
+
+::: {.g-col-6}
+#### 📈 Trading & Mercados
+Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).
+:::
+
+::: {.g-col-6}
+#### 🤖 Ingeniería de Datos
+Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.
+:::
+
+::: {.g-col-6}
+#### 🌍 Estrategia Internacional
+Gestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).
+:::
+
+::: {.g-col-6}
+#### ⚡ Gestión de Activos
+Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.
+:::
+
+:::

@@ -1,29 +1,94 @@
-/* Estilo "Army of One" - Minimalismo Ejecutivo */
+/* ESTILO "QUANT EXECUTIVE" */
 
-/* Títulos con autoridad */
-h1, h2, h3 {
-    color: #0f172a; /* Slate oscuro */
-    font-weight: 700;
-    letter-spacing: -0.5px; /* Un toque moderno y compacto */
+/* 1. Fondo y Tipografía Base */
+body {
+    background-color: #0f172a; /* Slate 900 - Oscuro profundo */
+    color: #e2e8f0;            /* Slate 200 - Blanco hueso (no quema la vista) */
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-weight: 300;          /* Letra fina y elegante */
 }
 
-/* Enlaces en color Data Teal */
+/* 2. Títulos con Autoridad */
+h1, h2, h3, h4 {
+    color: #f8fafc;            /* Blanco puro */
+    font-weight: 600;
+    letter-spacing: -0.02em;   /* Tracking ajustado moderno */
+    margin-top: 1.5em;
+}
+
+h1.title {
+    color: #2dd4bf;            /* Teal Electrico para tu nombre */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 2.5rem;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 0.5rem;
+}
+
+/* 3. Navegación (La barra de arriba) */
+.navbar {
+    background-color: #020617 !important; /* Casi negro */
+    border-bottom: 1px solid #1e293b;     /* Línea sutil separadora */
+}
+
+.navbar-brand {
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* 4. Enlaces y Botones */
 a {
-    color: #0d9488;
+    color: #2dd4bf; /* Teal */
     text-decoration: none;
+    transition: all 0.2s ease;
 }
 
 a:hover {
-    color: #0f172a;
-    text-decoration: underline;
+    color: #99f6e4; /* Teal más claro al pasar ratón */
+    text-decoration: none;
 }
 
-/* Modo oscuro: Ajustes automáticos */
-@media (prefers-color-scheme: dark) {
-    h1, h2, h3 {
-        color: #e2e8f0; /* Blanco suave en modo oscuro */
-    }
-    a {
-        color: #2dd4bf; /* Teal más brillante para fondo oscuro */
-    }
+/* Botones estilo "Terminal" */
+.btn-primary {
+    background-color: transparent;
+    border: 1px solid #2dd4bf;
+    color: #2dd4bf;
+    border-radius: 0; /* Bordes cuadrados = seriedad */
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.5rem;
+    letter-spacing: 0.05em;
+}
+
+.btn-primary:hover {
+    background-color: #2dd4bf;
+    color: #0f172a; /* Texto oscuro sobre fondo teal */
+    box-shadow: 0 0 15px rgba(45, 212, 191, 0.4); /* Brillo "Neon" */
+}
+
+/* 5. Tarjetas (Para los Dashboards) */
+.card-executive {
+    background-color: #1e293b; /* Slate 800 */
+    border: 1px solid #334155;
+    padding: 2rem;
+    border-radius: 4px;
+    transition: transform 0.2s ease, border-color 0.2s;
+    height: 100%;
+}
+
+.card-executive:hover {
+    transform: translateY(-5px); /* Levantar levemente */
+    border-color: #2dd4bf;       /* Borde se ilumina */
+}
+
+/* 6. Detalles finos */
+hr {
+    border-top: 1px solid #334155;
+    opacity: 1;
+}
+
+code {
+    color: #f472b6; /* Rosa técnico para código */
+    background-color: #1e293b;
 }
