@@ -1,0 +1,29 @@
+/* Estilo "Army of One" - Minimalismo Ejecutivo */
+
+/* Títulos con autoridad */
+h1, h2, h3 {
+    color: #0f172a; /* Slate oscuro */
+    font-weight: 700;
+    letter-spacing: -0.5px; /* Un toque moderno y compacto */
+}
+
+/* Enlaces en color Data Teal */
+a {
+    color: #0d9488;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0f172a;
+    text-decoration: underline;
+}
+
+/* Modo oscuro: Ajustes automáticos */
+@media (prefers-color-scheme: dark) {
+    h1, h2, h3 {
+        color: #e2e8f0; /* Blanco suave en modo oscuro */
+    }
+    a {
+        color: #2dd4bf; /* Teal más brillante para fondo oscuro */
+    }
+}
