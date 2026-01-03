@@ -4,5 +4,11 @@
   },
   "dashboards.qmd": {
     "dashboards.html": "161efd58"
+  },
+  "blog.qmd": {
+    "blog.html": "867f6837"
+  },
+  "posts/2026-01-welcome/index.qmd": {
+    "index.html": "560bf59e"
   }
 }

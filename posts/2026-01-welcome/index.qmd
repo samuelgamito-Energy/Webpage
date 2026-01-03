@@ -1,0 +1,11 @@
+---
+title: "Informe Enero 2026"
+date: 2026-01-01
+description: "Prueba de conexión"
+categories: [Report]
+image: https://via.placeholder.com/150
+---
+
+## Informe Mensual
+
+Sistema operativo.
