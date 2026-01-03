@@ -1,0 +1,17 @@
+---
+title: "ENERGY FLASH"
+listing:
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  fields: [date, title, reading-time, description, image]
+page-layout: full
+title-block-banner: true
+---
+
+## Market Intelligence & Monthly Reports
+
+Análisis mensual de la evolución de precios, regulación y estrategia energética (España, Italia & LATAM).

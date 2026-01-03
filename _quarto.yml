@@ -5,13 +5,15 @@ project:
 website:
   title: "SAMUEL GAMITO"
   navbar:
-    background: "#0f172a" # Tu color Slate 900 (Autoridad)
+    background: "#0f172a"
     foreground: "#ffffff"
     left:
       - href: index.qmd
         text: Home
-      - href: dashboards.qmd # Placeholder para el futuro
-        text: Datos CNMC
+      - href: blog.qmd
+        text: Energy Flash
+      - href: dashboards.qmd
+        text: Market Intelligence
     right:
       - icon: linkedin
         href: https://www.linkedin.com/in/samuel-gamito-matellan/
@@ -21,8 +23,8 @@ website:
 format:
   html:
     theme: 
-      light: flatly      # Limpio y estructurado para leer de día
-      dark: darkly       # Modo oscuro automático para entornos de trading
+      light: flatly
+      dark: darkly
     css: styles.css
     toc: true
-    mainfont: "Segoe UI" # La fuente que usas en tus dashboards
+    mainfont: "Segoe UI"
