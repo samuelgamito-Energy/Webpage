@@ -130,89 +130,121 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#samuel-gamito" id="toc-samuel-gamito" class="nav-link active" data-scroll-target="#samuel-gamito">SAMUEL GAMITO</a>
-  <ul class="collapse">
-  <li><a href="#energy-strategy-mathematics" id="toc-energy-strategy-mathematics" class="nav-link" data-scroll-target="#energy-strategy-mathematics">ENERGY STRATEGY &amp; MATHEMATICS</a>
-  <ul class="collapse">
-  <li><a href="#áreas-de-expertise" id="toc-áreas-de-expertise" class="nav-link" data-scroll-target="#áreas-de-expertise">ÁREAS DE EXPERTISE</a></li>
-  </ul></li>
-  </ul></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page" id="quarto-document-content">
 
 
 
 
 <style>
-    .profile-video {
+    /* Estilos del Vídeo (Tamaño controlado) */
+    .profile-video-container {
         width: 100%;
-        max-width: 300px;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #2dd4bf;
-        box-shadow: 0 0 25px rgba(45, 212, 191, 0.4);
+        max-width: 350px; /* Tamaño del rectángulo original */
         margin: 0 auto;
+        border-radius: 15px; /* Bordes redondeados pero rectangular */
+        overflow: hidden;
+        border: 2px solid #2dd4bf;
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.3);
+    }
+    
+    video {
+        width: 100%;
+        height: auto;
         display: block;
     }
+
+    /* Botones Sociales */
     .social-btn {
-        display: inline-block; margin: 0 5px; padding: 8px 15px;
-        border: 1px solid #334155; border-radius: 20px;
-        color: #94a3b8; text-decoration: none; font-size: 0.9rem;
+        display: inline-block;
+        margin: 5px;
+        padding: 8px 16px;
+        border: 1px solid #334155;
+        border-radius: 20px;
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.2s;
     }
     .social-btn:hover {
-        border-color: #2dd4bf; color: #2dd4bf; background: rgba(45, 212, 191, 0.1);
+        border-color: #2dd4bf;
+        color: #0f172a;
+        background: #2dd4bf;
     }
+
+    /* Tipografías */
+    h1 { color: #2dd4bf; font-weight: 700; letter-spacing: 1px; margin-bottom: 0; }
+    h2 { color: #94a3b8; font-size: 1.2rem; font-weight: 400; margin-top: 5px; }
+    .quote { border-left: 3px solid #2dd4bf; padding-left: 15px; color: #e2e8f0; font-style: italic; margin: 20px 0; }
+    p { color: #cbd5e1; line-height: 1.6; }
+    
+    /* Grid de Expertise */
+    .expertise-title { color: #f8fafc; font-weight: 600; margin-bottom: 5px; }
+    .expertise-desc { font-size: 0.9rem; color: #94a3b8; }
 </style>
-<div class="grid mt-5">
-<p>::: {.g-col-12 .g-col-md-4 .text-center} <video class="profile-video" autoplay="" loop="" muted="" playsinline=""> <source src="VideoFractales.mp4" type="video/mp4"> </video></p>
-<p><br></p>
-<div>
-<p><a href="[https://www.linkedin.com/in/samuel-gamito-matellan/](https://www.linkedin.com/in/samuel-gamito-matellan/)" class="social-btn" target="_blank"> <i class="fa-brands fa-linkedin"></i> LinkedIn </a> <a href="mailto:gamito@yahoo.com" class="social-btn"> <i class="fa-solid fa-envelope"></i> Email </a></p>
+<div class="grid gap-5" style="margin-top: 2rem;">
+<pre><code>&lt;div class="g-col-12 g-col-md-4 text-center"&gt;
+    
+    &lt;div class="profile-video-container"&gt;
+        &lt;video autoplay loop muted playsinline&gt;
+            &lt;source src="VideoFractales.mp4" type="video/mp4"&gt;
+        &lt;/video&gt;
+    &lt;/div&gt;
+
+    &lt;br&gt;
+
+    &lt;div&gt;
+        &lt;a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank"&gt;
+            &lt;i class="fa-brands fa-linkedin"&gt;&lt;/i&gt; LinkedIn
+        &lt;/a&gt;
+        &lt;a href="mailto:gamito@yahoo.com" class="social-btn"&gt;
+            &lt;i class="fa-solid fa-envelope"&gt;&lt;/i&gt; Email
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="g-col-12 g-col-md-8"&gt;
+    
+    &lt;h1&gt;SAMUEL GAMITO&lt;/h1&gt;
+    &lt;h2&gt;ENERGY STRATEGY &amp; MATHEMATICS&lt;/h2&gt;
+
+    &lt;div class="quote"&gt;
+        "Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."
+    &lt;/div&gt;
+
+    &lt;p&gt;
+        Soy &lt;strong&gt;Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática&lt;/strong&gt; y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México...). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
+    &lt;/p&gt;
+    &lt;p&gt;
+        Actualmente liderando la expansión de &lt;strong&gt;Greening Group&lt;/strong&gt; como CEO para el Sur de Europa.
+    &lt;/p&gt;
+
+    &lt;hr style="border-top: 1px solid #334155; margin: 30px 0;"&gt;
+
+    &lt;div class="grid gap-4"&gt;
+        &lt;div class="g-col-12 g-col-md-6"&gt;
+            &lt;div class="expertise-title"&gt;📈 Trading &amp; Mercados&lt;/div&gt;
+            &lt;div class="expertise-desc"&gt;Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="g-col-12 g-col-md-6"&gt;
+            &lt;div class="expertise-title"&gt;🤖 Ingeniería de Datos&lt;/div&gt;
+            &lt;div class="expertise-desc"&gt;Extracción masiva de datos (CNMC/REE) y modelado predictivo.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="g-col-12 g-col-md-6"&gt;
+            &lt;div class="expertise-title"&gt;🌍 Estrategia Internacional&lt;/div&gt;
+            &lt;div class="expertise-desc"&gt;Gestión de P&amp;L en entornos regulatorios complejos y equipos transfronterizos.&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="g-col-12 g-col-md-6"&gt;
+            &lt;div class="expertise-title"&gt;⚡ Gestión de Activos&lt;/div&gt;
+            &lt;div class="expertise-desc"&gt;Optimización de RoI en generación renovable y estrategias B2B.&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/div&gt;</code></pre>
 </div>
-</div>
-<section id="samuel-gamito" class="level1 title g-col-12 g-col-md-8" style="color: #2dd4bf; margin-top: 0;">
-<h1 class="title" style="color: #2dd4bf; margin-top: 0;">SAMUEL GAMITO</h1>
-<section id="energy-strategy-mathematics" class="level2" style="color: #94a3b8; font-size: 1.3rem; margin-top: -10px;">
-<h2 style="color: #94a3b8; font-size: 1.3rem; margin-top: -10px;" class="anchored" data-anchor-id="energy-strategy-mathematics">ENERGY STRATEGY &amp; MATHEMATICS</h2>
-<blockquote class="blockquote">
-<p><em>“Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.”</em></p>
-</blockquote>
-<p>Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México…). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.</p>
-<p>Actualmente liderando la expansión de <strong>Greening Group</strong> como CEO para el Sur de Europa.</p>
-<hr>
-<section id="áreas-de-expertise" class="level3">
-<h3 class="anchored" data-anchor-id="áreas-de-expertise">ÁREAS DE EXPERTISE</h3>
-<div class="grid">
-<section id="trading-mercados" class="level4 g-col-6">
-<h4 class="anchored" data-anchor-id="trading-mercados">📈 Trading &amp; Mercados</h4>
-<p>Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power &amp; Gas).</p>
-</section>
-<section id="ingeniería-de-datos" class="level4 g-col-6">
-<h4 class="anchored" data-anchor-id="ingeniería-de-datos">🤖 Ingeniería de Datos</h4>
-<p>Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.</p>
-</section>
-<section id="estrategia-internacional" class="level4 g-col-6">
-<h4 class="anchored" data-anchor-id="estrategia-internacional">🌍 Estrategia Internacional</h4>
-<p>Gestión de P&amp;L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).</p>
-</section>
-<section id="gestión-de-activos" class="level4 g-col-6">
-<h4 class="anchored" data-anchor-id="gestión-de-activos">⚡ Gestión de Activos</h4>
-<p>Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.</p>
-</section>
-</div>
-</section>
-</section>
-</section>
-<p>:::</p>
 
 
 
