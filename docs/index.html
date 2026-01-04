@@ -138,37 +138,38 @@ ul.task-list li input[type="checkbox"] {
 
 
 <style>
-    /* Contenedor Flexbox: Asegura que el texto y el video estén lado a lado */
+    /* Contenedor Principal Flexbox */
     .hero-container {
         display: flex;
-        flex-direction: row; /* En fila */
-        gap: 40px;
+        flex-direction: row; /* En fila horizontal */
+        gap: 50px; /* Espacio entre columnas */
         margin-top: 3rem;
-        align-items: flex-start; /* Alineados arriba */
+        align-items: flex-start;
     }
 
-    /* Columna Izquierda: Texto (65% del ancho) */
+    /* Columna 1: TEXTO (Ahora a la izquierda) */
     .hero-text {
-        flex: 2; 
+        flex: 3; /* Ocupa más espacio (60-70%) */
         min-width: 300px;
     }
 
-    /* Columna Derecha: Video (35% del ancho) */
+    /* Columna 2: VÍDEO (Ahora a la derecha) */
     .hero-video {
-        flex: 1;
+        flex: 2; /* Ocupa menos espacio (30-40%) */
         min-width: 280px;
         max-width: 450px;
     }
 
-    /* Estilo del Vídeo */
+    /* Diseño del Vídeo */
     .video-box {
         width: 100%;
-        aspect-ratio: 16/9;
-        border: 2px solid #2dd4bf; /* Borde Teal */
+        aspect-ratio: 16/9; /* Formato Rectangular */
+        border: 2px solid #2dd4bf;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 0 25px rgba(45, 212, 191, 0.25);
         background-color: #000;
+        margin-bottom: 20px;
     }
     
     video {
@@ -178,18 +179,18 @@ ul.task-list li input[type="checkbox"] {
         display: block;
     }
 
-    /* TIPOGRAFÍA */
+    /* Tipografías */
     h1 { 
         color: #2dd4bf !important; 
         font-weight: 800; 
         margin-bottom: 5px; 
         line-height: 1.1; 
-        font-size: 2.8em; 
+        font-size: 3em; 
         letter-spacing: -1px;
     }
     h2 { 
         color: #94a3b8 !important; 
-        font-size: 1.25rem; 
+        font-size: 1.2rem; 
         margin-top: 0; 
         font-weight: 400; 
         margin-bottom: 25px; 
@@ -203,15 +204,14 @@ ul.task-list li input[type="checkbox"] {
         font-style: italic; 
         margin-bottom: 30px;
         background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
-        border-radius: 0 10px 10px 0;
     }
     
     p { color: #cbd5e1; line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
 
-    /* BOTONES */
+    /* Botones */
     .btn-action {
         display: inline-flex; align-items: center; gap: 8px;
-        padding: 8px 20px;
+        padding: 10px 24px;
         border: 1px solid #334155; border-radius: 50px;
         color: #94a3b8; text-decoration: none; font-size: 0.9rem;
         transition: all 0.2s ease;
@@ -222,22 +222,21 @@ ul.task-list li input[type="checkbox"] {
         box-shadow: 0 0 15px rgba(45, 212, 191, 0.4);
     }
 
-    /* GRID DE EXPERTISE (Debajo del texto) */
+    /* Grid de Expertise */
     .expertise-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 25px;
+        gap: 30px;
         margin-top: 40px;
         padding-top: 30px;
         border-top: 1px solid #334155;
     }
-    .exp-item h4 { color: #f8fafc; font-size: 1rem; margin-bottom: 8px; margin-top: 0; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .exp-item h4 { color: #f8fafc; font-size: 1rem; margin-bottom: 8px; margin-top: 0; font-weight: 600; }
     .exp-item p { font-size: 0.9rem; color: #94a3b8; line-height: 1.4; margin: 0; }
 
-    /* MÓVIL: Si la pantalla es pequeña, poner uno debajo del otro */
+    /* MÓVIL */
     @media (max-width: 900px) {
-        .hero-container { flex-direction: column-reverse; }
-        .hero-text, .hero-video { width: 100%; }
+        .hero-container { flex-direction: column-reverse; } /* En móvil el texto abajo, vídeo arriba */
         .expertise-grid { grid-template-columns: 1fr; }
     }
 </style>
@@ -286,7 +285,7 @@ ul.task-list li input[type="checkbox"] {
             </video>
         </div>
         
-        <div style="text-align: center; margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <div style="text-align: center; display: flex; justify-content: center; gap: 10px;">
             <a href="[https://www.linkedin.com/in/samuel-gamito-matellan/](https://www.linkedin.com/in/samuel-gamito-matellan/)" class="btn-action" target="_blank">
                 <i class="fa-brands fa-linkedin"></i> LinkedIn
             </a>
