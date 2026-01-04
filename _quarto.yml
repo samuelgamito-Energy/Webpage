@@ -1,7 +1,7 @@
 project:
   type: website
   output-dir: docs
-  resources: ["VideoFractales.mp4"]  <--- AÑADE ESTA LÍNEA EXACTA
+  resources: ["VideoFractales.mp4"]
 
 website:
   title: "SAMUEL GAMITO"
