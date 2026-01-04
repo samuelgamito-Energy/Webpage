@@ -6,4 +6,4 @@ format:
     toc: false
 ---
 
-<iframe src="dashboard.html" style="width: 100%; height: 90vh; border: none; overflow: hidden; display: block;"></iframe>
+<iframe src="dashboard.html" scrolling="no" style="width: 100%; height: 85vh; border: none; overflow: hidden; display: block;"></iframe>
