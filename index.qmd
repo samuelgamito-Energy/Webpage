@@ -4,16 +4,16 @@ page-layout: full
 ---
 
 <style>
-    /* 1. Control estricto del tamaño del vídeo */
-    .video-container {
+    /* Contenedor del vídeo rectangular y ajustado */
+    .video-rect {
         width: 100%;
-        max-width: 320px; /* AQUÍ controlamos que no sea gigante */
-        aspect-ratio: 16/9;
-        margin: 0 auto;   /* Centrado */
-        border-radius: 10px;
-        overflow: hidden;
+        max-width: 350px; /* Ancho controlado */
+        aspect-ratio: 16 / 9; /* Formato rectangular */
+        border-radius: 8px; /* Bordes suaves */
         border: 2px solid #2dd4bf; /* Borde Teal */
-        box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
+        box-shadow: 0 4px 20px rgba(45, 212, 191, 0.2);
+        overflow: hidden;
+        margin: 0 auto 20px auto; /* Centrado y con margen abajo */
     }
     
     video {
@@ -23,87 +23,80 @@ page-layout: full
         display: block;
     }
 
-    /* 2. Botones sociales */
+    /* Botones sociales */
     .social-btn {
-        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        margin: 5px; padding: 6px 14px;
-        border: 1px solid #334155; border-radius: 20px;
-        color: #94a3b8; text-decoration: none; font-size: 0.85rem;
+        display: inline-block;
+        margin: 5px;
+        padding: 8px 16px;
+        border: 1px solid #334155;
+        border-radius: 20px;
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 0.9rem;
         transition: all 0.2s;
     }
     .social-btn:hover {
-        border-color: #2dd4bf; color: #0f172a; background: #2dd4bf;
+        border-color: #2dd4bf;
+        color: #2dd4bf;
+        background: rgba(45, 212, 191, 0.1);
     }
-
-    /* 3. Tipografía */
-    h1 { color: #2dd4bf; font-weight: 700; letter-spacing: 1px; margin-bottom: 0; line-height: 1.2; }
-    h2 { color: #94a3b8; font-size: 1.1rem; font-weight: 400; margin-top: 5px; margin-bottom: 20px; }
-    .quote { border-left: 3px solid #2dd4bf; padding-left: 15px; color: #e2e8f0; font-style: italic; margin-bottom: 20px; }
-    p { color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; }
-    
-    /* 4. Títulos de Expertise */
-    .exp-title { color: #f8fafc; font-weight: 600; margin-bottom: 4px; font-size: 1rem; }
-    .exp-desc { font-size: 0.9rem; color: #94a3b8; margin-bottom: 15px; }
 </style>
 
-<div class="grid gap-5" style="margin-top: 3rem;">
+::: {.grid}
 
-    <div class="g-col-12 g-col-md-4 text-center">
-        
-        <div class="video-container">
-            <video autoplay loop muted playsinline>
-                <source src="VideoFractales.mp4" type="video/mp4">
-            </video>
-        </div>
+::: {.g-col-12 .g-col-md-4 .text-center}
 
-        <br>
-
-        <div>
-            <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">
-                <i class="bi bi-linkedin"></i> LinkedIn
-            </a>
-            <a href="mailto:gamito@yahoo.com" class="social-btn">
-                <i class="bi bi-envelope"></i> Email
-            </a>
-        </div>
-    </div>
-
-    <div class="g-col-12 g-col-md-8">
-        
-        <h1>SAMUEL GAMITO</h1>
-        <h2>ENERGY STRATEGY & MATHEMATICS</h2>
-
-        <div class="quote">
-            "Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."
-        </div>
-
-        <p>
-            Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
-        </p>
-        <p>
-            Actualmente liderando la expansión de <strong>Greening Group</strong> como CEO para el Sur de Europa.
-        </p>
-
-        <hr style="border-top: 1px solid #334155; margin: 30px 0;">
-
-        <div class="grid gap-4">
-            <div class="g-col-12 g-col-md-6">
-                <div class="exp-title">📈 Trading & Mercados</div>
-                <div class="exp-desc">Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras.</div>
-            </div>
-            <div class="g-col-12 g-col-md-6">
-                <div class="exp-title">🤖 Ingeniería de Datos</div>
-                <div class="exp-desc">Extracción masiva de datos (CNMC/REE) y modelado predictivo.</div>
-            </div>
-            <div class="g-col-12 g-col-md-6">
-                <div class="exp-title">🌍 Estrategia Internacional</div>
-                <div class="exp-desc">Gestión de P&L en entornos regulatorios complejos y equipos transfronterizos.</div>
-            </div>
-            <div class="g-col-12 g-col-md-6">
-                <div class="exp-title">⚡ Gestión de Activos</div>
-                <div class="exp-desc">Optimización de RoI en generación renovable y estrategias B2B.</div>
-            </div>
-        </div>
-
-    </div>
+<div class="video-rect">
+  <video autoplay loop muted playsinline>
+    <source src="VideoFractales.mp4" type="video/mp4">
+  </video>
 </div>
+
+<div>
+  <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">LinkedIn</a>
+  <a href="mailto:gamito@yahoo.com" class="social-btn">Email</a>
+</div>
+
+:::
+
+::: {.g-col-12 .g-col-md-8}
+
+# SAMUEL GAMITO {style="color: #2dd4bf; margin-top: 0; font-weight: 700;"}
+
+## ENERGY STRATEGY & MATHEMATICS {style="color: #94a3b8; font-size: 1.2rem; margin-top: -5px;"}
+
+> *"Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."*
+
+Soy **Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática** y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
+
+Actualmente liderando la expansión de **Greening Group** como CEO para el Sur de Europa.
+
+---
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+#### 📈 Trading & Mercados
+Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power & Gas).
+:::
+
+::: {.g-col-12 .g-col-md-6}
+#### 🤖 Ingeniería de Datos
+Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de decisiones.
+:::
+
+::: {.g-col-12 .g-col-md-6}
+#### 🌍 Estrategia Internacional
+Gestión de P&L en entornos regulatorios complejos y liderazgo de equipos transfronterizos.
+:::
+
+::: {.g-col-12 .g-col-md-6}
+#### ⚡ Gestión de Activos
+Optimización de RoI en activos de generación renovable y estrategias B2B.
+:::
+
+:::
+
+:::
+
+:::
