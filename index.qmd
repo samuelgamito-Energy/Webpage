@@ -4,60 +4,70 @@ page-layout: full
 ---
 
 <style>
-    /* Estilo Rectangular para el Vídeo (Como la foto original) */
-    .video-container {
+    /* Contenedor del vídeo rectangular y ajustado */
+    .video-rect {
         width: 100%;
-        border-radius: 12px; /* Bordes ligeramente redondeados */
+        max-width: 350px; /* Ancho controlado */
+        aspect-ratio: 16 / 9; /* Formato rectangular */
+        border-radius: 8px; /* Bordes suaves */
+        border: 2px solid #2dd4bf; /* Borde Teal */
+        box-shadow: 0 4px 20px rgba(45, 212, 191, 0.2);
         overflow: hidden;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        border: 1px solid #334155;
+        margin: 0 auto 20px auto; /* Centrado y con margen abajo */
     }
     
     video {
         width: 100%;
-        height: auto;
+        height: 100%;
+        object-fit: cover;
         display: block;
     }
 
-    /* Botones y Textos */
+    /* Botones sociales */
     .social-btn {
-        display: inline-block; margin: 5px; padding: 8px 15px;
-        border: 1px solid #334155; border-radius: 20px;
-        color: #94a3b8; text-decoration: none; font-size: 0.9rem;
+        display: inline-block;
+        margin: 5px;
+        padding: 8px 16px;
+        border: 1px solid #334155;
+        border-radius: 20px;
+        color: #94a3b8;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.2s;
     }
     .social-btn:hover {
-        border-color: #2dd4bf; color: #2dd4bf;
+        border-color: #2dd4bf;
+        color: #2dd4bf;
+        background: rgba(45, 212, 191, 0.1);
     }
 </style>
 
 ::: {.grid}
 
-::: {.g-col-12 .g-col-md-4}
+::: {.g-col-12 .g-col-md-4 .text-center}
 
-<div class="video-container">
-<video autoplay loop muted playsinline>
-<source src="VideoFractales.mp4" type="video/mp4">
-</video>
+<div class="video-rect">
+  <video autoplay loop muted playsinline>
+    <source src="VideoFractales.mp4" type="video/mp4">
+  </video>
 </div>
 
-<br>
-
-<div style="text-align: center;">
-<a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">LinkedIn</a>
-<a href="mailto:gamito@yahoo.com" class="social-btn">Email</a>
+<div>
+  <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">LinkedIn</a>
+  <a href="mailto:gamito@yahoo.com" class="social-btn">Email</a>
 </div>
 
 :::
 
 ::: {.g-col-12 .g-col-md-8}
 
-# SAMUEL GAMITO {style="color: #2dd4bf; margin-top: 0;"}
+# SAMUEL GAMITO {style="color: #2dd4bf; margin-top: 0; font-weight: 700;"}
 
-## ENERGY STRATEGY & MATHEMATICS {style="color: #94a3b8; font-size: 1.2rem;"}
+## ENERGY STRATEGY & MATHEMATICS {style="color: #94a3b8; font-size: 1.2rem; margin-top: -5px;"}
 
 > *"Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."*
 
-Soy **Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática** y Ejecutivo C-Level especializado en mercados energéticos internacionales.
+Soy **Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática** y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
 
 Actualmente liderando la expansión de **Greening Group** como CEO para el Sur de Europa.
 
@@ -65,24 +75,24 @@ Actualmente liderando la expansión de **Greening Group** como CEO para el Sur d
 
 ::: {.grid}
 
-::: {.g-col-6}
+::: {.g-col-12 .g-col-md-6}
 #### 📈 Trading & Mercados
-Estructuración de PPAs y cobertura de riesgos financieros.
+Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power & Gas).
 :::
 
-::: {.g-col-6}
+::: {.g-col-12 .g-col-md-6}
 #### 🤖 Ingeniería de Datos
-Extracción masiva de datos (CNMC/REE) y modelado.
+Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de decisiones.
 :::
 
-::: {.g-col-6}
+::: {.g-col-12 .g-col-md-6}
 #### 🌍 Estrategia Internacional
-Gestión de P&L en entornos regulatorios complejos.
+Gestión de P&L en entornos regulatorios complejos y liderazgo de equipos transfronterizos.
 :::
 
-::: {.g-col-6}
+::: {.g-col-12 .g-col-md-6}
 #### ⚡ Gestión de Activos
-Optimización de RoI en renovables.
+Optimización de RoI en activos de generación renovable y estrategias B2B.
 :::
 
 :::
