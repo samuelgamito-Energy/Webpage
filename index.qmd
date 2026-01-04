@@ -3,104 +3,87 @@ title: ""
 page-layout: full
 ---
 
-```{=html}
 <style>
-    /* Estilo del Vídeo de Perfil */
     .profile-video {
         width: 100%;
         max-width: 300px;
         aspect-ratio: 1 / 1;
-        border-radius: 50%; /* Redondo */
+        border-radius: 50%;
         object-fit: cover;
-        border: 2px solid #2dd4bf; /* Borde Teal */
-        box-shadow: 0 0 25px rgba(45, 212, 191, 0.4); /* Brillo Neon */
+        border: 2px solid #2dd4bf;
+        box-shadow: 0 0 25px rgba(45, 212, 191, 0.4);
         margin: 0 auto;
         display: block;
     }
-
-    /* Estilo Botones */
     .social-btn {
-        display: inline-block;
-        margin: 0 5px;
-        padding: 8px 15px;
-        border: 1px solid #334155;
-        border-radius: 20px;
-        color: #94a3b8;
-        font-size: 0.9rem;
-        transition: all 0.2s;
-        text-decoration: none;
+        display: inline-block; margin: 0 5px; padding: 8px 15px;
+        border: 1px solid #334155; border-radius: 20px;
+        color: #94a3b8; text-decoration: none; font-size: 0.9rem;
     }
     .social-btn:hover {
-        border-color: #2dd4bf;
-        color: #2dd4bf;
-        background: rgba(45, 212, 191, 0.1);
+        border-color: #2dd4bf; color: #2dd4bf; background: rgba(45, 212, 191, 0.1);
     }
-    
-    /* Ajustes de texto HTML */
-    .bio-text { color: #cbd5e1; margin-top: 20px; line-height: 1.6; }
-    .bio-quote { color: #e2e8f0; font-style: italic; font-size: 1.1rem; border-left: 3px solid #2dd4bf; padding-left: 15px; margin-top: 20px; }
-    .section-title { color: #f8fafc; margin-top: 0; font-weight: 600; }
-    .section-desc { font-size: 0.9rem; color: #94a3b8; margin-bottom: 20px; }
 </style>
 
-<div class="grid gap-4" style="margin-top: 2rem;">
-    
-    <div class="g-col-12 g-col-md-4 text-center">
-        <video class="profile-video" autoplay loop muted playsinline>
-            <source src="VideoFractales.mp4" type="video/mp4">
-            Tu navegador no soporta vídeos HTML5.
-        </video>
-        
-        <br>
+::: {.grid .mt-5}
 
-        <div style="margin-top: 1.5rem;">
-            <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">
-                <i class="fa-brands fa-linkedin"></i> LinkedIn
-            </a>
-            <a href="mailto:gamito@yahoo.com" class="social-btn">
-                <i class="fa-solid fa-envelope"></i> Email
-            </a>
-        </div>
-    </div>
+::: {.g-col-12 .g-col-md-4 .text-center}
+<video class="profile-video" autoplay loop muted playsinline>
+  <source src="VideoFractales.mp4" type="video/mp4">
+</video>
 
-    <div class="g-col-12 g-col-md-8">
-        
-        <h1 style="margin-top: 0; color: #2dd4bf; font-weight: 700; letter-spacing: 2px;">SAMUEL GAMITO</h1>
-        
-        <h2 style="color: #94a3b8; font-size: 1.3rem; margin-top: -10px; font-weight: 300;">ENERGY STRATEGY & MATHEMATICS</h2>
+<br>
 
-        <div class="bio-quote">
-            "Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."
-        </div>
-
-        <p class="bio-text">
-            Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México...). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
-        </p>
-
-        <p class="bio-text">
-            Actualmente liderando la expansión de <strong>Greening Group</strong> como CEO para el Sur de Europa.
-        </p>
-
-        <hr style="border-top: 1px solid #334155; margin: 30px 0;">
-
-        <div class="grid">
-            <div class="g-col-6">
-                <h4 class="section-title">📈 Trading & Mercados</h4>
-                <p class="section-desc">Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras.</p>
-            </div>
-            <div class="g-col-6">
-                <h4 class="section-title">🤖 Ingeniería de Datos</h4>
-                <p class="section-desc">Extracción masiva de datos (CNMC/REE) y modelado predictivo.</p>
-            </div>
-            <div class="g-col-6">
-                <h4 class="section-title">🌍 Estrategia Internacional</h4>
-                <p class="section-desc">Gestión de P&L en entornos regulatorios complejos y equipos transfronterizos.</p>
-            </div>
-            <div class="g-col-6">
-                <h4 class="section-title">⚡ Gestión de Activos</h4>
-                <p class="section-desc">Optimización de RoI en generación renovable y estrategias B2B.</p>
-            </div>
-        </div>
-
-    </div>
+<div>
+  <a href="[https://www.linkedin.com/in/samuel-gamito-matellan/](https://www.linkedin.com/in/samuel-gamito-matellan/)" class="social-btn" target="_blank">
+    <i class="fa-brands fa-linkedin"></i> LinkedIn
+  </a>
+  <a href="mailto:gamito@yahoo.com" class="social-btn">
+    <i class="fa-solid fa-envelope"></i> Email
+  </a>
 </div>
+:::
+
+::: {.g-col-12 .g-col-md-8}
+
+# SAMUEL GAMITO {.title style="color: #2dd4bf; margin-top: 0;"}
+
+## ENERGY STRATEGY & MATHEMATICS {style="color: #94a3b8; font-size: 1.3rem; margin-top: -10px;"}
+
+> *"Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."*
+
+Soy **Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática** y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México...). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
+
+Actualmente liderando la expansión de **Greening Group** como CEO para el Sur de Europa.
+
+---
+
+### ÁREAS DE EXPERTISE
+
+::: {.grid}
+
+::: {.g-col-6}
+#### 📈 Trading & Mercados
+Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).
+:::
+
+::: {.g-col-6}
+#### 🤖 Ingeniería de Datos
+Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.
+:::
+
+::: {.g-col-6}
+#### 🌍 Estrategia Internacional
+Gestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).
+:::
+
+::: {.g-col-6}
+#### ⚡ Gestión de Activos
+Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.
+:::
+
+:::
+
+:::
+
+:::
