@@ -9,15 +9,15 @@ page-layout: full
         width: 100%;
         max-width: 300px;
         aspect-ratio: 1 / 1;
-        border-radius: 50%; /* Lo hace redondo */
-        object-fit: cover;  /* Asegura que no se deforme */
+        border-radius: 50%; /* Redondo */
+        object-fit: cover;
         border: 2px solid #2dd4bf; /* Borde Teal */
         box-shadow: 0 0 25px rgba(45, 212, 191, 0.4); /* Brillo Neon */
         margin: 0 auto;
         display: block;
     }
 
-    /* Estilo de los Botones Sociales */
+    /* Estilo Botones */
     .social-btn {
         display: inline-block;
         margin: 0 5px;
@@ -27,6 +27,7 @@ page-layout: full
         color: #94a3b8;
         font-size: 0.9rem;
         transition: all 0.2s;
+        text-decoration: none;
     }
     .social-btn:hover {
         border-color: #2dd4bf;
@@ -39,7 +40,7 @@ page-layout: full
     
     <div class="g-col-12 g-col-md-4 text-center">
         <video class="profile-video" autoplay loop muted playsinline>
-            <source src="Video_SG_Fractales_en_Movimiento.mp4" type="video/mp4">
+            <source src="VideoFractales.mp4" type="video/mp4">
         </video>
         
         <br>
@@ -56,7 +57,7 @@ page-layout: full
 
     <div class="g-col-12 g-col-md-8">
         
-        <h1 class="title" style="margin-top: 0;">SAMUEL GAMITO</h1>
+        <h1 class="title" style="margin-top: 0; color: #2dd4bf;">SAMUEL GAMITO</h1>
         
         <h2 style="color: #94a3b8; font-size: 1.3rem; margin-top: -10px;">ENERGY STRATEGY & MATHEMATICS</h2>
 
@@ -77,19 +78,19 @@ page-layout: full
         <div class="grid">
             <div class="g-col-6">
                 <h4 style="color: #f8fafc;">📈 Trading & Mercados</h4>
-                <p style="font-size: 0.9rem; color: #94a3b8;">Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras de energía (Power & Gas).</p>
+                <p style="font-size: 0.9rem; color: #94a3b8;">Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras.</p>
             </div>
             <div class="g-col-6">
                 <h4 style="color: #f8fafc;">🤖 Ingeniería de Datos</h4>
-                <p style="font-size: 0.9rem; color: #94a3b8;">Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.</p>
+                <p style="font-size: 0.9rem; color: #94a3b8;">Extracción masiva de datos (CNMC/REE) y modelado predictivo.</p>
             </div>
             <div class="g-col-6">
                 <h4 style="color: #f8fafc;">🌍 Estrategia Internacional</h4>
-                <p style="font-size: 0.9rem; color: #94a3b8;">Gestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).</p>
+                <p style="font-size: 0.9rem; color: #94a3b8;">Gestión de P&L en entornos regulatorios complejos y equipos transfronterizos.</p>
             </div>
             <div class="g-col-6">
                 <h4 style="color: #f8fafc;">⚡ Gestión de Activos</h4>
-                <p style="font-size: 0.9rem; color: #94a3b8;">Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.</p>
+                <p style="font-size: 0.9rem; color: #94a3b8;">Optimización de RoI en generación renovable y estrategias B2B.</p>
             </div>
         </div>
 
