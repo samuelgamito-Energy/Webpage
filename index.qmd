@@ -5,124 +5,112 @@ page-layout: full
 
 ```{=html}
 <style>
-    /* Contenedor Principal: Divide la pantalla en 2 mitades */
-    .layout-split {
+    /* --- SECCIÓN SUPERIOR (Hero) --- */
+    .hero-container {
         display: flex;
         flex-direction: row;
-        gap: 60px; /* Espacio generoso entre izquierda y derecha */
-        margin-top: 3rem;
-        align-items: flex-start;
+        gap: 60px;
+        margin-top: 2rem;
+        align-items: center; /* Centrado verticalmente */
+        margin-bottom: 60px; /* Espacio antes de la parte de abajo */
     }
 
-    /* COLUMNA IZQUIERDA (Video + Bio) */
-    .col-left {
-        flex: 1; /* Ocupa el 50% aprox */
-        min-width: 320px;
-    }
+    /* Columna Texto (Izquierda) */
+    .hero-text { flex: 3; min-width: 300px; }
 
-    /* COLUMNA DERECHA (Expertise) */
-    .col-right {
-        flex: 1; /* Ocupa el 50% aprox */
-        min-width: 320px;
-        padding-top: 20px; /* Un poco de aire arriba para alinear visualmente */
-    }
+    /* Columna Video (Derecha) */
+    .hero-video { flex: 2; min-width: 300px; max-width: 500px; }
 
-    /* --- ESTILOS DE LA COLUMNA IZQUIERDA --- */
-    
-    /* Video */
+    /* Estilos del Vídeo */
     .video-card {
         width: 100%;
-        max-width: 450px; /* Que no se haga gigante */
         aspect-ratio: 16/9;
         border: 2px solid #2dd4bf;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 0 25px rgba(45, 212, 191, 0.2);
-        margin-bottom: 20px; /* Espacio debajo del video */
+        box-shadow: 0 0 25px rgba(45, 212, 191, 0.25);
+        margin-bottom: 20px;
     }
     video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-    /* Botones (debajo del video) */
-    .social-row { display: flex; gap: 10px; margin-bottom: 30px; }
+    /* Botones */
+    .social-row { display: flex; justify-content: center; gap: 15px; }
     .btn-profile {
         display: inline-flex; align-items: center; gap: 8px;
-        padding: 8px 20px;
+        padding: 10px 24px;
         border: 1px solid #334155; border-radius: 50px;
         color: #94a3b8; text-decoration: none; font-size: 0.9rem;
         transition: all 0.2s;
+        background: rgba(15, 23, 42, 0.6);
     }
-    .btn-profile:hover {
-        background: #2dd4bf; color: #0f172a; border-color: #2dd4bf;
-    }
+    .btn-profile:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
-    /* Texto Bio */
-    h1 { color: #2dd4bf !important; font-weight: 800; margin-bottom: 5px; line-height: 1.1; font-size: 2.8em; letter-spacing: -1px; }
-    h2 { color: #94a3b8 !important; font-size: 1.2rem; margin-top: 0; font-weight: 400; margin-bottom: 25px; letter-spacing: 1px; }
-    
+    /* Tipografía Bio */
+    h1 { color: #2dd4bf !important; font-weight: 800; margin-bottom: 5px; line-height: 1.1; font-size: 3em; letter-spacing: -1px; }
+    h2 { color: #94a3b8 !important; font-size: 1.3rem; margin-top: 0; font-weight: 400; margin-bottom: 30px; letter-spacing: 1px; }
     .bio-quote { 
-        border-left: 4px solid #2dd4bf; 
-        padding: 15px; 
-        color: #e2e8f0; 
-        font-style: italic; 
-        background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
-        margin-bottom: 25px;
+        border-left: 4px solid #2dd4bf; padding: 15px 20px; 
+        color: #e2e8f0; font-style: italic; background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
+        margin-bottom: 25px; border-radius: 0 10px 10px 0;
     }
     p { color: #cbd5e1; line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
 
 
-    /* --- ESTILOS DE LA COLUMNA DERECHA (EXPERTISE) --- */
-    
-    /* Grid de Expertise (Una sola columna de tarjetas grandes para llenar el espacio derecho) */
-    .expertise-stack {
-        display: flex;
-        flex-direction: column;
-        gap: 25px;
+    /* --- SECCIÓN INFERIOR (Expertise - ANCHO COMPLETO) --- */
+    .full-width-section {
+        width: 100%;
+        border-top: 1px solid #334155;
+        padding-top: 40px;
+        margin-top: 40px;
+    }
+
+    .section-title {
+        color: #2dd4bf; 
+        text-align: center; 
+        font-size: 1.2rem; 
+        font-weight: 700; 
+        text-transform: uppercase; 
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+    }
+
+    /* Grid de 4 columnas para ocupar toda la hoja */
+    .expertise-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr); /* 4 columnas iguales */
+        gap: 20px;
     }
 
     .exp-card {
         background: rgba(15, 23, 42, 0.4);
         border: 1px solid #334155;
-        border-radius: 10px;
-        padding: 25px;
+        border-radius: 12px;
+        padding: 20px;
         transition: transform 0.2s;
+        height: 100%; /* Para que todas tengan la misma altura */
     }
-    .exp-card:hover { transform: translateX(5px); border-color: #2dd4bf; }
+    .exp-card:hover { transform: translateY(-5px); border-color: #2dd4bf; background: rgba(45, 212, 191, 0.05); }
     
     .exp-card h4 { 
-        color: #f8fafc; 
-        font-size: 1.1rem; 
-        margin-top: 0; 
-        margin-bottom: 10px; 
-        font-weight: 600; 
-        display: flex; align-items: center; gap: 10px;
+        color: #f8fafc; font-size: 1rem; margin-top: 0; margin-bottom: 10px; 
+        font-weight: 600; display: flex; align-items: center; gap: 8px;
     }
-    .exp-card p { margin: 0; font-size: 0.95rem; color: #94a3b8; }
+    .exp-card p { margin: 0; font-size: 0.9rem; color: #94a3b8; line-height: 1.4; }
 
-    /* MÓVIL */
-    @media (max-width: 900px) {
-        .layout-split { flex-direction: column; gap: 40px; }
+    /* MÓVIL: Ajustes responsivos */
+    @media (max-width: 1024px) {
+        .expertise-grid { grid-template-columns: 1fr 1fr; } /* Tablet: 2 columnas */
+    }
+    @media (max-width: 768px) {
+        .hero-container { flex-direction: column-reverse; } /* Móvil: Video arriba, texto abajo */
+        .expertise-grid { grid-template-columns: 1fr; } /* Móvil: 1 columna */
+        .hero-video { max-width: 100%; }
     }
 </style>
 
-<div class="layout-split">
-
-    <div class="col-left">
-        
-        <div class="video-card">
-            <video autoplay loop muted playsinline>
-                <source src="VideoFractales.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <div class="social-row">
-            <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="btn-profile" target="_blank">
-                <i class="fa-brands fa-linkedin"></i> LinkedIn
-            </a>
-            <a href="mailto:gamito@yahoo.com" class="btn-profile">
-                <i class="fa-solid fa-envelope"></i> Email
-            </a>
-        </div>
-
+<div class="hero-container">
+    
+    <div class="hero-text">
         <h1>SAMUEL GAMITO</h1>
         <h2>ENERGY STRATEGY & MATHEMATICS</h2>
 
@@ -131,40 +119,56 @@ page-layout: full
         </div>
 
         <p>
-            Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México...). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
+            Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
         </p>
         <p>
             Actualmente liderando la expansión de <strong>Greening Group</strong> como CEO para el Sur de Europa.
         </p>
     </div>
 
-    <div class="col-right">
-        <h3 style="color: #2dd4bf; margin-top: 0; margin-bottom: 20px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px;">Áreas de Expertise</h3>
-        
-        <div class="expertise-stack">
-            
-            <div class="exp-card">
-                <h4>📈 Trading & Mercados</h4>
-                <p>Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power & Gas).</p>
-            </div>
-
-            <div class="exp-card">
-                <h4>🤖 Ingeniería de Datos</h4>
-                <p>Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.</p>
-            </div>
-
-            <div class="exp-card">
-                <h4>🌍 Estrategia Internacional</h4>
-                <p>Gestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos (España-Italia).</p>
-            </div>
-
-            <div class="exp-card">
-                <h4>⚡ Gestión de Activos</h4>
-                <p>Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.</p>
-            </div>
-
+    <div class="hero-video">
+        <div class="video-card">
+            <video autoplay loop muted playsinline>
+                <source src="VideoFractales.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="social-row">
+            <a href="[https://www.linkedin.com/in/samuel-gamito-matellan/](https://www.linkedin.com/in/samuel-gamito-matellan/)" class="btn-profile" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="mailto:gamito@yahoo.com" class="btn-profile">
+                <i class="fa-solid fa-envelope"></i> Email
+            </a>
         </div>
     </div>
 
+</div>
+
+<div class="full-width-section">
+    <div class="section-title">Áreas de Expertise</div>
+    
+    <div class="expertise-grid">
+        
+        <div class="exp-card">
+            <h4>📈 Trading & Mercados</h4>
+            <p>Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power & Gas).</p>
+        </div>
+
+        <div class="exp-card">
+            <h4>🤖 Ingeniería de Datos</h4>
+            <p>Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos.</p>
+        </div>
+
+        <div class="exp-card">
+            <h4>🌍 Estrategia Internacional</h4>
+            <p>Gestión de P&L en entornos regulatorios complejos. Liderazgo de equipos transfronterizos.</p>
+        </div>
+
+        <div class="exp-card">
+            <h4>⚡ Gestión de Activos</h4>
+            <p>Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.</p>
+        </div>
+
+    </div>
 </div>
 ```
