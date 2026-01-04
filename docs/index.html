@@ -138,16 +138,37 @@ ul.task-list li input[type="checkbox"] {
 
 
 <style>
-    /* Contenedor del vídeo rectangular y ajustado */
-    .video-rect {
+    /* Contenedor Flexbox: Asegura que el texto y el video estén lado a lado */
+    .hero-container {
+        display: flex;
+        flex-direction: row; /* En fila */
+        gap: 40px;
+        margin-top: 3rem;
+        align-items: flex-start; /* Alineados arriba */
+    }
+
+    /* Columna Izquierda: Texto (65% del ancho) */
+    .hero-text {
+        flex: 2; 
+        min-width: 300px;
+    }
+
+    /* Columna Derecha: Video (35% del ancho) */
+    .hero-video {
+        flex: 1;
+        min-width: 280px;
+        max-width: 450px;
+    }
+
+    /* Estilo del Vídeo */
+    .video-box {
         width: 100%;
-        max-width: 350px; /* Ancho controlado */
-        aspect-ratio: 16 / 9; /* Formato rectangular */
-        border-radius: 8px; /* Bordes suaves */
+        aspect-ratio: 16/9;
         border: 2px solid #2dd4bf; /* Borde Teal */
-        box-shadow: 0 4px 20px rgba(45, 212, 191, 0.2);
+        border-radius: 12px;
         overflow: hidden;
-        margin: 0 auto 20px auto; /* Centrado y con margen abajo */
+        box-shadow: 0 0 25px rgba(45, 212, 191, 0.25);
+        background-color: #000;
     }
     
     video {
@@ -157,63 +178,124 @@ ul.task-list li input[type="checkbox"] {
         display: block;
     }
 
-    /* Botones sociales */
-    .social-btn {
-        display: inline-block;
-        margin: 5px;
-        padding: 8px 16px;
-        border: 1px solid #334155;
-        border-radius: 20px;
-        color: #94a3b8;
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: all 0.2s;
+    /* TIPOGRAFÍA */
+    h1 { 
+        color: #2dd4bf !important; 
+        font-weight: 800; 
+        margin-bottom: 5px; 
+        line-height: 1.1; 
+        font-size: 2.8em; 
+        letter-spacing: -1px;
     }
-    .social-btn:hover {
-        border-color: #2dd4bf;
-        color: #2dd4bf;
-        background: rgba(45, 212, 191, 0.1);
+    h2 { 
+        color: #94a3b8 !important; 
+        font-size: 1.25rem; 
+        margin-top: 0; 
+        font-weight: 400; 
+        margin-bottom: 25px; 
+        letter-spacing: 1px;
+    }
+    
+    .quote-box { 
+        border-left: 4px solid #2dd4bf; 
+        padding: 15px 20px; 
+        color: #e2e8f0; 
+        font-style: italic; 
+        margin-bottom: 30px;
+        background: linear-gradient(90deg, rgba(45, 212, 191, 0.05) 0%, transparent 100%);
+        border-radius: 0 10px 10px 0;
+    }
+    
+    p { color: #cbd5e1; line-height: 1.7; margin-bottom: 15px; font-size: 1.05rem; }
+
+    /* BOTONES */
+    .btn-action {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 8px 20px;
+        border: 1px solid #334155; border-radius: 50px;
+        color: #94a3b8; text-decoration: none; font-size: 0.9rem;
+        transition: all 0.2s ease;
+        background: rgba(15, 23, 42, 0.5);
+    }
+    .btn-action:hover {
+        background-color: #2dd4bf; color: #0f172a; border-color: #2dd4bf;
+        box-shadow: 0 0 15px rgba(45, 212, 191, 0.4);
+    }
+
+    /* GRID DE EXPERTISE (Debajo del texto) */
+    .expertise-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid #334155;
+    }
+    .exp-item h4 { color: #f8fafc; font-size: 1rem; margin-bottom: 8px; margin-top: 0; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .exp-item p { font-size: 0.9rem; color: #94a3b8; line-height: 1.4; margin: 0; }
+
+    /* MÓVIL: Si la pantalla es pequeña, poner uno debajo del otro */
+    @media (max-width: 900px) {
+        .hero-container { flex-direction: column-reverse; }
+        .hero-text, .hero-video { width: 100%; }
+        .expertise-grid { grid-template-columns: 1fr; }
     }
 </style>
-<div class="grid">
-<div class="g-col-12 g-col-md-4 text-center">
-<div class="video-rect">
-<p><video autoplay="" loop="" muted="" playsinline=""> <source src="VideoFractales.mp4" type="video/mp4"> </video></p>
-</div>
-<div>
-<p><a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">LinkedIn</a> <a href="mailto:gamito@yahoo.com" class="social-btn">Email</a></p>
-</div>
-</div>
-<section id="samuel-gamito" class="level1 g-col-12 g-col-md-8" style="color: #2dd4bf; margin-top: 0; font-weight: 700;">
-<h1 style="color: #2dd4bf; margin-top: 0; font-weight: 700;">SAMUEL GAMITO</h1>
-<section id="energy-strategy-mathematics" class="level2" style="color: #94a3b8; font-size: 1.2rem; margin-top: -5px;">
-<h2 style="color: #94a3b8; font-size: 1.2rem; margin-top: -5px;" class="anchored" data-anchor-id="energy-strategy-mathematics">ENERGY STRATEGY &amp; MATHEMATICS</h2>
-<blockquote class="blockquote">
-<p><em>“Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.”</em></p>
-</blockquote>
-<p>Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.</p>
-<p>Actualmente liderando la expansión de <strong>Greening Group</strong> como CEO para el Sur de Europa.</p>
-<hr>
-<div class="grid">
-<section id="trading-mercados" class="level4 g-col-12 g-col-md-6">
-<h4 class="anchored" data-anchor-id="trading-mercados">📈 Trading &amp; Mercados</h4>
-<p>Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power &amp; Gas).</p>
-</section>
-<section id="ingeniería-de-datos" class="level4 g-col-12 g-col-md-6">
-<h4 class="anchored" data-anchor-id="ingeniería-de-datos">🤖 Ingeniería de Datos</h4>
-<p>Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de decisiones.</p>
-</section>
-<section id="estrategia-internacional" class="level4 g-col-12 g-col-md-6">
-<h4 class="anchored" data-anchor-id="estrategia-internacional">🌍 Estrategia Internacional</h4>
-<p>Gestión de P&amp;L en entornos regulatorios complejos y liderazgo de equipos transfronterizos.</p>
-</section>
-<section id="gestión-de-activos" class="level4 g-col-12 g-col-md-6">
-<h4 class="anchored" data-anchor-id="gestión-de-activos">⚡ Gestión de Activos</h4>
-<p>Optimización de RoI en activos de generación renovable y estrategias B2B.</p>
-</section>
-</div>
-</section>
-</section>
+
+<div class="hero-container">
+
+    <div class="hero-text">
+        <h1>SAMUEL GAMITO</h1>
+        <h2 class="anchored">ENERGY STRATEGY &amp; MATHEMATICS</h2>
+
+        <div class="quote-box">
+            "Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos."
+        </div>
+
+        <p>
+            Soy <strong>Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática</strong> y Ejecutivo C-Level especializado en mercados energéticos internacionales (España, Italia, Brasil, México...). Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.
+        </p>
+        <p>
+            Actualmente liderando la expansión de <strong>Greening Group</strong> como CEO para el Sur de Europa.
+        </p>
+
+        <div class="expertise-grid">
+            <div class="exp-item">
+                <h4 class="anchored">📈 Trading &amp; Mercados</h4>
+                <p>Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power &amp; Gas).</p>
+            </div>
+            <div class="exp-item">
+                <h4 class="anchored">🤖 Ingeniería de Datos</h4>
+                <p>Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de decisiones.</p>
+            </div>
+            <div class="exp-item">
+                <h4 class="anchored">🌍 Estrategia Internacional</h4>
+                <p>Gestión de P&amp;L en entornos regulatorios complejos y liderazgo de equipos transfronterizos.</p>
+            </div>
+            <div class="exp-item">
+                <h4 class="anchored">⚡ Gestión de Activos</h4>
+                <p>Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-video">
+        <div class="video-box">
+            <video autoplay="" loop="" muted="" playsinline="">
+                <source src="VideoFractales.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+            <a href="[https://www.linkedin.com/in/samuel-gamito-matellan/](https://www.linkedin.com/in/samuel-gamito-matellan/)" class="btn-action" target="_blank">
+                <i class="fa-brands fa-linkedin"></i> LinkedIn
+            </a>
+            <a href="mailto:gamito@yahoo.com" class="btn-action">
+                <i class="fa-solid fa-envelope"></i> Email
+            </a>
+        </div>
+    </div>
+
 </div>
 
 
