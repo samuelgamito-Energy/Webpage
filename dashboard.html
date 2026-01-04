@@ -3,225 +3,574 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard FNEE</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
-    <link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)" rel="stylesheet">
+    <title>Cuadro de Mando Estratégico FNEE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        /* ESTILO EJECUTIVO DARK MODE (Forzado) */
-        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
-        
-        /* Ocultar scrollbar para integración limpia */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-
-        /* Tarjetas */
-        .card { 
-            background: #1e293b; 
-            border: 1px solid #334155; 
-            border-radius: 0.5rem; 
-            box-shadow: none; 
-        }
-
-        /* Textos */
-        .text-slate-700 { color: #e2e8f0 !important; } /* Títulos */
-        .text-slate-500 { color: #94a3b8 !important; } /* Subtítulos */
-        .text-slate-800 { color: #f8fafc !important; } /* Cifras fuertes */
-        
-        /* Colores de Marca */
-        .text-blue-600 { color: #2dd4bf !important; } /* Teal Principal */
-        .bg-blue-50 { background-color: rgba(45, 212, 191, 0.1) !important; color: #2dd4bf !important; }
-        .text-emerald-600 { color: #34d399 !important; }
-
-        /* Tablas */
-        thead { background-color: #020617; }
-        th { color: #94a3b8; font-weight: 600; }
-        td { border-bottom: 1px solid #334155; }
-        tr:hover { background-color: #334155 !important; }
-
-        /* Inputs */
-        input { 
-            background-color: #0f172a !important; 
-            border-color: #334155 !important; 
-            color: white !important; 
-        }
-
-        /* Navegación Interna */
-        .tab-active { background-color: #2dd4bf; color: #0f172a; border: none; }
-        .tab-inactive { background-color: transparent; color: #94a3b8; border: 1px solid #334155; }
-        
-        /* Ocultar elementos no deseados */
-        #btn-data, #view-data { display: none !important; } /* Adiós pestaña BBDD */
-        nav { display: none !important; } /* Adiós navbar antigua */
-
-        /* Animaciones */
-        .fade-in { animation: fadeIn 0.5s ease-out; }
+        /* Estilos base del original */
+        .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- 🌑 TRANSFORMACIÓN A MODO EJECUTIVO (SLATE & TEAL) 🌑 --- */
+        
+        /* 1. Fondos Principales */
+        body { background-color: #0f172a !important; color: #e2e8f0 !important; } /* Fondo Web */
+        
+        /* 2. Tarjetas (Las cajas blancas ahora son oscuras) */
+        .card, .bg-white { 
+            background-color: #1e293b !important; 
+            border: 1px solid #334155 !important;
+            color: #e2e8f0 !important;
+            box-shadow: none !important;
+        }
+
+        /* 3. Textos (Inversión de colores) */
+        .text-slate-900, .text-slate-800, .text-slate-700 { color: #f8fafc !important; } /* Títulos blancos */
+        .text-slate-500, .text-slate-400 { color: #94a3b8 !important; } /* Subtítulos grises */
+        
+        /* 4. Tablas */
+        thead, .bg-slate-100, .bg-slate-50 { 
+            background-color: #020617 !important; /* Cabecera tabla muy oscura */
+            border-color: #334155 !important;
+        }
+        th { color: #94a3b8 !important; }
+        td { border-bottom: 1px solid #334155 !important; }
+        tr:hover { background-color: #334155 !important; } /* Hover fila */
+
+        /* 5. Inputs (Buscador) */
+        input {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+            color: white !important;
+        }
+
+        /* 6. Colores de Acento (Del Azul al Teal) */
+        .text-blue-600 { color: #2dd4bf !important; } /* Teal Principal */
+        .bg-blue-100, .bg-blue-50 { background-color: rgba(45, 212, 191, 0.1) !important; color: #2dd4bf !important; }
+        .text-emerald-600 { color: #34d399 !important; }
+        
+        /* Botones de acción (Los ojos) */
+        .fa-eye { color: #2dd4bf !important; }
+        button:hover .fa-eye { color: #fff !important; }
+
+        /* 7. Navbar Superior (Oculta para no duplicar con tu web) */
+        nav { display: none !important; }
+
+        /* 8. Pestañas de Navegación */
+        .tab-active { 
+            background-color: #2dd4bf !important; 
+            color: #0f172a !important; 
+            border: none !important; 
+        }
+        .tab-inactive { 
+            background-color: transparent !important; 
+            color: #94a3b8 !important; 
+            border: 1px solid #334155 !important; 
+        }
+
+        /* 9. Modal (El Popup) */
+        #modal .bg-slate-900 { background-color: #020617 !important; border-bottom: 1px solid #334155; }
+        
+        /* Ocultar pestaña Datos */
+        #btn-data { display: none !important; }
     </style>
 </head>
-<body class="p-4">
+<body class="pb-10">
 
-    <div class="flex justify-center space-x-4 mb-6">
-        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all">
-            <i class="fa-solid fa-chart-pie mr-2"></i> Mercado Global
+    <div class="flex justify-center space-x-4 mt-6 mb-6">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-all shadow-lg flex items-center gap-2">
+            <i class="fa-solid fa-chart-column"></i> Mercado Global
         </button>
-        <button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all">
-            <i class="fa-solid fa-crosshairs mr-2"></i> Comparador
+        <button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-all hover:bg-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-chart-line"></i> Comparador
         </button>
+        <button onclick="switchTab('data')" id="btn-data" class="hidden">Datos</button>
     </div>
 
-    <main class="max-w-7xl mx-auto">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div id="view-dashboard" class="fade-in">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div class="card p-6 border-l-4 border-l-teal-400">
-                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Empresas Activas</p>
-                    <h3 class="text-4xl font-bold text-white" id="kpi-total-companies">0</h3>
+                <div class="card p-6 border-l-4 border-l-teal-500">
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Empresas Monitorizadas</p>
+                    <h3 class="text-4xl font-bold" id="kpi-total-companies">0</h3>
+                    <div class="mt-4 flex items-center text-emerald-400 text-xs font-bold">
+                        <i class="fa-solid fa-check-circle mr-2"></i> Base de datos activa
+                    </div>
                 </div>
                 <div class="card p-6">
-                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Volumen '24</p>
-                    <h3 class="text-2xl font-bold text-white" id="kpi-total-sales">0 GWh</h3>
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Volumen Total 2024</p>
+                    <h3 class="text-2xl font-bold text-slate-800" id="kpi-total-sales">0 GWh</h3>
+                    <p class="text-xs text-slate-500 mt-2">Suma agregada de mercado</p>
                 </div>
                 <div class="card p-6">
-                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Coste FNEE Est.</p>
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Coste FNEE Est. (2024)</p>
                     <h3 class="text-2xl font-bold text-blue-600" id="kpi-total-cost">0 M€</h3>
+                    <p class="text-xs text-slate-500 mt-2">Estimado @ ~239k€/GWh</p>
                 </div>
                 <div class="card p-6">
-                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Top Growth</p>
-                    <h3 class="text-lg font-bold text-white truncate" id="kpi-top-grower-name">-</h3>
-                    <p class="text-emerald-600 font-bold text-xs" id="kpi-top-grower-val">+0 GWh</p>
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Líder Crecimiento '24</p>
+                    <h3 class="text-lg font-bold text-slate-800 truncate" id="kpi-top-grower-name">-</h3>
+                    <p class="text-emerald-600 font-bold mt-1" id="kpi-top-grower-val">+0 GWh</p>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="card lg:col-span-2 h-[600px] flex flex-col">
-                    <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-900/50">
-                        <h3 class="font-bold text-white text-sm">RANKING COMERCIALIZADORAS</h3>
-                        <input type="text" id="search-input" placeholder="Buscar..." class="px-3 py-1 rounded text-sm w-48" onkeyup="filterTable()">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                <div class="card lg:col-span-2 overflow-hidden flex flex-col h-[600px]">
+                    <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-700"><i class="fa-solid fa-list mr-2"></i> Directorio de Empresas</h3>
+                        <div class="relative">
+                            <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-xs"></i>
+                            <input type="text" id="search-input" placeholder="Buscar CIF o Nombre..." 
+                                class="pl-8 pr-4 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none w-64"
+                                onkeyup="filterTable()">
+                        </div>
                     </div>
-                    <div class="overflow-auto flex-1 p-0">
+                    <div class="overflow-auto flex-1">
                         <table class="w-full text-sm text-left">
-                            <thead class="sticky top-0 z-10">
+                            <thead class="text-xs text-slate-500 uppercase bg-slate-100 sticky top-0 z-10">
                                 <tr>
-                                    <th class="px-4 py-3">Empresa</th>
-                                    <th class="px-4 py-3 text-right">Ventas '24</th>
-                                    <th class="px-4 py-3 text-right">Trend</th>
+                                    <th class="px-6 py-3 cursor-pointer" onclick="sortTable('cif')">CIF <i class="fa-solid fa-sort text-slate-300"></i></th>
+                                    <th class="px-6 py-3 cursor-pointer" onclick="sortTable('name')">Razón Social <i class="fa-solid fa-sort text-slate-300"></i></th>
+                                    <th class="px-6 py-3 text-right cursor-pointer" onclick="sortTable('sales2024')">Ventas '24 <i class="fa-solid fa-sort text-slate-300"></i></th>
+                                    <th class="px-6 py-3 text-right">Trend ('23-'24)</th>
+                                    <th class="px-6 py-3 text-center">Acción</th>
                                 </tr>
                             </thead>
-                            <tbody id="companies-table-body"></tbody>
+                            <tbody id="companies-table-body" class="divide-y divide-slate-100">
+                                </tbody>
                         </table>
+                    </div>
+                    <div class="p-2 bg-slate-50 border-t text-center text-xs text-slate-400">
+                        Mostrando las primeras 200 coincidencias por rendimiento
                     </div>
                 </div>
 
-                <div class="card p-4 flex flex-col h-[600px]">
-                    <h3 class="font-bold text-white mb-4 text-sm text-center">EVOLUCIÓN DEL MERCADO</h3>
+                <div class="card p-4 flex flex-col">
+                    <h3 class="font-bold text-slate-700 mb-4 text-sm">Volumen Total Mercado (GWh)</h3>
                     <div class="flex-1 relative">
                         <canvas id="marketChart"></canvas>
+                    </div>
+                    <div class="mt-4 p-3 bg-blue-50 rounded text-xs text-blue-800">
+                        <i class="fa-solid fa-info-circle mr-1"></i> Evolución agregada de las ventas declaradas por todos los sujetos obligados cargados.
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="view-comparator" class="hidden fade-in">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[80vh]">
                 <div class="lg:col-span-1 flex flex-col gap-4">
-                    <div class="card p-4">
-                        <h3 class="font-bold text-white mb-2 text-xs uppercase">Añadir Competidor</h3>
-                        <input type="text" id="comp-search" placeholder="Escribe nombre..." class="w-full px-3 py-2 rounded text-sm mb-2" onkeyup="searchCompetitor()">
-                        <div id="comp-results" class="hidden bg-slate-800 border border-slate-700 rounded mt-1 max-h-32 overflow-y-auto absolute z-50 w-64 shadow-xl"></div>
-                        <div id="selected-comps" class="space-y-2 mt-2"></div>
+                    <div class="card p-5">
+                        <h3 class="font-bold text-slate-800 mb-4 text-sm uppercase">1. Añadir Competidores</h3>
+                        <div class="relative mb-2">
+                            <input type="text" id="comp-search" placeholder="Buscar empresa..." 
+                                class="w-full px-4 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-blue-500"
+                                onkeyup="searchCompetitor()">
+                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-xl max-h-48 overflow-y-auto"></div>
+                        </div>
+                        <div id="selected-comps" class="space-y-2 mt-4 min-h-[100px]">
+                            <p class="text-xs text-slate-400 italic text-center mt-4">Máximo 5 empresas</p>
+                        </div>
                     </div>
-                    <div class="card p-4">
-                        <button onclick="setChartMode('absolute')" id="mode-abs" class="w-full text-left px-3 py-2 rounded mb-2 text-xs font-bold tab-active">VOLUMEN (GWh)</button>
-                        <button onclick="setChartMode('indexed')" id="mode-idx" class="w-full text-left px-3 py-2 rounded text-xs font-bold tab-inactive">CRECIMIENTO (%)</button>
+                    
+                    <div class="card p-5">
+                        <h3 class="font-bold text-slate-800 mb-4 text-sm uppercase">2. Visualización</h3>
+                        <button onclick="setChartMode('absolute')" class="w-full text-left px-4 py-3 rounded mb-2 text-sm font-medium transition-colors bg-blue-50 text-blue-700 border border-blue-200" id="mode-abs">
+                            <i class="fa-solid fa-chart-bar mr-2"></i> Volumen Real (GWh)
+                        </button>
+                        <button onclick="setChartMode('indexed')" class="w-full text-left px-4 py-3 rounded text-sm font-medium transition-colors bg-white text-slate-600 border border-slate-200 hover:bg-slate-50" id="mode-idx">
+                            <i class="fa-solid fa-arrow-trend-up mr-2"></i> Base 100 (Crecimiento)
+                        </button>
                     </div>
                 </div>
-                <div class="lg:col-span-3 card p-4">
-                    <div class="h-full relative">
+
+                <div class="lg:col-span-3 card p-6 flex flex-col">
+                    <h3 class="font-bold text-slate-700 mb-2">Comparativa Estratégica</h3>
+                    <div class="flex-1 relative">
                         <canvas id="comparatorChart"></canvas>
+                    </div>
+                    <div class="mt-4 overflow-x-auto">
+                        <table class="w-full text-sm text-left" id="comp-table">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-xs">
+                                <tr>
+                                    <th class="px-4 py-2">Empresa</th>
+                                    <th class="px-4 py-2 text-right">2020</th>
+                                    <th class="px-4 py-2 text-right">2024</th>
+                                    <th class="px-4 py-2 text-right">CAGR (4y)</th>
+                                    <th class="px-4 py-2 text-right">Crecimiento Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comp-table-body"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div id="view-data" class="hidden fade-in"></div>
+
     </main>
 
+    <div id="modal" class="fixed inset-0 bg-slate-900/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div class="bg-slate-900 p-6 flex justify-between items-start text-white">
+                <div>
+                    <span class="bg-white/10 text-xs px-2 py-1 rounded font-mono" id="modal-cif">CIF</span>
+                    <h2 class="text-2xl font-bold mt-2" id="modal-name">Nombre Empresa</h2>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div class="p-4 bg-slate-50 rounded border border-slate-100">
+                        <p class="text-xs text-slate-500">Ventas 2024</p>
+                        <p class="text-xl font-bold" id="modal-sales-24">0</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded border border-slate-100">
+                        <p class="text-xs text-slate-500">Crecimiento ('20-'24)</p>
+                        <p class="text-xl font-bold" id="modal-growth">0%</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded border border-slate-100">
+                        <p class="text-xs text-slate-500">CAGR</p>
+                        <p class="text-xl font-bold text-blue-600" id="modal-cagr">0%</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded border border-slate-100">
+                        <p class="text-xs text-slate-500">Coste Est. FNEE</p>
+                        <p class="text-xl font-bold text-slate-800" id="modal-cost">0€</p>
+                    </div>
+                </div>
+                <div class="h-80">
+                    <canvas id="modalChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // DATOS MUESTRA (Aquí pegaremos el excel luego)
+        // --- 1. DATOS PRECARGADOS ---
         let DB = [
-            { cif: "A81948077", name: "ENDESA ENERGÍA", sales: { 2020: 85210, 2024: 68500 } },
-            { cif: "A80298896", name: "CEPSA COMERCIAL", sales: { 2020: 71631, 2024: 73200 } },
-            { cif: "A95758389", name: "IBERDROLA CLIENTES", sales: { 2020: 51557, 2024: 46500 } },
-            { cif: "A61797536", name: "NATURGY", sales: { 2020: 30751, 2024: 20100 } },
-            { cif: "A95000295", name: "TOTALENERGIES", sales: { 2020: 14518, 2024: 26500 } },
-            { cif: "B82846825", name: "ENERGIA XXI", sales: { 2020: 12968, 2024: 12300 } },
-            { cif: "B83160994", name: "AXPO IBERIA", sales: { 2020: 14727, 2024: 10000 } }
+            { cif: "A81948077", name: "ENDESA ENERGÍA S.A.U.", sales: { 2019: 96136, 2020: 85210, 2021: 75390, 2022: 78328, 2023: 75390, 2024: 68500 } },
+            { cif: "A80298896", name: "CEPSA COMERCIAL PETROLEO, S.A.U.", sales: { 2019: 87767, 2020: 71631, 2021: 71796, 2022: 75500, 2023: 74000, 2024: 73200 } },
+            { cif: "A95758389", name: "IBERDROLA CLIENTES, S.A.U.", sales: { 2019: 56083, 2020: 51557, 2021: 51557, 2022: 42000, 2023: 39293, 2024: 46500 } },
+            { cif: "A61797536", name: "GAS NATURAL COMERCIALIZADORA (NATURGY)", sales: { 2019: 42699, 2020: 30751, 2021: 23978, 2022: 22388, 2023: 21500, 2024: 20100 } },
+            { cif: "A28559573", name: "GALP ENERGÍA ESPAÑA, S.A.U.", sales: { 2019: 36467, 2020: 23744, 2021: 22253, 2022: 24500, 2023: 25100, 2024: 26000 } },
+            { cif: "A80298839", name: "REPSOL PRODUCTOS PETROLIFEROS, S.A.", sales: { 2019: 11748, 2020: 119846, 2021: 194426, 2022: 185000, 2023: 175000, 2024: 170000 } },
+            { cif: "A28135846", name: "BP OIL ESPAÑA, S.A.U.", sales: { 2019: 41080, 2020: 34795, 2021: 39293, 2022: 38000, 2023: 37500, 2024: 36000 } },
+            { cif: "B82846825", name: "ENERGIA XXI (ENDESA REF)", sales: { 2019: 13261, 2020: 12968, 2021: 12673, 2022: 12673, 2023: 12400, 2024: 12300 } },
+            { cif: "A95000295", name: "TOTALENERGIES CLIENTES, S.A.U.", sales: { 2019: 13310, 2020: 14518, 2021: 23543, 2022: 23543, 2023: 25000, 2024: 26500 } },
+            { cif: "A62338827", name: "AUDAX RENOVABLES, S.A.", sales: { 2019: 1677, 2020: 1675, 2021: 1725, 2022: 1800, 2023: 1950, 2024: 2100 } }
         ];
 
-        const YEARS = [2020, 2024];
+        const YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
         let marketChartInstance = null;
         let comparatorChartInstance = null;
+        let modalChartInstance = null;
         let selectedCompetitors = [];
         let comparatorMode = 'absolute';
-        
-        // Utils
-        const fmtNum = n => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n);
-        const fmtEur = n => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
 
-        function switchTab(t) {
-            document.getElementById('view-dashboard').classList.add('hidden');
-            document.getElementById('view-comparator').classList.add('hidden');
-            document.getElementById('btn-dashboard').className = 'tab-inactive px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all';
-            document.getElementById('btn-comparator').className = 'tab-inactive px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all';
+        // --- 2. FUNCIONES DE FORMATO ---
+        const fmtNum = (n) => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n);
+        const fmtEur = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+        const calcCAGR = (start, end, periods) => (start > 0 && periods > 0) ? ((Math.pow(end / start, 1 / periods) - 1) * 100).toFixed(2) : 0;
+
+        // --- 3. INICIALIZACIÓN Y NAVEGACIÓN ---
+        function switchTab(tabId) {
+            ['dashboard', 'comparator', 'data'].forEach(t => {
+                document.getElementById('view-' + t).classList.add('hidden');
+                document.getElementById('btn-' + t).className = 'tab-inactive px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-all hover:bg-slate-800 flex items-center gap-2';
+            });
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).className = 'tab-active px-6 py-2 rounded-lg text-sm font-bold uppercase tracking-wide transition-all shadow-lg flex items-center gap-2';
             
-            document.getElementById('view-' + t).classList.remove('hidden');
-            document.getElementById('btn-' + t).className = 'tab-active px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all';
-            
-            if(t==='comparator') updateComparatorChart();
+            if(tabId === 'comparator') updateComparatorChart();
         }
 
+        // --- 4. LÓGICA DASHBOARD PRINCIPAL ---
         function renderDashboard() {
-            let total24 = DB.reduce((sum, c) => sum + (c.sales[2024]||0), 0);
-            let total20 = DB.reduce((sum, c) => sum + (c.sales[2020]||0), 0); // Simplificado para demo
-            
-            document.getElementById('kpi-total-companies').innerText = DB.length;
-            document.getElementById('kpi-total-sales').innerText = fmtNum(total24) + ' GWh';
-            document.getElementById('kpi-total-cost').innerText = fmtEur(total24 * 239000).slice(0,-2) + ' M€';
+            let totalSales2024 = 0;
+            let totalSales2023 = 0;
+            let topGrower = { name: '-', growth: -Infinity };
 
-            // Table
-            const tbody = document.getElementById('companies-table-body');
-            tbody.innerHTML = '';
-            DB.sort((a,b) => (b.sales[2024]||0) - (a.sales[2024]||0)).forEach(c => {
-                let s24 = c.sales[2024]||0;
-                let s20 = c.sales[2020]||0;
-                let trend = s20 > 0 ? ((s24-s20)/s20)*100 : 0;
-                let color = trend >= 0 ? 'text-emerald-400' : 'text-rose-400';
-                tbody.innerHTML += `<tr>
-                    <td class="px-4 py-3 font-bold text-slate-300">${c.name}</td>
-                    <td class="px-4 py-3 text-right text-white font-mono">${fmtNum(s24)}</td>
-                    <td class="px-4 py-3 text-right ${color} font-bold text-xs">${trend.toFixed(1)}%</td>
-                </tr>`;
+            DB.forEach(c => {
+                const s24 = c.sales[2024] || 0;
+                const s23 = c.sales[2023] || 0;
+                totalSales2024 += s24;
+                totalSales2023 += s23;
+                
+                const growth = s24 - s23;
+                if (growth > topGrower.growth) topGrower = { name: c.name, growth: growth };
             });
 
-            // Chart
+            document.getElementById('kpi-total-companies').innerText = DB.length;
+            document.getElementById('kpi-total-sales').innerText = fmtNum(totalSales2024) + ' GWh';
+            document.getElementById('kpi-total-cost').innerText = fmtEur(totalSales2024 * 239000).slice(0,-2) + ' M€';
+            document.getElementById('kpi-top-grower-name').innerText = topGrower.name;
+            document.getElementById('kpi-top-grower-val').innerText = '+' + fmtNum(topGrower.growth) + ' GWh';
+
+            renderTable(DB);
+            renderMarketChart();
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('companies-table-body');
+            tbody.innerHTML = '';
+            const sorted = [...data].sort((a,b) => (b.sales[2024]||0) - (a.sales[2024]||0)).slice(0, 200);
+
+            sorted.forEach(c => {
+                const s24 = c.sales[2024] || 0;
+                const s23 = c.sales[2023] || 0;
+                const trend = s23 > 0 ? ((s24 - s23)/s23 * 100).toFixed(1) : 0;
+                const trendColor = trend >= 0 ? 'text-emerald-400' : 'text-rose-400';
+                
+                const row = `
+                    <tr class="hover:bg-slate-800 transition-colors border-b border-slate-700">
+                        <td class="px-6 py-3 font-mono text-xs text-slate-500">${c.cif}</td>
+                        <td class="px-6 py-3 font-medium text-slate-200 truncate max-w-xs" title="${c.name}">${c.name}</td>
+                        <td class="px-6 py-3 text-right font-bold text-slate-200">${fmtNum(s24)}</td>
+                        <td class="px-6 py-3 text-right font-bold text-xs ${trendColor}">${trend > 0 ? '+' : ''}${trend}%</td>
+                        <td class="px-6 py-3 text-center">
+                            <button onclick="openModal('${c.cif}')" class="text-blue-600 hover:bg-slate-700 p-2 rounded transition">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function renderMarketChart() {
             const ctx = document.getElementById('marketChart').getContext('2d');
-            new Chart(ctx, {
+            const totals = YEARS.map(y => DB.reduce((sum, c) => sum + (c.sales[y]||0), 0));
+
+            if(marketChartInstance) marketChartInstance.destroy();
+
+            marketChartInstance = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['2020', '2024'],
-                    datasets: [{ label: 'Mercado', data: [total20, total24], backgroundColor: '#2dd4bf', borderRadius: 4 }]
+                    labels: YEARS,
+                    datasets: [{
+                        label: 'Volumen Total (GWh)',
+                        data: totals,
+                        backgroundColor: '#2dd4bf', // TEAL
+                        borderRadius: 4,
+                        hoverBackgroundColor: '#99f6e4'
+                    }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } }
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: { // Tooltips activados para modo oscuro
+                            backgroundColor: '#0f172a',
+                            titleColor: '#2dd4bf',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#334155',
+                            borderWidth: 1
+                        }
+                    },
+                    scales: { 
+                        y: { beginAtZero: true, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, 
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } } 
+                    }
                 }
             });
         }
 
+        function filterTable() {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const filtered = DB.filter(c => c.name.toLowerCase().includes(term) || c.cif.toLowerCase().includes(term));
+            renderTable(filtered);
+        }
+
+        // --- 5. LÓGICA COMPARADOR ---
+        function searchCompetitor() {
+            const term = document.getElementById('comp-search').value.toLowerCase();
+            const resultsDiv = document.getElementById('comp-results');
+            resultsDiv.innerHTML = '';
+            
+            if(term.length < 2) { resultsDiv.classList.add('hidden'); return; }
+
+            const matches = DB.filter(c => c.name.toLowerCase().includes(term) && !selectedCompetitors.includes(c.cif)).slice(0, 10);
+            
+            if(matches.length > 0) {
+                resultsDiv.classList.remove('hidden');
+                // Ajuste dark mode resultados
+                resultsDiv.classList.add('bg-slate-800', 'border-slate-600');
+                matches.forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = 'p-3 hover:bg-slate-700 cursor-pointer text-xs border-b border-slate-700 text-white';
+                    div.innerHTML = `<strong>${c.name}</strong> <span class="text-slate-400">(${c.cif})</span>`;
+                    div.onclick = () => addCompetitor(c.cif);
+                    resultsDiv.appendChild(div);
+                });
+            } else {
+                resultsDiv.classList.add('hidden');
+            }
+        }
+
+        function addCompetitor(cif) {
+            if(selectedCompetitors.length >= 5) { alert("Máximo 5 competidores"); return; }
+            selectedCompetitors.push(cif);
+            document.getElementById('comp-search').value = '';
+            document.getElementById('comp-results').classList.add('hidden');
+            renderSelectedChips();
+            updateComparatorChart();
+        }
+
+        function removeCompetitor(cif) {
+            selectedCompetitors = selectedCompetitors.filter(c => c !== cif);
+            renderSelectedChips();
+            updateComparatorChart();
+        }
+
+        function renderSelectedChips() {
+            const container = document.getElementById('selected-comps');
+            container.innerHTML = '';
+            const colors = ['#2dd4bf', '#f472b6', '#34d399', '#fbbf24', '#a78bfa'];
+            
+            selectedCompetitors.forEach((cif, idx) => {
+                const comp = DB.find(c => c.cif === cif);
+                const div = document.createElement('div');
+                div.className = 'flex items-center justify-between p-2 bg-slate-800 rounded border border-slate-700 text-xs text-white';
+                div.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <div class="w-3 h-3 rounded-full flex-shrink-0" style="background:${colors[idx]}"></div>
+                        <span class="font-bold truncate">${comp.name}</span>
+                    </div>
+                    <button onclick="removeCompetitor('${cif}')" class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-times"></i></button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function setChartMode(mode) {
+            comparatorMode = mode;
+            document.getElementById('mode-abs').className = mode === 'absolute' ? 'w-full text-left px-4 py-3 rounded mb-2 text-sm font-medium transition-colors bg-blue-50 text-blue-700 border border-blue-200' : 'w-full text-left px-4 py-3 rounded mb-2 text-sm font-medium transition-colors bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+            document.getElementById('mode-idx').className = mode === 'indexed' ? 'w-full text-left px-4 py-3 rounded text-sm font-medium transition-colors bg-blue-50 text-blue-700 border border-blue-200' : 'w-full text-left px-4 py-3 rounded text-sm font-medium transition-colors bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+            updateComparatorChart();
+        }
+
+        function updateComparatorChart() {
+            const ctx = document.getElementById('comparatorChart').getContext('2d');
+            const colors = ['#2dd4bf', '#f472b6', '#34d399', '#fbbf24', '#a78bfa'];
+            
+            const datasets = selectedCompetitors.map((cif, idx) => {
+                const comp = DB.find(c => c.cif === cif);
+                let data = YEARS.map(y => comp.sales[y] || 0);
+                
+                if (comparatorMode === 'indexed') {
+                    const base = data[0] || 1; 
+                    data = data.map(v => (v/base)*100);
+                }
+
+                return {
+                    label: comp.name,
+                    data: data,
+                    borderColor: colors[idx],
+                    backgroundColor: colors[idx],
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointRadius: 4
+                };
+            });
+
+            if(comparatorChartInstance) comparatorChartInstance.destroy();
+
+            comparatorChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels: YEARS, datasets: datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    scales: { y: { beginAtZero: false, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } },
+                    plugins: { legend: { labels: { color: '#e2e8f0' } } }
+                }
+            });
+
+            // Actualizar tabla comparativa
+            const tbody = document.getElementById('comp-table-body');
+            tbody.innerHTML = '';
+            selectedCompetitors.forEach(cif => {
+                const comp = DB.find(c => c.cif === cif);
+                const s20 = comp.sales[2020] || 0;
+                const s24 = comp.sales[2024] || 0;
+                const growth = s20 > 0 ? ((s24 - s20)/s20 * 100).toFixed(1) : 0;
+                const cagr = calcCAGR(s20, s24, 4);
+                
+                const row = `
+                    <tr class="border-b border-slate-700">
+                        <td class="px-4 py-2 font-bold text-slate-200 truncate max-w-xs">${comp.name}</td>
+                        <td class="px-4 py-2 text-right text-slate-400">${fmtNum(s20)}</td>
+                        <td class="px-4 py-2 text-right font-bold text-slate-200">${fmtNum(s24)}</td>
+                        <td class="px-4 py-2 text-right text-blue-600 font-bold">${cagr}%</td>
+                        <td class="px-4 py-2 text-right ${growth >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold">${growth}%</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // --- 6. MODAL DETALLE ---
+        function openModal(cif) {
+            const comp = DB.find(c => c.cif === cif);
+            if(!comp) return;
+
+            document.getElementById('modal').classList.remove('hidden');
+            document.getElementById('modal-cif').innerText = comp.cif;
+            document.getElementById('modal-name').innerText = comp.name;
+            
+            const s20 = comp.sales[2020] || 0;
+            const s24 = comp.sales[2024] || 0;
+            const growth = s20 > 0 ? ((s24 - s20)/s20 * 100).toFixed(1) + '%' : '-';
+            const cagr = calcCAGR(s20, s24, 4) + '%';
+            
+            document.getElementById('modal-sales-24').innerText = fmtNum(s24);
+            document.getElementById('modal-growth').innerText = growth;
+            document.getElementById('modal-cagr').innerText = cagr;
+            document.getElementById('modal-cost').innerText = fmtEur(s24 * 239000); // 239k€/GWh aprox
+
+            // Chart
+            const ctx = document.getElementById('modalChart').getContext('2d');
+            if(modalChartInstance) modalChartInstance.destroy();
+
+            modalChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: YEARS,
+                    datasets: [{
+                        label: 'Ventas (GWh)',
+                        data: YEARS.map(y => comp.sales[y]||0),
+                        borderColor: '#2dd4bf',
+                        backgroundColor: 'rgba(45, 212, 191, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        y: { beginAtZero: true, grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    }
+                }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
         // Init
         renderDashboard();
+
     </script>
 </body>
 </html>
