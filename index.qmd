@@ -5,16 +5,16 @@ page-layout: full
 
 ```{=html}
 <style>
-    /* Estilos del Vídeo */
+    /* Estilo Vídeo (Columna Derecha) */
     .video-container {
         width: 100%;
-        max-width: 350px; /* Tamaño controlado */
+        max-width: 400px;
         aspect-ratio: 16/9;
         margin: 0 auto;
-        border-radius: 10px;
+        border-radius: 12px;
         overflow: hidden;
-        border: 2px solid #2dd4bf;
-        box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+        border: 2px solid #2dd4bf; /* Borde Teal */
+        box-shadow: 0 0 25px rgba(45, 212, 191, 0.2); /* Brillo */
     }
     
     video {
@@ -36,14 +36,25 @@ page-layout: full
         border-color: #2dd4bf; color: #0f172a; background: #2dd4bf;
     }
 
-    /* Tipografía */
-    h1 { color: #2dd4bf !important; font-weight: 700; letter-spacing: 1px; margin-bottom: 0; line-height: 1.2; font-size: 2.5rem; }
-    h2 { color: #94a3b8 !important; font-size: 1.2rem; font-weight: 400; margin-top: 5px; margin-bottom: 25px; }
-    .quote { border-left: 4px solid #2dd4bf; padding-left: 20px; color: #e2e8f0; font-style: italic; margin-bottom: 25px; font-size: 1.1rem; }
-    p { color: #cbd5e1; line-height: 1.7; margin-bottom: 15px; font-size: 1rem; }
+    /* Textos (Columna Izquierda) */
+    h1 { color: #2dd4bf !important; font-weight: 700; letter-spacing: 1px; margin-bottom: 5px; line-height: 1.1; font-size: 2.8rem; }
+    h2 { color: #94a3b8 !important; font-size: 1.2rem; font-weight: 400; margin-top: 0; margin-bottom: 30px; }
     
+    .quote { 
+        border-left: 4px solid #2dd4bf; 
+        padding-left: 20px; 
+        color: #e2e8f0; 
+        font-style: italic; 
+        margin-bottom: 30px; 
+        font-size: 1.1rem;
+        background: linear-gradient(90deg, rgba(45,212,191,0.05) 0%, transparent 100%);
+        padding-top: 10px; padding-bottom: 10px;
+    }
+    
+    p { color: #cbd5e1; line-height: 1.7; margin-bottom: 15px; font-size: 1rem; }
+
     /* Expertise Grid */
-    .exp-title { color: #f8fafc; font-weight: 600; margin-bottom: 5px; font-size: 1.05rem; }
+    .exp-title { color: #f8fafc; font-weight: 600; margin-bottom: 5px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
     .exp-desc { font-size: 0.9rem; color: #94a3b8; margin-bottom: 20px; line-height: 1.4; }
 </style>
 
@@ -88,7 +99,7 @@ page-layout: full
 
     </div>
 
-    <div class="g-col-12 g-col-md-4 text-center">
+    <div class="g-col-12 g-col-md-4 text-center" style="margin-top: 10px;">
         
         <div class="video-container">
             <video autoplay loop muted playsinline>
@@ -96,7 +107,7 @@ page-layout: full
             </video>
         </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
+        <div style="margin-top: 25px; display: flex; justify-content: center; gap: 10px;">
             <a href="[https://www.linkedin.com/in/samuel-gamito-matellan/](https://www.linkedin.com/in/samuel-gamito-matellan/)" class="social-btn" target="_blank">
                 <i class="fa-brands fa-linkedin"></i> LinkedIn
             </a>
