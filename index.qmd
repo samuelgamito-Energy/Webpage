@@ -4,16 +4,16 @@ page-layout: full
 ---
 
 <style>
-    /* Estilos para que todo se vea bien alineado */
-    .video-frame {
+    /* Estilo Vídeo Rectangular (Más elegante) */
+    .video-container {
         width: 100%;
-        max-width: 400px;
-        border: 2px solid #2dd4bf; /* Borde Teal */
-        border-radius: 12px;
-        box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
+        max-width: 400px; /* Tamaño controlado */
+        aspect-ratio: 16/9; /* Formato panorámico */
+        border-radius: 10px;
         overflow: hidden;
+        border: 1px solid #2dd4bf;
+        box-shadow: 0 0 20px rgba(45, 212, 191, 0.2);
         margin: 0 auto;
-        aspect-ratio: 16/9;
     }
     
     video {
@@ -23,47 +23,40 @@ page-layout: full
         display: block;
     }
 
-    /* Botones */
-    .btn-social {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        margin: 5px;
+    /* Botones alineados */
+    .social-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .social-btn {
+        display: inline-flex; align-items: center; gap: 8px;
         padding: 8px 16px;
         border: 1px solid #334155;
         border-radius: 20px;
         color: #94a3b8;
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         transition: all 0.2s;
     }
-    .btn-social:hover {
-        background-color: #2dd4bf;
-        color: #0f172a;
-        border-color: #2dd4bf;
+    .social-btn:hover {
+        border-color: #2dd4bf; color: #0f172a; background: #2dd4bf;
     }
 
-    /* Textos */
-    h1 { color: #2dd4bf; font-weight: 700; margin-bottom: 5px; line-height: 1.1; }
-    h2 { color: #94a3b8; font-size: 1.2rem; margin-top: 0; font-weight: 400; margin-bottom: 25px; }
-    .quote { 
-        border-left: 4px solid #2dd4bf; 
-        padding-left: 15px; 
-        color: #e2e8f0; 
-        font-style: italic; 
-        margin-bottom: 25px;
-        background: rgba(45, 212, 191, 0.05);
-        padding: 15px;
-        border-radius: 0 8px 8px 0;
-    }
-    p { color: #cbd5e1; margin-bottom: 15px; line-height: 1.6; }
+    /* Tipografía Ejecutiva */
+    h1 { color: #2dd4bf !important; font-weight: 700; letter-spacing: 1px; margin-bottom: 0; line-height: 1.2; }
+    h2 { color: #94a3b8 !important; font-size: 1.1rem; font-weight: 400; margin-top: 5px; margin-bottom: 20px; }
+    .quote { border-left: 3px solid #2dd4bf; padding-left: 15px; color: #e2e8f0; font-style: italic; margin-bottom: 25px; }
+    p { color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; font-size: 1rem; }
     
-    /* Grid de expertise */
-    .exp-title { color: #f8fafc; font-weight: 600; font-size: 1rem; margin-bottom: 5px; }
-    .exp-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
+    /* Grid de Expertise */
+    .exp-title { color: #f8fafc; font-weight: 600; margin-bottom: 4px; font-size: 1rem; }
+    .exp-desc { font-size: 0.9rem; color: #94a3b8; margin-bottom: 15px; }
 </style>
 
-<div class="grid gap-5" style="margin-top: 2rem;">
+<div class="grid gap-5" style="margin-top: 3rem; align-items: start;">
 
     <div class="g-col-12 g-col-md-8">
         
@@ -98,7 +91,7 @@ page-layout: full
             </div>
             <div class="g-col-12 g-col-md-6">
                 <div class="exp-title">⚡ Gestión de Activos</div>
-                <div class="exp-desc">Optimización de RoI en activos de generación renovable y estrategias B2B.</div>
+                <div class="exp-desc">Optimización de RoI en generación renovable y estrategias B2B.</div>
             </div>
         </div>
 
@@ -106,21 +99,20 @@ page-layout: full
 
     <div class="g-col-12 g-col-md-4 text-center">
         
-        <div class="video-frame">
+        <div class="video-container">
             <video autoplay loop muted playsinline>
                 <source src="VideoFractales.mp4" type="video/mp4">
             </video>
         </div>
 
-        <div style="margin-top: 20px; display: flex; justify-content: center; gap: 10px;">
-            <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="btn-social" target="_blank">
+        <div class="social-buttons">
+            <a href="https://www.linkedin.com/in/samuel-gamito-matellan/" class="social-btn" target="_blank">
                 <i class="fa-brands fa-linkedin"></i> LinkedIn
             </a>
-            <a href="mailto:gamito@yahoo.com" class="btn-social">
+            <a href="mailto:gamito@yahoo.com" class="social-btn">
                 <i class="fa-solid fa-envelope"></i> Email
             </a>
         </div>
-
     </div>
 
 </div>
