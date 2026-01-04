@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>SAMUEL GAMITO - MARKET INTELLIGENCE</title>
+<title>SAMUEL GAMITO</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -73,7 +73,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed">
+<body class="p-4 overflow-hidden nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -127,60 +127,209 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     </div>
 <!-- main -->
-<main class="content column-page" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">MARKET INTELLIGENCE</h1>
-</div>
+<main class="content" id="quarto-document-content">
 
 
 
-<div class="quarto-title-meta column-page">
 
+&lt;!DOCTYPE html&gt;
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+FNEE Dashboard
+</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"></p>
+<style>
+        /* --- ESTILO EJECUTIVO (MODO OSCURO FORZADO) --- */
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        /* Ocultar barra de navegación superior antigua */
+        nav { display: none !important; }
+
+        /* Tarjetas y Contenedores */
+        .card { 
+            background-color: #1e293b !important; /* Slate 800 */
+            border: 1px solid #334155 !important;
+            color: #e2e8f0 !important;
+        }
+
+        /* Textos */
+        .text-slate-700, .text-slate-800 { color: #f8fafc !important; } /* Títulos blancos */
+        .text-slate-500, .text-slate-400 { color: #94a3b8 !important; } /* Subtítulos grises */
+        
+        /* Acentos en TEAL (Tu marca) */
+        .text-blue-600 { color: #2dd4bf !important; }
+        .bg-blue-50 { background-color: rgba(45, 212, 191, 0.1) !important; color: #2dd4bf !important; }
+        .hover\:bg-blue-50:hover { background-color: rgba(45, 212, 191, 0.1) !important; }
+        .text-emerald-600 { color: #34d399 !important; }
+
+        /* Tablas */
+        thead { background-color: #020617 !important; }
+        th { color: #94a3b8 !important; border-bottom: 1px solid #334155; }
+        td { border-bottom: 1px solid #334155 !important; color: #e2e8f0 !important; }
+        tr:hover { background-color: #334155 !important; }
+        
+        /* Inputs */
+        input { 
+            background-color: #0f172a !important; 
+            border: 1px solid #334155 !important; 
+            color: white !important; 
+        }
+
+        /* Botones de Pestañas */
+        .tab-active { background-color: #2dd4bf !important; color: #0f172a !important; border: none !important; }
+        .tab-inactive { background-color: transparent !important; color: #94a3b8 !important; border: 1px solid #334155 !important; }
+
+        /* Modal Popup */
+        #modal .bg-white { background-color: #1e293b !important; border: 1px solid #334155; }
+        #modal .bg-slate-900 { background-color: #020617 !important; border-bottom: 1px solid #334155; }
+        #modal .bg-slate-50 { background-color: #0f172a !important; border: 1px solid #334155; }
+
+        /* Scrollbar fina */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        /* Animación */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+
+
+<pre><code>&lt;div class="flex justify-center space-x-4 mb-6"&gt;
+    &lt;button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all flex items-center gap-2"&gt;
+        &lt;i class="fa-solid fa-chart-column"&gt;&lt;/i&gt; Mercado Global
+    &lt;/button&gt;
+    &lt;button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all flex items-center gap-2"&gt;
+        &lt;i class="fa-solid fa-chart-line"&gt;&lt;/i&gt; Comparador
+    &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;main class="max-w-full mx-auto h-[85vh] flex flex-col"&gt;
     
-  
-    
-  </div>
-  
+    &lt;div id="view-dashboard" class="fade-in h-full flex flex-col"&gt;
+        &lt;div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 flex-shrink-0"&gt;
+            &lt;div class="card p-4 border-l-4 border-l-teal-400"&gt;
+                &lt;p class="text-slate-500 text-xs font-bold uppercase mb-1"&gt;Empresas Monitorizadas&lt;/p&gt;
+                &lt;h3 class="text-3xl font-bold text-white" id="kpi-total-companies"&gt;0&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class="card p-4"&gt;
+                &lt;p class="text-slate-500 text-xs font-bold uppercase mb-1"&gt;Volumen Total '24&lt;/p&gt;
+                &lt;h3 class="text-2xl font-bold text-white" id="kpi-total-sales"&gt;0 GWh&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class="card p-4"&gt;
+                &lt;p class="text-slate-500 text-xs font-bold uppercase mb-1"&gt;Coste FNEE Est.&lt;/p&gt;
+                &lt;h3 class="text-2xl font-bold text-blue-600" id="kpi-total-cost"&gt;0 M€&lt;/h3&gt;
+            &lt;/div&gt;
+            &lt;div class="card p-4"&gt;
+                &lt;p class="text-slate-500 text-xs font-bold uppercase mb-1"&gt;Top Crecimiento&lt;/p&gt;
+                &lt;h3 class="text-lg font-bold text-white truncate" id="kpi-top-grower-name"&gt;-&lt;/h3&gt;
+                &lt;p class="text-emerald-600 font-bold text-xs" id="kpi-top-grower-val"&gt;+0 GWh&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
 
+        &lt;div class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0"&gt;
+            &lt;div class="card lg:col-span-2 flex flex-col overflow-hidden"&gt;
+                &lt;div class="p-3 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center flex-shrink-0"&gt;
+                    &lt;h3 class="font-bold text-white text-sm"&gt;&lt;i class="fa-solid fa-list mr-2"&gt;&lt;/i&gt; Directorio de Empresas&lt;/h3&gt;
+                    &lt;div class="relative"&gt;
+                        &lt;i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"&gt;&lt;/i&gt;
+                        &lt;input type="text" id="search-input" placeholder="Buscar CIF o Nombre..." 
+                            class="pl-8 pr-4 py-1.5 rounded-lg text-sm w-56 focus:outline-none focus:border-teal-400"
+                            onkeyup="filterTable()"&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class="overflow-auto flex-1"&gt;
+                    &lt;table class="w-full text-sm text-left"&gt;
+                        &lt;thead class="text-xs uppercase bg-slate-900 sticky top-0 z-10"&gt;
+                            &lt;tr&gt;
+                                &lt;th class="px-4 py-3 cursor-pointer" onclick="sortTable('cif')"&gt;CIF&lt;/th&gt;
+                                &lt;th class="px-4 py-3 cursor-pointer" onclick="sortTable('name')"&gt;Razón Social&lt;/th&gt;
+                                &lt;th class="px-4 py-3 text-right cursor-pointer" onclick="sortTable('sales2024')"&gt;Ventas '24&lt;/th&gt;
+                                &lt;th class="px-4 py-3 text-right"&gt;Trend&lt;/th&gt;
+                                &lt;th class="px-4 py-3 text-center"&gt;Acción&lt;/th&gt; &lt;/tr&gt;
+                        &lt;/thead&gt;
+                        &lt;tbody id="companies-table-body" class="divide-y divide-slate-700"&gt;
+                            &lt;/tbody&gt;
+                    &lt;/table&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
 
-</header>
+            &lt;div class="card p-4 flex flex-col"&gt;
+                &lt;h3 class="font-bold text-white mb-4 text-sm"&gt;Volumen Total Mercado (GWh)&lt;/h3&gt;
+                &lt;div class="flex-1 relative min-h-[200px]"&gt;
+                    &lt;canvas id="marketChart"&gt;&lt;/canvas&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
 
+    &lt;div id="view-comparator" class="hidden fade-in h-full"&gt;
+        &lt;div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full"&gt;
+            &lt;div class="lg:col-span-1 flex flex-col gap-4"&gt;
+                &lt;div class="card p-5"&gt;
+                    &lt;h3 class="font-bold text-white mb-4 text-xs uppercase"&gt;1. Selección Competidores&lt;/h3&gt;
+                    &lt;div class="relative mb-2"&gt;
+                        &lt;input type="text" id="comp-search" placeholder="Añadir empresa..." 
+                            class="w-full px-4 py-2 rounded-lg text-sm focus:outline-none focus:border-teal-400"
+                            onkeyup="searchCompetitor()"&gt;
+                        &lt;div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-48 overflow-y-auto"&gt;&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div id="selected-comps" class="space-y-2 mt-4"&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                
+                &lt;div class="card p-5"&gt;
+                    &lt;h3 class="font-bold text-white mb-4 text-xs uppercase"&gt;2. Visualización&lt;/h3&gt;
+                    &lt;button onclick="setChartMode('absolute')" class="w-full text-left px-4 py-3 rounded mb-2 text-sm font-medium transition-colors tab-active" id="mode-abs"&gt;
+                        &lt;i class="fa-solid fa-chart-bar mr-2"&gt;&lt;/i&gt; Volumen (GWh)
+                    &lt;/button&gt;
+                    &lt;button onclick="setChartMode('indexed')" class="w-full text-left px-4 py-3 rounded text-sm font-medium transition-colors tab-inactive" id="mode-idx"&gt;
+                        &lt;i class="fa-solid fa-arrow-trend-up mr-2"&gt;&lt;/i&gt; Crecimiento (%)
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
 
-<p>Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.</p>
-<p><br></p>
-<div class="grid">
-<div class="g-col-12 g-col-md-6">
-<div class="card-executive">
-<h3 class="anchored">
-🗺️ Expansión Territorial
-</h3>
-<p style="color: #94a3b8; margin-bottom: 2rem;">
-Visualización geoespacial de la cartera de clientes de Alumbra. Análisis de densidad de consumo y penetración regional.
-</p>
-<p><a href="mapa.html" target="_blank" class="btn btn-primary"> ABRIR MAPA INTERACTIVO <i class="fa-solid fa-arrow-up-right-from-square"></i> </a></p>
-</div>
-</div>
-<div class="g-col-12 g-col-md-6">
-<div class="card-executive">
-<h3 class="anchored">
-📊 Benchmarking FNEE
-</h3>
-<p style="color: #94a3b8; margin-bottom: 2rem;">
-Dashboard estratégico basado en datos de la CNMC. Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.
-</p>
-<p><a href="fnee.html" target="_blank" class="btn btn-primary"> ACCEDER AL DASHBOARD <i class="fa-solid fa-chart-line"></i> </a></p>
-</div>
-</div>
-</div>
+            &lt;div class="lg:col-span-3 card p-6 flex flex-col"&gt;
+                &lt;h3 class="font-bold text-white mb-2"&gt;Comparativa Estratégica&lt;/h3&gt;
+                &lt;div class="flex-1 relative"&gt;
+                    &lt;canvas id="comparatorChart"&gt;&lt;/canvas&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+&lt;/main&gt;
+
+&lt;div id="modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm"&gt;
+    &lt;div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden animate-in fade-in zoom-in duration-200 border border-slate-600"&gt;
+        &lt;div class="bg-slate-900 p-6 flex justify-between items-start border-b border-slate-700"&gt;
+            &lt;div&gt;
+                &lt;span class="bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded font-mono" id="modal-cif"&gt;CIF&lt;/span&gt;
+                &lt;h2 class="text-2xl font-bold mt-2 text-white" id="modal-name"&gt;Empresa&lt;/h2&gt;
+            &lt;/div&gt;
+            &lt;button onclick="closeModal()" class="text-slate-400 hover:text-white transition"&gt;&lt;i class="fa-solid fa-times text-2xl"&gt;&lt;/i&gt;&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class="p-6"&gt;
+            &lt;div class="grid grid-cols-4 gap-4 mb-6"&gt;
+                &lt;div class="p-4 bg-slate-900 rounded border border-slate-700"&gt;
+                    &lt;p class="text-xs text-slate-400"&gt;Ventas 2024&lt;/p&gt;
+                    &lt;p class="text-xl font-bold text-white" id="modal-sales-24"&gt;0&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="p-4 bg-slate-900 rounded border border-slate-700"&gt;
+                    &lt;p class="text-xs text-slate-400"&gt;Crecimiento ('20-'24)&lt;/p&gt;
+                    &lt;p class="text-xl font-bold text-white" id="modal-growth"&gt;0%&lt;/p&gt;
+                &lt;/div&gt;</code></pre>
 
 
 

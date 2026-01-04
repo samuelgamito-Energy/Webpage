@@ -1,40 +1,191 @@
----
-title: "MARKET INTELLIGENCE"
-format:
-  html:
-    page-layout: full
----
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FNEE Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILO EJECUTIVO (MODO OSCURO FORZADO) --- */
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        
+        /* Ocultar barra de navegación superior antigua */
+        nav { display: none !important; }
 
-Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.
+        /* Tarjetas y Contenedores */
+        .card { 
+            background-color: #1e293b !important; /* Slate 800 */
+            border: 1px solid #334155 !important;
+            color: #e2e8f0 !important;
+        }
 
-<br>
+        /* Textos */
+        .text-slate-700, .text-slate-800 { color: #f8fafc !important; } /* Títulos blancos */
+        .text-slate-500, .text-slate-400 { color: #94a3b8 !important; } /* Subtítulos grises */
+        
+        /* Acentos en TEAL (Tu marca) */
+        .text-blue-600 { color: #2dd4bf !important; }
+        .bg-blue-50 { background-color: rgba(45, 212, 191, 0.1) !important; color: #2dd4bf !important; }
+        .hover\:bg-blue-50:hover { background-color: rgba(45, 212, 191, 0.1) !important; }
+        .text-emerald-600 { color: #34d399 !important; }
 
-::: {.grid}
+        /* Tablas */
+        thead { background-color: #020617 !important; }
+        th { color: #94a3b8 !important; border-bottom: 1px solid #334155; }
+        td { border-bottom: 1px solid #334155 !important; color: #e2e8f0 !important; }
+        tr:hover { background-color: #334155 !important; }
+        
+        /* Inputs */
+        input { 
+            background-color: #0f172a !important; 
+            border: 1px solid #334155 !important; 
+            color: white !important; 
+        }
 
-::: {.g-col-12 .g-col-md-6}
-<div class="card-executive">
-  <h3>🗺️ Expansión Territorial</h3>
-  <p style="color: #94a3b8; margin-bottom: 2rem;">
-    Visualización geoespacial de la cartera de clientes de Alumbra. 
-    Análisis de densidad de consumo y penetración regional.
-  </p>
-  <a href="mapa.html" target="_blank" class="btn btn-primary">
-    ABRIR MAPA INTERACTIVO <i class="fa-solid fa-arrow-up-right-from-square"></i>
-  </a>
-</div>
-:::
+        /* Botones de Pestañas */
+        .tab-active { background-color: #2dd4bf !important; color: #0f172a !important; border: none !important; }
+        .tab-inactive { background-color: transparent !important; color: #94a3b8 !important; border: 1px solid #334155 !important; }
 
-::: {.g-col-12 .g-col-md-6}
-<div class="card-executive">
-  <h3>📊 Benchmarking FNEE</h3>
-  <p style="color: #94a3b8; margin-bottom: 2rem;">
-    Dashboard estratégico basado en datos de la CNMC. 
-    Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.
-  </p>
-  <a href="fnee.html" target="_blank" class="btn btn-primary">
-    ACCEDER AL DASHBOARD <i class="fa-solid fa-chart-line"></i>
-  </a>
-</div>
-:::
+        /* Modal Popup */
+        #modal .bg-white { background-color: #1e293b !important; border: 1px solid #334155; }
+        #modal .bg-slate-900 { background-color: #020617 !important; border-bottom: 1px solid #334155; }
+        #modal .bg-slate-50 { background-color: #0f172a !important; border: 1px solid #334155; }
 
-:::
+        /* Scrollbar fina */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        /* Animación */
+        .fade-in { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="p-4 overflow-hidden">
+
+    <div class="flex justify-center space-x-4 mb-6">
+        <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all flex items-center gap-2">
+            <i class="fa-solid fa-chart-column"></i> Mercado Global
+        </button>
+        <button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-6 py-2 rounded text-sm font-bold uppercase tracking-wide transition-all flex items-center gap-2">
+            <i class="fa-solid fa-chart-line"></i> Comparador
+        </button>
+    </div>
+
+    <main class="max-w-full mx-auto h-[85vh] flex flex-col">
+        
+        <div id="view-dashboard" class="fade-in h-full flex flex-col">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 flex-shrink-0">
+                <div class="card p-4 border-l-4 border-l-teal-400">
+                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Empresas Monitorizadas</p>
+                    <h3 class="text-3xl font-bold text-white" id="kpi-total-companies">0</h3>
+                </div>
+                <div class="card p-4">
+                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Volumen Total '24</p>
+                    <h3 class="text-2xl font-bold text-white" id="kpi-total-sales">0 GWh</h3>
+                </div>
+                <div class="card p-4">
+                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Coste FNEE Est.</p>
+                    <h3 class="text-2xl font-bold text-blue-600" id="kpi-total-cost">0 M€</h3>
+                </div>
+                <div class="card p-4">
+                    <p class="text-slate-500 text-xs font-bold uppercase mb-1">Top Crecimiento</p>
+                    <h3 class="text-lg font-bold text-white truncate" id="kpi-top-grower-name">-</h3>
+                    <p class="text-emerald-600 font-bold text-xs" id="kpi-top-grower-val">+0 GWh</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 flex-1 min-h-0">
+                <div class="card lg:col-span-2 flex flex-col overflow-hidden">
+                    <div class="p-3 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center flex-shrink-0">
+                        <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-list mr-2"></i> Directorio de Empresas</h3>
+                        <div class="relative">
+                            <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                            <input type="text" id="search-input" placeholder="Buscar CIF o Nombre..." 
+                                class="pl-8 pr-4 py-1.5 rounded-lg text-sm w-56 focus:outline-none focus:border-teal-400"
+                                onkeyup="filterTable()">
+                        </div>
+                    </div>
+                    <div class="overflow-auto flex-1">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs uppercase bg-slate-900 sticky top-0 z-10">
+                                <tr>
+                                    <th class="px-4 py-3 cursor-pointer" onclick="sortTable('cif')">CIF</th>
+                                    <th class="px-4 py-3 cursor-pointer" onclick="sortTable('name')">Razón Social</th>
+                                    <th class="px-4 py-3 text-right cursor-pointer" onclick="sortTable('sales2024')">Ventas '24</th>
+                                    <th class="px-4 py-3 text-right">Trend</th>
+                                    <th class="px-4 py-3 text-center">Acción</th> </tr>
+                            </thead>
+                            <tbody id="companies-table-body" class="divide-y divide-slate-700">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card p-4 flex flex-col">
+                    <h3 class="font-bold text-white mb-4 text-sm">Volumen Total Mercado (GWh)</h3>
+                    <div class="flex-1 relative min-h-[200px]">
+                        <canvas id="marketChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-comparator" class="hidden fade-in h-full">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full">
+                <div class="lg:col-span-1 flex flex-col gap-4">
+                    <div class="card p-5">
+                        <h3 class="font-bold text-white mb-4 text-xs uppercase">1. Selección Competidores</h3>
+                        <div class="relative mb-2">
+                            <input type="text" id="comp-search" placeholder="Añadir empresa..." 
+                                class="w-full px-4 py-2 rounded-lg text-sm focus:outline-none focus:border-teal-400"
+                                onkeyup="searchCompetitor()">
+                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-48 overflow-y-auto"></div>
+                        </div>
+                        <div id="selected-comps" class="space-y-2 mt-4"></div>
+                    </div>
+                    
+                    <div class="card p-5">
+                        <h3 class="font-bold text-white mb-4 text-xs uppercase">2. Visualización</h3>
+                        <button onclick="setChartMode('absolute')" class="w-full text-left px-4 py-3 rounded mb-2 text-sm font-medium transition-colors tab-active" id="mode-abs">
+                            <i class="fa-solid fa-chart-bar mr-2"></i> Volumen (GWh)
+                        </button>
+                        <button onclick="setChartMode('indexed')" class="w-full text-left px-4 py-3 rounded text-sm font-medium transition-colors tab-inactive" id="mode-idx">
+                            <i class="fa-solid fa-arrow-trend-up mr-2"></i> Crecimiento (%)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-3 card p-6 flex flex-col">
+                    <h3 class="font-bold text-white mb-2">Comparativa Estratégica</h3>
+                    <div class="flex-1 relative">
+                        <canvas id="comparatorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl overflow-hidden animate-in fade-in zoom-in duration-200 border border-slate-600">
+            <div class="bg-slate-900 p-6 flex justify-between items-start border-b border-slate-700">
+                <div>
+                    <span class="bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded font-mono" id="modal-cif">CIF</span>
+                    <h2 class="text-2xl font-bold mt-2 text-white" id="modal-name">Empresa</h2>
+                </div>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-times text-2xl"></i></button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div class="p-4 bg-slate-900 rounded border border-slate-700">
+                        <p class="text-xs text-slate-400">Ventas 2024</p>
+                        <p class="text-xl font-bold text-white" id="modal-sales-24">0</p>
+                    </div>
+                    <div class="p-4 bg-slate-900 rounded border border-slate-700">
+                        <p class="text-xs text-slate-400">Crecimiento ('20-'24)</p>
+                        <p class="text-xl font-bold text-white" id="modal-growth">0%</p>
+                    </div>
