@@ -218,178 +218,190 @@ window.Quarto = {
 </header>
 
 
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></p>
 <style>
-/* 1. ESTRUCTURA */
-.dashboard-container {
+/* Contenedor General */
+.dashboard-wrapper {
   font-family: 'Segoe UI', system-ui, sans-serif;
   color: #cbd5e1;
   max-width: 1400px;
   margin: 0 auto;
+  padding-top: 20px;
 }
 
-/* 2. PESTAÑAS SUPERIORES (Estilo FNEE adaptado a Dark) */
-.tab-header {
+/* Pestañas Superiores (Estilo Botón) */
+.tab-container {
   display: flex;
-  gap: 10px;
-  border-bottom: 1px solid #334155;
+  gap: 15px;
   margin-bottom: 25px;
-  padding-bottom: 10px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 15px;
 }
-.tab-button {
-  padding: 10px 24px;
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
   border-radius: 8px;
-  font-weight: 600;
   cursor: pointer;
-  border: 1px solid transparent;
-  background: transparent;
+  font-weight: 600;
   color: #94a3b8;
-  transition: all 0.2s;
-  display: flex; align-items: center; gap: 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  background: rgba(30, 41, 59, 0.3);
 }
-.tab-button:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
-.tab-button.active {
-  background-color: #1e293b;
+.tab-item:hover {
+  background: rgba(45, 212, 191, 0.1);
+  color: #fff;
+}
+.tab-item.active {
+  background: #0f172a;
   color: #2dd4bf;
-  border: 1px solid #334155;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  border: 1px solid #2dd4bf;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
 }
 
-/* 3. TARJETAS (CARDS) */
-.fnee-card {
-  background-color: rgba(30, 41, 59, 0.4); /* Fondo semitransparente */
+/* Tarjetas (Cards) */
+.glass-card {
+  background: rgba(15, 23, 42, 0.6); /* Fondo oscuro semitransparente */
   border: 1px solid #334155;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  border-radius: 16px; /* Bordes muy redondeados como el original */
+  padding: 30px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+  backdrop-filter: blur(5px);
 }
 
-/* 4. TABLA FNEE (Clonada y oscurecida) */
-.table-container { overflow-x: auto; }
-.fnee-table {
+/* Títulos */
+.card-title {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-subtitle {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+
+/* Tabla Profesional */
+.data-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
+  border-collapse: separate;
+  border-spacing: 0;
 }
-.fnee-table th {
+.data-table th {
   text-align: left;
   padding: 15px;
   color: #2dd4bf;
-  border-bottom: 2px solid #2dd4bf;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  font-size: 0.8rem;
   letter-spacing: 1px;
-  background: rgba(15, 23, 42, 0.5);
+  border-bottom: 2px solid #2dd4bf;
 }
-.fnee-table td {
-  padding: 12px 15px;
+.data-table td {
+  padding: 15px;
   border-bottom: 1px solid #334155;
   color: #e2e8f0;
 }
-.fnee-table tr:hover {
-  background-color: rgba(45, 212, 191, 0.05); /* Hover Teal muy suave */
+.data-table tr:hover td {
+  background: rgba(45, 212, 191, 0.05);
 }
 
-/* 5. BOTONES DE ACCIÓN (OJO) */
-.btn-icon {
-  background: rgba(15, 23, 42, 0.8);
+/* Botón Ojo */
+.btn-eye {
+  background: rgba(15, 23, 42, 1);
   border: 1px solid #475569;
   color: #2dd4bf;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
   transition: all 0.2s;
   font-size: 0.85rem;
-  display: inline-flex; align-items: center; gap: 6px;
 }
-.btn-icon:hover {
+.btn-eye:hover {
   background: #2dd4bf;
   color: #0f172a;
   border-color: #2dd4bf;
-  box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
+  box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
 }
 
-/* 6. MODAL (VENTANA FLOTANTE) */
-dialog.fnee-modal {
+/* Modal / Popup */
+dialog.custom-modal {
   background: #0f172a;
   color: #fff;
   border: 1px solid #2dd4bf;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 0;
-  width: 85%; max-width: 900px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  width: 90%; max-width: 950px;
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
 }
-dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+dialog.custom-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+.modal-top { padding: 25px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(30,41,59,0.3); }
+.modal-content { padding: 30px; }
 
-.modal-header {
-  padding: 20px;
-  border-bottom: 1px solid #334155;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(30, 41, 59, 0.3);
-}
-.modal-body { padding: 30px; }
-.close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
-.close-btn:hover { color: #fff; }
-
-/* 7. INPUT DE BÚSQUEDA */
-input[type="search"] {
+/* Input Buscador */
+.search-box input {
   width: 100%;
-  padding: 12px 15px;
-  background: #0f172a !important;
-  border: 1px solid #334155 !important;
+  background: #1e293b !important;
+  border: 1px solid #475569 !important;
   color: #fff !important;
-  border-radius: 8px;
+  padding: 15px !important;
+  border-radius: 10px !important;
+  font-size: 1rem;
 }
 </style>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="138" data-source-offset="-32"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 137;"><span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"ventas_boe.csv"</span>)<span class="op">.</span><span class="fu">text</span>()</span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="co">// Limpieza de formato (comillas y puntos y coma)</span></span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>clean_csv <span class="op">=</span> raw<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\r?\n</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">map</span>(line <span class="kw">=&gt;</span> {</span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> l <span class="op">=</span> line<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>l) <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> </span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (l<span class="op">.</span><span class="fu">startsWith</span>(<span class="st">'"'</span>) <span class="op">&amp;&amp;</span> l<span class="op">.</span><span class="fu">endsWith</span>(<span class="st">'"'</span>)) l <span class="op">=</span> l<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (l<span class="op">.</span><span class="fu">endsWith</span>(<span class="st">';'</span>)) l <span class="op">=</span> l<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span></span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> l<span class="op">;</span></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">filter</span>(l <span class="kw">=&gt;</span> l <span class="op">!==</span> <span class="kw">null</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="co">// Parseo Inteligente</span></span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(clean_csv<span class="op">,</span> (d<span class="op">,</span> i<span class="op">,</span> columns) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> {</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NIF"</span><span class="op">:</span> d[columns[<span class="dv">0</span>]]<span class="op">,</span>       </span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d[columns[<span class="dv">1</span>]]    </span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>  columns<span class="op">.</span><span class="fu">forEach</span>(col <span class="kw">=&gt;</span> {</span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (col<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> valStr <span class="op">=</span> d[col] <span class="op">?</span> d[col]<span class="op">.</span><span class="fu">toString</span>() <span class="op">:</span> <span class="st">"0"</span><span class="op">;</span></span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>      <span class="co">// 1.234,56 -&gt; 1234.56</span></span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(valStr<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\.</span><span class="ss">/g</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> col<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
-<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span> </span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="co">// Filtrar años (BORRANDO 2025)</span></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])</span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k) <span class="op">&amp;&amp;</span> k<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">4</span> <span class="op">&amp;&amp;</span> k <span class="op">!==</span> <span class="st">"2025"</span>)</span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="co">// Datos Largos para gráficas</span></span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
-<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d[<span class="st">"Empresa"</span>]<span class="op">,</span></span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NIF"</span><span class="op">:</span> d[<span class="st">"NIF"</span>]<span class="op">,</span></span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span></span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="co">// VARIABLES DE ESTADO (REACTIVIDAD)</span></span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>mutable activeTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> <span class="co">// Pestaña activa por defecto</span></span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>mutable selectedCompany <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="153" data-source-offset="-44"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 152;"><span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"ventas_boe.csv"</span>)<span class="op">.</span><span class="fu">text</span>()</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a><span class="co">// Limpieza agresiva de formato (CSV sucio)</span></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>clean_csv <span class="op">=</span> raw<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\r?\n</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">map</span>(line <span class="kw">=&gt;</span> {</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> l <span class="op">=</span> line<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>l) <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> </span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (l<span class="op">.</span><span class="fu">startsWith</span>(<span class="st">'"'</span>) <span class="op">&amp;&amp;</span> l<span class="op">.</span><span class="fu">endsWith</span>(<span class="st">'"'</span>)) l <span class="op">=</span> l<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (l<span class="op">.</span><span class="fu">endsWith</span>(<span class="st">';'</span>)) l <span class="op">=</span> l<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> l<span class="op">;</span></span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">filter</span>(l <span class="kw">=&gt;</span> l <span class="op">!==</span> <span class="kw">null</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="co">// Parseo</span></span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(clean_csv<span class="op">,</span> (d<span class="op">,</span> i<span class="op">,</span> columns) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> {</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NIF"</span><span class="op">:</span> d[columns[<span class="dv">0</span>]]<span class="op">,</span>       </span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d[columns[<span class="dv">1</span>]]    </span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  columns<span class="op">.</span><span class="fu">forEach</span>(col <span class="kw">=&gt;</span> {</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (col<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> valStr <span class="op">=</span> d[col] <span class="op">?</span> d[col]<span class="op">.</span><span class="fu">toString</span>() <span class="op">:</span> <span class="st">"0"</span><span class="op">;</span></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(valStr<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\.</span><span class="ss">/g</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> col<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span> </span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a><span class="co">// Lista de años (Sin 2025)</span></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k) <span class="op">&amp;&amp;</span> k<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">4</span> <span class="op">&amp;&amp;</span> k <span class="op">!==</span> <span class="st">"2025"</span>)</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="co">// Datos largos</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d[<span class="st">"Empresa"</span>]<span class="op">,</span></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NIF"</span><span class="op">:</span> d[<span class="st">"NIF"</span>]<span class="op">,</span></span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a><span class="co">// Variables interactivas</span></span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>mutable selectedRow <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -440,23 +452,23 @@ input[type="search"] {
 </div>
 </div>
 </div>
-<div class="dashboard-container">
-<div class="tab-header">
-<pre><code>&lt;button class="tab-button ${activeTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable activeTab = 'mercado'}&gt;
+<div class="dashboard-wrapper">
+<div class="tab-container">
+<pre><code>&lt;div class="tab-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;
   &lt;i class="fa-solid fa-chart-pie"&gt;&lt;/i&gt; Mercado Global
-&lt;/button&gt;
-&lt;button class="tab-button ${activeTab === 'comparador' ? 'active' : ''}" onclick=${() =&gt; mutable activeTab = 'comparador'}&gt;
+&lt;/div&gt;
+&lt;div class="tab-item ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'comparador'}&gt;
   &lt;i class="fa-solid fa-table-list"&gt;&lt;/i&gt; Comparador y Análisis
-&lt;/button&gt;</code></pre>
+&lt;/div&gt;</code></pre>
 </div>
-<div style="display: ${activeTab === 'mercado' ? 'block' : 'none'}">
-<pre><code>&lt;div class="fnee-card"&gt;
-  &lt;h3 style="color:#2dd4bf; margin-top:0;"&gt;Evolución del Mercado (GWh)&lt;/h3&gt;
-  &lt;p style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;"&gt;Volumen total agregado de todas las comercializadoras del sistema.&lt;/p&gt;
+<div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
+<pre><code>&lt;div class="glass-card"&gt;
+  &lt;div class="card-title"&gt;&lt;i class="fa-solid fa-globe"&gt;&lt;/i&gt; Evolución del Mercado&lt;/div&gt;
+  &lt;div class="card-subtitle"&gt;Volumen total gestionado por todas las comercializadoras (GWh).&lt;/div&gt;
   
   ${Plot.plot({
-    style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
-    height: 400,
+    style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
+    height: 450,
     marginLeft: 60,
     y: { grid: true, label: "Total GWh", tickFormat: "s" },
     x: { label: null, tickFormat: "d" },
@@ -464,30 +476,33 @@ input[type="search"] {
       Plot.barY(data_long, Plot.groupX({y: "sum"}, {
         x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.8, tip: true,
         title: d =&gt; `${d.Año}: ${d.Ventas.toLocaleString("es-ES")} GWh`
-      }))
+      })),
+      Plot.ruleY([0], {stroke: "#334155"})
     ]
   })}
 &lt;/div&gt;</code></pre>
 </div>
-<div style="display: ${activeTab === 'comparador' ? 'block' : 'none'}">
-<pre><code>&lt;div class="fnee-card"&gt;
-  
-  &lt;div style="margin-bottom: 20px;"&gt;
+<div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
+<pre><code>&lt;div class="glass-card"&gt;
+  &lt;div class="card-title"&gt;&lt;i class="fa-solid fa-building-user"&gt;&lt;/i&gt; Directorio de Empresas&lt;/div&gt;
+  &lt;div class="card-subtitle"&gt;Utiliza el buscador para localizar una comercializadora y ver su histórico.&lt;/div&gt;
+
+  &lt;div class="search-box" style="margin-bottom: 25px;"&gt;
     ${viewof searchTerm = Inputs.search(data, {
-      placeholder: "🔍 Buscar por NIF o Razón Social...",
+      placeholder: "🔍 Buscar por NIF o Nombre...",
       columns: ["Empresa", "NIF"]
     })}
   &lt;/div&gt;
 
-  &lt;div class="table-container"&gt;
+  &lt;div style="overflow-x: auto;"&gt;
     ${htl.html`
-    &lt;table class="fnee-table"&gt;
+    &lt;table class="data-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
           &lt;th style="width:15%"&gt;NIF&lt;/th&gt;
           &lt;th style="width:45%"&gt;COMERCIALIZADORA&lt;/th&gt;
           &lt;th style="width:25%; text-align:right"&gt;VENTAS 2024 (GWh)&lt;/th&gt;
-          &lt;th style="width:15%; text-align:center"&gt;ANÁLISIS&lt;/th&gt;
+          &lt;th style="width:15%; text-align:center"&gt;ACCIÓN&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;
@@ -495,12 +510,12 @@ input[type="search"] {
           &lt;tr&gt;
             &lt;td style="font-family:monospace; color:#94a3b8;"&gt;${row.NIF}&lt;/td&gt;
             &lt;td style="font-weight:600; color:#f1f5f9;"&gt;${row.Empresa}&lt;/td&gt;
-            &lt;td style="text-align:right; color:#cbd5e1;"&gt;
+            &lt;td style="text-align:right; font-feature-settings: 'tnum';"&gt;
               ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             &lt;/td&gt;
             &lt;td style="text-align:center"&gt;
-              &lt;button class="btn-icon" onclick=${() =&gt; mutable selectedCompany = row}&gt;
-                👁️ Ver
+              &lt;button class="btn-eye" onclick=${() =&gt; mutable selectedRow = row}&gt;
+                &lt;i class="fa-solid fa-eye"&gt;&lt;/i&gt; Ver
               &lt;/button&gt;
             &lt;/td&gt;
           &lt;/tr&gt;
@@ -510,34 +525,31 @@ input[type="search"] {
     ${searchTerm.length === 0 ? htl.html`&lt;div style="padding:40px; text-align:center; color:#64748b;"&gt;No se encontraron resultados&lt;/div&gt;` : ''}
     `}
   &lt;/div&gt;
-  
-  &lt;div style="margin-top:15px; text-align:right; font-size:0.8rem; color:#64748b;"&gt;
-    Mostrando ${Math.min(50, searchTerm.length)} resultados
-  &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 </div>
 </div>
 <span class="math inline">\({(() =&gt; {
-  if (selectedCompany) {
-    const dialog = htl.html`&lt;dialog class="fnee-modal" open&gt;
-      &lt;div class="modal-header"&gt;
+  if (selectedRow) {
+    const dialog = htl.html`&lt;dialog class="custom-modal" open&gt;
+      &lt;div class="modal-top"&gt;
         &lt;div&gt;
-          &lt;h2 style="margin:0; color:#2dd4bf; font-size:1.3rem;"&gt;\)</span>{selectedCompany.Empresa}
+          &lt;h2 style="margin:0; color:#2dd4bf; font-size:1.5rem;"&gt;\)</span>{selectedRow.Empresa}
 
-<pre><code>      &lt;span style="font-family:monospace; color:#94a3b8;"&gt;${selectedCompany.NIF}&lt;/span&gt;
+<pre><code>      &lt;span style="font-family:monospace; color:#94a3b8; font-size:1rem;"&gt;${selectedRow.NIF}&lt;/span&gt;
     &lt;/div&gt;
-    &lt;button class="close-btn" onclick=${() =&gt; mutable selectedCompany = null}&gt;&amp;times;&lt;/button&gt;
+    &lt;button style="background:none; border:none; color:#94a3b8; font-size:2rem; cursor:pointer;" 
+            onclick=${() =&gt; mutable selectedRow = null}&gt;&amp;times;&lt;/button&gt;
   &lt;/div&gt;
   
-  &lt;div class="modal-body"&gt;
-    &lt;div id="chart-area"&gt;&lt;/div&gt;
+  &lt;div class="modal-content"&gt;
+    &lt;div id="chart-mount"&gt;&lt;/div&gt;
     
-    &lt;div style="margin-top:25px; display:grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap:10px;"&gt;
+    &lt;div style="margin-top:30px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;"&gt;
       ${years.map(y =&gt; htl.html`
-        &lt;div style="background:rgba(30,41,59,0.5); padding:10px; border-radius:8px; border:1px solid #334155; text-align:center;"&gt;
+        &lt;div style="background:rgba(15,23,42,0.6); padding:15px; border-radius:10px; border:1px solid #334155; min-width:100px; text-align:center;"&gt;
           &lt;div style="color:#64748b; font-size:0.8rem; margin-bottom:5px;"&gt;${y}&lt;/div&gt;
-          &lt;div style="color:#fff; font-weight:bold;"&gt;
-            ${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
+          &lt;div style="color:#fff; font-weight:bold; font-size:1.1rem;"&gt;
+            ${(selectedRow[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
           &lt;/div&gt;
         &lt;/div&gt;
       `)}
@@ -545,31 +557,38 @@ input[type="search"] {
   &lt;/div&gt;
 &lt;/dialog&gt;`;
 
-// Gráfico Lineal dentro del modal
+// Gráfico
 const chart = Plot.plot({
-  style: { background: "transparent", color: "#cbd5e1", fontSize: "13px" },
+  style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
   height: 350,
-  width: 850,
+  width: 900,
   grid: true,
+  marginLeft: 60,
   x: { label: "Año", tickFormat: "d", domain: years.map(Number) },
   y: { label: "Ventas (GWh)" },
   marks: [
-    Plot.lineY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {
-      x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle", tip: true
+    Plot.lineY(data_long.filter(d =&gt; d.Empresa === selectedRow.Empresa), {
+      x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 4, marker: "circle", tip: true
     }),
-    Plot.areaY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {
-      x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2
-    })
+    Plot.areaY(data_long.filter(d =&gt; d.Empresa === selectedRow.Empresa), {
+      x: "Año", y: "Ventas", fill: "url(#gradientTeal)", fillOpacity: 0.4
+    }),
+    () =&gt; svg`&lt;defs&gt;
+      &lt;linearGradient id="gradientTeal" x1="0" x2="0" y1="0" y2="1"&gt;
+        &lt;stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.6"/&gt;
+        &lt;stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/&gt;
+      &lt;/linearGradient&gt;
+    &lt;/defs&gt;`
   ]
 });
 
-dialog.querySelector("#chart-area").append(chart);
+dialog.querySelector("#chart-mount").append(chart);
 
-// Cerrar al pulsar fuera
+// Cerrar click fuera
 dialog.addEventListener("click", e =&gt; {
   const rect = dialog.getBoundingClientRect();
   if (e.clientX &lt; rect.left || e.clientX &gt; rect.right || e.clientY &lt; rect.top || e.clientY &gt; rect.bottom) {
-    mutable selectedCompany = null;
+    mutable selectedRow = null;
   }
 });
 
@@ -580,7 +599,7 @@ return dialog;</code></pre>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAtLS0gMS4gQ0FSR0EgREUgREFUT1MgLS0tXHJcbnJhdyA9IGF3YWl0IEZpbGVBdHRhY2htZW50KFwidmVudGFzX2JvZS5jc3ZcIikudGV4dCgpXHJcblxyXG4vLyBMaW1waWV6YSBkZSBmb3JtYXRvIChjb21pbGxhcyB5IHB1bnRvcyB5IGNvbWEpXHJcbmNsZWFuX2NzdiA9IHJhdy5zcGxpdCgvXFxyP1xcbi8pLm1hcChsaW5lID0+IHtcclxuICBsZXQgbCA9IGxpbmUudHJpbSgpO1xyXG4gIGlmICghbCkgcmV0dXJuIG51bGw7IFxyXG4gIGlmIChsLnN0YXJ0c1dpdGgoJ1wiJykgJiYgbC5lbmRzV2l0aCgnXCInKSkgbCA9IGwuc2xpY2UoMSwgLTEpO1xyXG4gIGlmIChsLmVuZHNXaXRoKCc7JykpIGwgPSBsLnNsaWNlKDAsIC0xKTtcclxuICByZXR1cm4gbDtcclxufSkuZmlsdGVyKGwgPT4gbCAhPT0gbnVsbCkuam9pbihcIlxcblwiKVxyXG5cclxuLy8gUGFyc2VvIEludGVsaWdlbnRlXHJcbmRhdGEgPSBkMy5kc3ZGb3JtYXQoXCI7XCIpLnBhcnNlKGNsZWFuX2NzdiwgKGQsIGksIGNvbHVtbnMpID0+IHtcclxuICBjb25zdCByb3cgPSB7XHJcbiAgICBcIk5JRlwiOiBkW2NvbHVtbnNbMF1dLCAgICAgICBcclxuICAgIFwiRW1wcmVzYVwiOiBkW2NvbHVtbnNbMV1dICAgIFxyXG4gIH07XHJcblxyXG4gIGNvbHVtbnMuZm9yRWFjaChjb2wgPT4ge1xyXG4gICAgaWYgKGNvbC5pbmNsdWRlcyhcIlZlbnRhc1wiKSkge1xyXG4gICAgICBsZXQgdmFsU3RyID0gZFtjb2xdID8gZFtjb2xdLnRvU3RyaW5nKCkgOiBcIjBcIjtcclxuICAgICAgLy8gMS4yMzQsNTYgLT4gMTIzNC41NlxyXG4gICAgICBsZXQgdmFsID0gcGFyc2VGbG9hdCh2YWxTdHIucmVwbGFjZSgvXFwuL2csIFwiXCIpLnJlcGxhY2UoXCIsXCIsIFwiLlwiKSkgfHwgMDtcclxuICAgICAgbGV0IHllYXIgPSBjb2wucmVwbGFjZShcIlZlbnRhc1wiLCBcIlwiKS50cmltKCk7XHJcbiAgICAgIHJvd1t5ZWFyXSA9IHZhbDsgXHJcbiAgICB9XHJcbiAgfSk7XHJcbiAgcmV0dXJuIHJvdztcclxufSlcclxuXHJcbi8vIEZpbHRyYXIgYcOxb3MgKEJPUlJBTkRPIDIwMjUpXHJcbnllYXJzID0gT2JqZWN0LmtleXMoZGF0YVswXSlcclxuICAuZmlsdGVyKGsgPT4gIWlzTmFOKGspICYmIGsubGVuZ3RoID09PSA0ICYmIGsgIT09IFwiMjAyNVwiKVxyXG4gIC5zb3J0KCk7XHJcblxyXG4vLyBEYXRvcyBMYXJnb3MgcGFyYSBncsOhZmljYXNcclxuZGF0YV9sb25nID0gZGF0YS5mbGF0TWFwKGQgPT4ge1xyXG4gIHJldHVybiB5ZWFycy5tYXAoeWVhciA9PiAoe1xyXG4gICAgXCJFbXByZXNhXCI6IGRbXCJFbXByZXNhXCJdLFxyXG4gICAgXCJOSUZcIjogZFtcIk5JRlwiXSxcclxuICAgIFwiQcOxb1wiOiBwYXJzZUludCh5ZWFyKSxcclxuICAgIFwiVmVudGFzXCI6IGRbeWVhcl0gfHwgMFxyXG4gIH0pKTtcclxufSlcclxuXHJcbi8vIFZBUklBQkxFUyBERSBFU1RBRE8gKFJFQUNUSVZJREFEKVxyXG5tdXRhYmxlIGFjdGl2ZVRhYiA9IFwiY29tcGFyYWRvclwiOyAvLyBQZXN0YcOxYSBhY3RpdmEgcG9yIGRlZmVjdG9cclxubXV0YWJsZSBzZWxlY3RlZENvbXBhbnkgPSBudWxsOyAgIC8vIEVtcHJlc2Egc2VsZWNjaW9uYWRhXHJcbiJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAtLS0gMS4gTMOTR0lDQSBERSBEQVRPUyAoTm8gdG9jYXIpIC0tLVxyXG5yYXcgPSBhd2FpdCBGaWxlQXR0YWNobWVudChcInZlbnRhc19ib2UuY3N2XCIpLnRleHQoKVxyXG5cclxuLy8gTGltcGllemEgYWdyZXNpdmEgZGUgZm9ybWF0byAoQ1NWIHN1Y2lvKVxyXG5jbGVhbl9jc3YgPSByYXcuc3BsaXQoL1xccj9cXG4vKS5tYXAobGluZSA9PiB7XHJcbiAgbGV0IGwgPSBsaW5lLnRyaW0oKTtcclxuICBpZiAoIWwpIHJldHVybiBudWxsOyBcclxuICBpZiAobC5zdGFydHNXaXRoKCdcIicpICYmIGwuZW5kc1dpdGgoJ1wiJykpIGwgPSBsLnNsaWNlKDEsIC0xKTtcclxuICBpZiAobC5lbmRzV2l0aCgnOycpKSBsID0gbC5zbGljZSgwLCAtMSk7XHJcbiAgcmV0dXJuIGw7XHJcbn0pLmZpbHRlcihsID0+IGwgIT09IG51bGwpLmpvaW4oXCJcXG5cIilcclxuXHJcbi8vIFBhcnNlb1xyXG5kYXRhID0gZDMuZHN2Rm9ybWF0KFwiO1wiKS5wYXJzZShjbGVhbl9jc3YsIChkLCBpLCBjb2x1bW5zKSA9PiB7XHJcbiAgY29uc3Qgcm93ID0ge1xyXG4gICAgXCJOSUZcIjogZFtjb2x1bW5zWzBdXSwgICAgICAgXHJcbiAgICBcIkVtcHJlc2FcIjogZFtjb2x1bW5zWzFdXSAgICBcclxuICB9O1xyXG4gIGNvbHVtbnMuZm9yRWFjaChjb2wgPT4ge1xyXG4gICAgaWYgKGNvbC5pbmNsdWRlcyhcIlZlbnRhc1wiKSkge1xyXG4gICAgICBsZXQgdmFsU3RyID0gZFtjb2xdID8gZFtjb2xdLnRvU3RyaW5nKCkgOiBcIjBcIjtcclxuICAgICAgbGV0IHZhbCA9IHBhcnNlRmxvYXQodmFsU3RyLnJlcGxhY2UoL1xcLi9nLCBcIlwiKS5yZXBsYWNlKFwiLFwiLCBcIi5cIikpIHx8IDA7XHJcbiAgICAgIGxldCB5ZWFyID0gY29sLnJlcGxhY2UoXCJWZW50YXNcIiwgXCJcIikudHJpbSgpO1xyXG4gICAgICByb3dbeWVhcl0gPSB2YWw7IFxyXG4gICAgfVxyXG4gIH0pO1xyXG4gIHJldHVybiByb3c7XHJcbn0pXHJcblxyXG4vLyBMaXN0YSBkZSBhw7FvcyAoU2luIDIwMjUpXHJcbnllYXJzID0gT2JqZWN0LmtleXMoZGF0YVswXSlcclxuICAuZmlsdGVyKGsgPT4gIWlzTmFOKGspICYmIGsubGVuZ3RoID09PSA0ICYmIGsgIT09IFwiMjAyNVwiKVxyXG4gIC5zb3J0KCk7XHJcblxyXG4vLyBEYXRvcyBsYXJnb3NcclxuZGF0YV9sb25nID0gZGF0YS5mbGF0TWFwKGQgPT4ge1xyXG4gIHJldHVybiB5ZWFycy5tYXAoeWVhciA9PiAoe1xyXG4gICAgXCJFbXByZXNhXCI6IGRbXCJFbXByZXNhXCJdLFxyXG4gICAgXCJOSUZcIjogZFtcIk5JRlwiXSxcclxuICAgIFwiQcOxb1wiOiBwYXJzZUludCh5ZWFyKSxcclxuICAgIFwiVmVudGFzXCI6IGRbeWVhcl0gfHwgMFxyXG4gIH0pKTtcclxufSlcclxuXHJcbi8vIFZhcmlhYmxlcyBpbnRlcmFjdGl2YXNcclxubXV0YWJsZSBjdXJyZW50VGFiID0gXCJjb21wYXJhZG9yXCI7IFxyXG5tdXRhYmxlIHNlbGVjdGVkUm93ID0gbnVsbDtcclxuIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

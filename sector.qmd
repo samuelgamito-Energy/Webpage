@@ -7,137 +7,152 @@ format:
     css: styles.css
 ---
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <style>
-/* 1. ESTRUCTURA */
-.dashboard-container {
+/* Contenedor General */
+.dashboard-wrapper {
   font-family: 'Segoe UI', system-ui, sans-serif;
   color: #cbd5e1;
   max-width: 1400px;
   margin: 0 auto;
+  padding-top: 20px;
 }
 
-/* 2. PESTAÑAS SUPERIORES (Estilo FNEE adaptado a Dark) */
-.tab-header {
+/* Pestañas Superiores (Estilo Botón) */
+.tab-container {
   display: flex;
-  gap: 10px;
-  border-bottom: 1px solid #334155;
+  gap: 15px;
   margin-bottom: 25px;
-  padding-bottom: 10px;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 15px;
 }
-.tab-button {
-  padding: 10px 24px;
+.tab-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
   border-radius: 8px;
-  font-weight: 600;
   cursor: pointer;
-  border: 1px solid transparent;
-  background: transparent;
+  font-weight: 600;
   color: #94a3b8;
-  transition: all 0.2s;
-  display: flex; align-items: center; gap: 8px;
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+  background: rgba(30, 41, 59, 0.3);
 }
-.tab-button:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
-.tab-button.active {
-  background-color: #1e293b;
+.tab-item:hover {
+  background: rgba(45, 212, 191, 0.1);
+  color: #fff;
+}
+.tab-item.active {
+  background: #0f172a;
   color: #2dd4bf;
-  border: 1px solid #334155;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  border: 1px solid #2dd4bf;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
 }
 
-/* 3. TARJETAS (CARDS) */
-.fnee-card {
-  background-color: rgba(30, 41, 59, 0.4); /* Fondo semitransparente */
+/* Tarjetas (Cards) */
+.glass-card {
+  background: rgba(15, 23, 42, 0.6); /* Fondo oscuro semitransparente */
   border: 1px solid #334155;
-  border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  border-radius: 16px; /* Bordes muy redondeados como el original */
+  padding: 30px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+  backdrop-filter: blur(5px);
 }
 
-/* 4. TABLA FNEE (Clonada y oscurecida) */
-.table-container { overflow-x: auto; }
-.fnee-table {
+/* Títulos */
+.card-title {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 5px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-subtitle {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+
+/* Tabla Profesional */
+.data-table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
+  border-collapse: separate;
+  border-spacing: 0;
 }
-.fnee-table th {
+.data-table th {
   text-align: left;
   padding: 15px;
   color: #2dd4bf;
-  border-bottom: 2px solid #2dd4bf;
+  font-size: 0.85rem;
   text-transform: uppercase;
-  font-size: 0.8rem;
   letter-spacing: 1px;
-  background: rgba(15, 23, 42, 0.5);
+  border-bottom: 2px solid #2dd4bf;
 }
-.fnee-table td {
-  padding: 12px 15px;
+.data-table td {
+  padding: 15px;
   border-bottom: 1px solid #334155;
   color: #e2e8f0;
 }
-.fnee-table tr:hover {
-  background-color: rgba(45, 212, 191, 0.05); /* Hover Teal muy suave */
+.data-table tr:hover td {
+  background: rgba(45, 212, 191, 0.05);
 }
 
-/* 5. BOTONES DE ACCIÓN (OJO) */
-.btn-icon {
-  background: rgba(15, 23, 42, 0.8);
+/* Botón Ojo */
+.btn-eye {
+  background: rgba(15, 23, 42, 1);
   border: 1px solid #475569;
   color: #2dd4bf;
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
   transition: all 0.2s;
   font-size: 0.85rem;
-  display: inline-flex; align-items: center; gap: 6px;
 }
-.btn-icon:hover {
+.btn-eye:hover {
   background: #2dd4bf;
   color: #0f172a;
   border-color: #2dd4bf;
-  box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
+  box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
 }
 
-/* 6. MODAL (VENTANA FLOTANTE) */
-dialog.fnee-modal {
+/* Modal / Popup */
+dialog.custom-modal {
   background: #0f172a;
   color: #fff;
   border: 1px solid #2dd4bf;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 0;
-  width: 85%; max-width: 900px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+  width: 90%; max-width: 950px;
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
 }
-dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+dialog.custom-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
+.modal-top { padding: 25px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(30,41,59,0.3); }
+.modal-content { padding: 30px; }
 
-.modal-header {
-  padding: 20px;
-  border-bottom: 1px solid #334155;
-  display: flex; justify-content: space-between; align-items: center;
-  background: rgba(30, 41, 59, 0.3);
-}
-.modal-body { padding: 30px; }
-.close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
-.close-btn:hover { color: #fff; }
-
-/* 7. INPUT DE BÚSQUEDA */
-input[type="search"] {
+/* Input Buscador */
+.search-box input {
   width: 100%;
-  padding: 12px 15px;
-  background: #0f172a !important;
-  border: 1px solid #334155 !important;
+  background: #1e293b !important;
+  border: 1px solid #475569 !important;
   color: #fff !important;
-  border-radius: 8px;
+  padding: 15px !important;
+  border-radius: 10px !important;
+  font-size: 1rem;
 }
 </style>
 
 ```{ojs}
 //| echo: false
 
-// --- 1. CARGA DE DATOS ---
+// --- 1. LÓGICA DE DATOS (No tocar) ---
 raw = await FileAttachment("ventas_boe.csv").text()
 
-// Limpieza de formato (comillas y puntos y coma)
+// Limpieza agresiva de formato (CSV sucio)
 clean_csv = raw.split(/\r?\n/).map(line => {
   let l = line.trim();
   if (!l) return null; 
@@ -146,17 +161,15 @@ clean_csv = raw.split(/\r?\n/).map(line => {
   return l;
 }).filter(l => l !== null).join("\n")
 
-// Parseo Inteligente
+// Parseo
 data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
   const row = {
     "NIF": d[columns[0]],       
     "Empresa": d[columns[1]]    
   };
-
   columns.forEach(col => {
     if (col.includes("Ventas")) {
       let valStr = d[col] ? d[col].toString() : "0";
-      // 1.234,56 -> 1234.56
       let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
       let year = col.replace("Ventas", "").trim();
       row[year] = val; 
@@ -165,12 +178,12 @@ data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
   return row;
 })
 
-// Filtrar años (BORRANDO 2025)
+// Lista de años (Sin 2025)
 years = Object.keys(data[0])
   .filter(k => !isNaN(k) && k.length === 4 && k !== "2025")
   .sort();
 
-// Datos Largos para gráficas
+// Datos largos
 data_long = data.flatMap(d => {
   return years.map(year => ({
     "Empresa": d["Empresa"],
@@ -180,30 +193,30 @@ data_long = data.flatMap(d => {
   }));
 })
 
-// VARIABLES DE ESTADO (REACTIVIDAD)
-mutable activeTab = "comparador"; // Pestaña activa por defecto
-mutable selectedCompany = null;   // Empresa seleccionada
+// Variables interactivas
+mutable currentTab = "comparador"; 
+mutable selectedRow = null;
 ```
 
-<div class="dashboard-container">
+<div class="dashboard-wrapper">
 
-  <div class="tab-header">
-    <button class="tab-button ${activeTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable activeTab = 'mercado'}>
+  <div class="tab-container">
+    <div class="tab-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
       <i class="fa-solid fa-chart-pie"></i> Mercado Global
-    </button>
-    <button class="tab-button ${activeTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable activeTab = 'comparador'}>
+    </div>
+    <div class="tab-item ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable currentTab = 'comparador'}>
       <i class="fa-solid fa-table-list"></i> Comparador y Análisis
-    </button>
+    </div>
   </div>
 
-  <div style="display: ${activeTab === 'mercado' ? 'block' : 'none'}">
-    <div class="fnee-card">
-      <h3 style="color:#2dd4bf; margin-top:0;">Evolución del Mercado (GWh)</h3>
-      <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Volumen total agregado de todas las comercializadoras del sistema.</p>
+  <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
+    <div class="glass-card">
+      <div class="card-title"><i class="fa-solid fa-globe"></i> Evolución del Mercado</div>
+      <div class="card-subtitle">Volumen total gestionado por todas las comercializadoras (GWh).</div>
       
       ${Plot.plot({
-        style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
-        height: 400,
+        style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
+        height: 450,
         marginLeft: 60,
         y: { grid: true, label: "Total GWh", tickFormat: "s" },
         x: { label: null, tickFormat: "d" },
@@ -211,31 +224,34 @@ mutable selectedCompany = null;   // Empresa seleccionada
           Plot.barY(data_long, Plot.groupX({y: "sum"}, {
             x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.8, tip: true,
             title: d => `${d.Año}: ${d.Ventas.toLocaleString("es-ES")} GWh`
-          }))
+          })),
+          Plot.ruleY([0], {stroke: "#334155"})
         ]
       })}
     </div>
   </div>
 
-  <div style="display: ${activeTab === 'comparador' ? 'block' : 'none'}">
-    <div class="fnee-card">
-      
-      <div style="margin-bottom: 20px;">
+  <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
+    <div class="glass-card">
+      <div class="card-title"><i class="fa-solid fa-building-user"></i> Directorio de Empresas</div>
+      <div class="card-subtitle">Utiliza el buscador para localizar una comercializadora y ver su histórico.</div>
+
+      <div class="search-box" style="margin-bottom: 25px;">
         ${viewof searchTerm = Inputs.search(data, {
-          placeholder: "🔍 Buscar por NIF o Razón Social...",
+          placeholder: "🔍 Buscar por NIF o Nombre...",
           columns: ["Empresa", "NIF"]
         })}
       </div>
 
-      <div class="table-container">
+      <div style="overflow-x: auto;">
         ${htl.html`
-        <table class="fnee-table">
+        <table class="data-table">
           <thead>
             <tr>
               <th style="width:15%">NIF</th>
               <th style="width:45%">COMERCIALIZADORA</th>
               <th style="width:25%; text-align:right">VENTAS 2024 (GWh)</th>
-              <th style="width:15%; text-align:center">ANÁLISIS</th>
+              <th style="width:15%; text-align:center">ACCIÓN</th>
             </tr>
           </thead>
           <tbody>
@@ -243,12 +259,12 @@ mutable selectedCompany = null;   // Empresa seleccionada
               <tr>
                 <td style="font-family:monospace; color:#94a3b8;">${row.NIF}</td>
                 <td style="font-weight:600; color:#f1f5f9;">${row.Empresa}</td>
-                <td style="text-align:right; color:#cbd5e1;">
+                <td style="text-align:right; font-feature-settings: 'tnum';">
                   ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                 </td>
                 <td style="text-align:center">
-                  <button class="btn-icon" onclick=${() => mutable selectedCompany = row}>
-                    👁️ Ver
+                  <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
+                    <i class="fa-solid fa-eye"></i> Ver
                   </button>
                 </td>
               </tr>
@@ -258,35 +274,32 @@ mutable selectedCompany = null;   // Empresa seleccionada
         ${searchTerm.length === 0 ? htl.html`<div style="padding:40px; text-align:center; color:#64748b;">No se encontraron resultados</div>` : ''}
         `}
       </div>
-      
-      <div style="margin-top:15px; text-align:right; font-size:0.8rem; color:#64748b;">
-        Mostrando ${Math.min(50, searchTerm.length)} resultados
-      </div>
     </div>
   </div>
 
 </div>
 
 ${(() => {
-  if (selectedCompany) {
-    const dialog = htl.html`<dialog class="fnee-modal" open>
-      <div class="modal-header">
+  if (selectedRow) {
+    const dialog = htl.html`<dialog class="custom-modal" open>
+      <div class="modal-top">
         <div>
-          <h2 style="margin:0; color:#2dd4bf; font-size:1.3rem;">${selectedCompany.Empresa}</h2>
-          <span style="font-family:monospace; color:#94a3b8;">${selectedCompany.NIF}</span>
+          <h2 style="margin:0; color:#2dd4bf; font-size:1.5rem;">${selectedRow.Empresa}</h2>
+          <span style="font-family:monospace; color:#94a3b8; font-size:1rem;">${selectedRow.NIF}</span>
         </div>
-        <button class="close-btn" onclick=${() => mutable selectedCompany = null}>&times;</button>
+        <button style="background:none; border:none; color:#94a3b8; font-size:2rem; cursor:pointer;" 
+                onclick=${() => mutable selectedRow = null}>&times;</button>
       </div>
       
-      <div class="modal-body">
-        <div id="chart-area"></div>
+      <div class="modal-content">
+        <div id="chart-mount"></div>
         
-        <div style="margin-top:25px; display:grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap:10px;">
+        <div style="margin-top:30px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
           ${years.map(y => htl.html`
-            <div style="background:rgba(30,41,59,0.5); padding:10px; border-radius:8px; border:1px solid #334155; text-align:center;">
+            <div style="background:rgba(15,23,42,0.6); padding:15px; border-radius:10px; border:1px solid #334155; min-width:100px; text-align:center;">
               <div style="color:#64748b; font-size:0.8rem; margin-bottom:5px;">${y}</div>
-              <div style="color:#fff; font-weight:bold;">
-                ${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
+              <div style="color:#fff; font-weight:bold; font-size:1.1rem;">
+                ${(selectedRow[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
               </div>
             </div>
           `)}
@@ -294,31 +307,38 @@ ${(() => {
       </div>
     </dialog>`;
 
-    // Gráfico Lineal dentro del modal
+    // Gráfico
     const chart = Plot.plot({
-      style: { background: "transparent", color: "#cbd5e1", fontSize: "13px" },
+      style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
       height: 350,
-      width: 850,
+      width: 900,
       grid: true,
+      marginLeft: 60,
       x: { label: "Año", tickFormat: "d", domain: years.map(Number) },
       y: { label: "Ventas (GWh)" },
       marks: [
-        Plot.lineY(data_long.filter(d => d.Empresa === selectedCompany.Empresa), {
-          x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle", tip: true
+        Plot.lineY(data_long.filter(d => d.Empresa === selectedRow.Empresa), {
+          x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 4, marker: "circle", tip: true
         }),
-        Plot.areaY(data_long.filter(d => d.Empresa === selectedCompany.Empresa), {
-          x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2
-        })
+        Plot.areaY(data_long.filter(d => d.Empresa === selectedRow.Empresa), {
+          x: "Año", y: "Ventas", fill: "url(#gradientTeal)", fillOpacity: 0.4
+        }),
+        () => svg`<defs>
+          <linearGradient id="gradientTeal" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
+          </linearGradient>
+        </defs>`
       ]
     });
 
-    dialog.querySelector("#chart-area").append(chart);
+    dialog.querySelector("#chart-mount").append(chart);
     
-    // Cerrar al pulsar fuera
+    // Cerrar click fuera
     dialog.addEventListener("click", e => {
       const rect = dialog.getBoundingClientRect();
       if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
-        mutable selectedCompany = null;
+        mutable selectedRow = null;
       }
     });
 
