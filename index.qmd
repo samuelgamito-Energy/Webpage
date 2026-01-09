@@ -5,18 +5,21 @@ page-layout: full
 
 ```{=html}
 <style>
-    /* RESET: Asegura que no haya márgenes molestos */
+    /* RESET */
     body, .main-container, .page-columns { max-width: 100% !important; padding: 0 !important; }
 
     /* --- PARTE DE ARRIBA (BIO + VIDEO) --- */
     .top-section {
         display: flex;
         flex-direction: row;
-        gap: 5%; /* Espacio porcentual para adaptarse */
-        padding: 40px 5%; /* Márgenes laterales del 5% */
+        gap: 5%; 
+        padding: 0 5%; 
         align-items: flex-start;
         max-width: 1600px;
         margin: 0 auto;
+        
+        /* AQUÍ ESTÁ EL CAMBIO: MÁS AIRE ARRIBA */
+        margin-top: 100px; 
     }
 
     .bio-column { flex: 1.5; min-width: 320px; }
@@ -54,23 +57,23 @@ page-layout: full
     /* --- PARTE DE ABAJO (EXPERTISE - ANCHO TOTAL) --- */
     .bottom-section {
         width: 100%;
-        background-color: rgba(15, 23, 42, 0.3); /* Fondo sutil para separar */
+        background-color: rgba(15, 23, 42, 0.3);
         border-top: 1px solid #334155;
-        padding: 50px 5%; /* Padding lateral generoso */
-        margin-top: 40px;
+        padding: 60px 5%; /* Un poco más de aire también abajo */
+        margin-top: 60px;
     }
 
     .section-header {
         color: #2dd4bf; text-align: center; font-size: 1.2rem; font-weight: 700;
-        text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px;
+        text-transform: uppercase; letter-spacing: 3px; margin-bottom: 50px;
     }
 
-    /* GRID DE 4 COLUMNAS REAL */
+    /* GRID DE 4 COLUMNAS */
     .cards-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 Columnas IGUALES */
-        gap: 30px; /* Espacio entre tarjetas */
-        max-width: 1800px; /* Tope máximo para pantallas gigantes */
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        max-width: 1800px;
         margin: 0 auto;
     }
 
@@ -80,7 +83,7 @@ page-layout: full
         border-radius: 12px;
         padding: 25px;
         transition: transform 0.3s ease;
-        height: 100%; /* Misma altura para todas */
+        height: 100%;
     }
     .info-card:hover { transform: translateY(-5px); border-color: #2dd4bf; }
 
@@ -92,11 +95,11 @@ page-layout: full
 
     /* RESPONSIVE */
     @media (max-width: 1024px) {
-        .cards-grid { grid-template-columns: 1fr 1fr; } /* Tablet: 2 y 2 */
+        .cards-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
-        .top-section { flex-direction: column-reverse; } /* Móvil: Uno debajo de otro */
-        .cards-grid { grid-template-columns: 1fr; } /* Móvil: 1 columna */
+        .top-section { flex-direction: column-reverse; margin-top: 40px; } /* En móvil menos margen */
+        .cards-grid { grid-template-columns: 1fr; }
     }
 </style>
 
