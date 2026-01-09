@@ -1,5 +1,5 @@
 ---
-title: "SECTOR ANALYTICS | SPAIN"
+title: "SECTOR ANALYTICS"
 page-layout: full
 format:
   html:
@@ -8,76 +8,75 @@ format:
 ---
 
 <style>
-/* Tablas de OJS transparentes y con texto claro */
+/* 1. GENERAL */
+.observablehq { 
+  color: #cbd5e1 !important; 
+  font-family: 'Inter', sans-serif;
+}
+
+/* 2. TABLAS TRANSPARENTES Y ELEGANTES */
 .observablehq-table { 
   color: #cbd5e1 !important; 
   background: transparent !important; 
-  font-family: sans-serif;
-  font-size: 0.9rem;
 }
-.observablehq-table thead th { 
-  background-color: rgba(15, 23, 42, 0.8) !important; 
+.observablehq-table thead { 
+  background-color: rgba(15, 23, 42, 0.9) !important; 
+  border-bottom: 2px solid #2dd4bf !important; 
+}
+.observablehq-table th {
   color: #2dd4bf !important; 
-  border-bottom: 1px solid #2dd4bf !important; 
   text-transform: uppercase;
+  font-size: 0.85rem;
   letter-spacing: 1px;
 }
-.observablehq-table tbody tr:hover { 
+.observablehq-table tr:hover {
   background-color: rgba(45, 212, 191, 0.1) !important; 
 }
 
-/* Inputs (Buscadores y Selectores) */
-.observablehq-input { color: #cbd5e1; margin-bottom: 15px; }
-.observablehq-input input, .observablehq-input select { 
+/* 3. INPUTS (BUSCADOR Y SELECTORES) */
+form.observablehq-input input, 
+form.observablehq-input select {
   background-color: #1e293b !important; 
-  color: #fff !important; 
   border: 1px solid #334155 !important;
-  padding: 8px 12px; 
+  color: #f1f5f9 !important;
   border-radius: 6px;
-  outline: none;
+  padding: 8px 12px;
 }
-.observablehq-input input:focus, .observablehq-input select:focus {
-  border-color: #2dd4bf !important;
-  box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2);
-}
+form.observablehq-input { color: #94a3b8; }
 
-/* Pestañas (Tabs) */
-.nav-tabs { border-bottom: 1px solid #334155; }
+/* 4. PESTAÑAS (TABS) */
+.nav-tabs { border-bottom: 1px solid #334155; margin-bottom: 20px; }
+.nav-tabs .nav-link { color: #94a3b8; border: none; }
 .nav-tabs .nav-link.active { 
-  color: #2dd4bf !important; 
-  border: none;
-  border-bottom: 2px solid #2dd4bf !important; 
-  background: transparent !important; 
-  font-weight: 600;
+  background-color: transparent; 
+  border-bottom: 3px solid #2dd4bf; 
+  color: #2dd4bf; 
+  font-weight: bold;
 }
-.nav-tabs .nav-link { 
-  color: #94a3b8 !important; 
-  border: none;
-}
-.nav-tabs .nav-link:hover { color: #cbd5e1 !important; }
 </style>
 
 ```{ojs}
 //| echo: false
 
-// 1. CARGA Y LIMPIEZA ROBUSTA DE DATOS
-// Leemos el archivo crudo
+// --- 1. CARGA DE DATOS ---
 raw = await FileAttachment("ventas_boe.csv").text()
 
-// Limpiamos líneas: quitamos comillas envolventes y puntos y coma sobrantes
+// --- 2. LIMPIEZA DE FORMATO ---
 clean_csv = raw.split(/\r?\n/).map(line => {
   let l = line.trim();
   if (!l) return null; 
+  // Quitar comillas envolventes
   if (l.startsWith('"') && l.endsWith('"')) l = l.slice(1, -1);
+  // Quitar punto y coma final
   if (l.endsWith(';')) l = l.slice(0, -1);
   return l;
 }).filter(l => l !== null).join("\n")
 
-// Parseamos con punto y coma (;)
+// --- 3. PARSEO Y CONVERSIÓN ---
 data = d3.dsvFormat(";").parse(clean_csv, (d) => {
   for (const key in d) {
-    // Convertimos columnas de Ventas a números (formato español 1.234,56 -> 1234.56)
     if (key.includes("Ventas") && d[key]) {
+      // Formato español 1.000,00 -> 1000.00
       let val = d[key].toString().replace(/\./g, "").replace(",", ".");
       d[key] = parseFloat(val) || 0;
     }
@@ -85,7 +84,7 @@ data = d3.dsvFormat(";").parse(clean_csv, (d) => {
   return d;
 })
 
-// Creamos datos en formato largo para las gráficas temporales
+// --- 4. FORMATO LARGO (GRÁFICAS) ---
 data_long = data.flatMap(d => {
   const years = [2019, 2020, 2021, 2022, 2023, 2024];
   return years.map(year => ({
@@ -99,41 +98,15 @@ data_long = data.flatMap(d => {
 
 ::: {.panel-tabset}
 
-## 👁️‍🗨️ Market Overview
+## 🔍 Buscador
 
-Visión consolidada del mercado energético español (Volumen total gestionado).
-
-```{ojs}
-//| echo: false
-Plot.plot({
-  style: { background: "transparent", color: "#94a3b8", fontSize: "14px", fontFamily: "sans-serif" },
-  height: 400,
-  marginLeft: 60,
-  y: { grid: true, label: "Volumen Total (GWh)", tickFormat: "s" },
-  x: { label: null, tickFormat: "d" },
-  marks: [
-    Plot.barY(data_long, Plot.groupX({y: "sum"}, {
-      x: "Año", 
-      y: "Ventas", 
-      fill: "#2dd4bf", // Color Teal corporativo
-      fillOpacity: 0.9,
-      tip: true,
-      title: d => `${d.Año}\nTotal: ${d.Ventas}`
-    })),
-    Plot.ruleY([0], {stroke: "#334155"})
-  ]
-})
-```
-
-## 🔍 Buscador Inteligente
-
-Base de datos completa de comercializadoras. Busca por nombre o CIF.
+Base de datos completa del sistema energético.
 
 ```{ojs}
 //| echo: false
 viewof search = Inputs.search(data, {
   label: "Buscar:",
-  placeholder: "Ej: IBERDROLA, ENDESA...",
+  placeholder: "Ej: ENDESA, FENOSA...",
   columns: ["Razón Social", "NIF"]
 })
 
@@ -141,29 +114,54 @@ Inputs.table(search, {
   columns: ["NIF", "Razón Social", "Ventas 2022", "Ventas 2023", "Ventas 2024"],
   header: {
     "Razón Social": "Comercializadora",
-    "Ventas 2022": "2022",
-    "Ventas 2023": "2023",
-    "Ventas 2024": "2024"
+    "Ventas 2022": "2022 (GWh)",
+    "Ventas 2023": "2023 (GWh)",
+    "Ventas 2024": "2024 (GWh)"
   },
   sort: "Ventas 2024",
   reverse: true,
   rows: 15,
   format: {
-    "Ventas 2022": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}) + " GWh",
-    "Ventas 2023": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}) + " GWh",
-    "Ventas 2024": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}) + " GWh"
+    "Ventas 2022": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}),
+    "Ventas 2023": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}),
+    "Ventas 2024": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0})
   }
 })
 ```
 
-## 📈 Comparador Competitivo
+## 📊 Mercado Global
 
-Selecciona múltiples empresas para analizar su evolución relativa.
+Evolución del volumen total gestionado (GWh).
+
+```{ojs}
+//| echo: false
+Plot.plot({
+  style: { background: "transparent", color: "#94a3b8", fontSize: "14px" },
+  height: 400,
+  marginLeft: 60,
+  y: { grid: true, label: "Total GWh", tickFormat: "s" },
+  x: { label: null, tickFormat: "d" },
+  marks: [
+    Plot.barY(data_long, Plot.groupX({y: "sum"}, {
+      x: "Año", 
+      y: "Ventas", 
+      fill: "#2dd4bf", 
+      fillOpacity: 0.8,
+      tip: true
+    })),
+    Plot.ruleY([0], {stroke: "#475569"})
+  ]
+})
+```
+
+## 🆚 Comparador
+
+Análisis competitivo y cuota de mercado.
 
 ```{ojs}
 //| echo: false
 viewof selected_companies = Inputs.select(data.map(d => d["Razón Social"]).sort(), {
-  label: "Añadir Competidores:",
+  label: "Selecciona Empresas:",
   multiple: true,
   value: ["ENDESA ENERGIA, S.A.U.", "IBERDROLA CLIENTES, S.A.U."], 
   unique: true
@@ -174,7 +172,7 @@ filtered_data = data_long.filter(d => selected_companies.includes(d["Empresa"]))
 Plot.plot({
   style: { background: "transparent", color: "#94a3b8", fontSize: "13px" },
   height: 450,
-  marginRight: 140,
+  marginRight: 130,
   x: { label: "Año", tickFormat: "d", domain: [2019, 2024] },
   y: { label: "Ventas (GWh)", grid: true },
   marks: [
@@ -187,4 +185,17 @@ Plot.plot({
       curve: "monotone-x", 
       tip: true
     }),
-    Plot.text(
+    Plot.text(filtered_data, Plot.selectLast({
+      x: "Año", 
+      y: "Ventas", 
+      z: "Empresa", 
+      text: "Empresa", 
+      textAnchor: "start", 
+      dx: 10,
+      fill: "#cbd5e1",
+      fontWeight: "bold"
+    }))
+  ],
+  color: { scheme: "spectral", legend: true }
+})
+```
