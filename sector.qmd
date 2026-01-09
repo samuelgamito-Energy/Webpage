@@ -8,90 +8,77 @@ format:
 ---
 
 <style>
-/* 1. GENERAL */
-.observablehq { 
-  color: #cbd5e1 !important; 
-  font-family: 'Inter', sans-serif;
-}
-
-/* 2. TABLAS TRANSPARENTES Y ELEGANTES */
-.observablehq-table { 
-  color: #cbd5e1 !important; 
-  background: transparent !important; 
-}
-.observablehq-table thead { 
-  background-color: rgba(15, 23, 42, 0.9) !important; 
-  border-bottom: 2px solid #2dd4bf !important; 
-}
-.observablehq-table th {
-  color: #2dd4bf !important; 
-  text-transform: uppercase;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-}
-.observablehq-table tr:hover {
-  background-color: rgba(45, 212, 191, 0.1) !important; 
-}
-
-/* 3. INPUTS (BUSCADOR Y SELECTORES) */
-form.observablehq-input input, 
-form.observablehq-input select {
-  background-color: #1e293b !important; 
-  border: 1px solid #334155 !important;
-  color: #f1f5f9 !important;
-  border-radius: 6px;
-  padding: 8px 12px;
-}
-form.observablehq-input { color: #94a3b8; }
-
-/* 4. PESTAÑAS (TABS) */
+.observablehq { color: #cbd5e1 !important; font-family: 'Inter', sans-serif; }
+.observablehq-table { color: #cbd5e1 !important; background: transparent !important; }
+.observablehq-table thead { background-color: rgba(15, 23, 42, 0.9) !important; border-bottom: 2px solid #2dd4bf !important; }
+.observablehq-table th { color: #2dd4bf !important; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+.observablehq-table tr:hover { background-color: rgba(45, 212, 191, 0.1) !important; }
+form.observablehq-input input, form.observablehq-input select { background-color: #1e293b !important; border: 1px solid #334155 !important; color: #f1f5f9 !important; border-radius: 6px; padding: 8px 12px; }
 .nav-tabs { border-bottom: 1px solid #334155; margin-bottom: 20px; }
+.nav-tabs .nav-link.active { background-color: transparent; border-bottom: 3px solid #2dd4bf; color: #2dd4bf; font-weight: bold; }
 .nav-tabs .nav-link { color: #94a3b8; border: none; }
-.nav-tabs .nav-link.active { 
-  background-color: transparent; 
-  border-bottom: 3px solid #2dd4bf; 
-  color: #2dd4bf; 
-  font-weight: bold;
-}
 </style>
 
 ```{ojs}
 //| echo: false
 
-// --- 1. CARGA DE DATOS ---
+// 1. CARGA SEGURA
 raw = await FileAttachment("ventas_boe.csv").text()
 
-// --- 2. LIMPIEZA DE FORMATO ---
+// 2. LIMPIEZA DE ESTRUCTURA (Quitar comillas envolventes)
 clean_csv = raw.split(/\r?\n/).map(line => {
   let l = line.trim();
-  if (!l) return null; 
-  // Quitar comillas envolventes
+  if (!l) return null;
+  // Si la línea entera está entre comillas, las quitamos
   if (l.startsWith('"') && l.endsWith('"')) l = l.slice(1, -1);
-  // Quitar punto y coma final
+  // Si termina en punto y coma, lo quitamos para que no cree una columna vacía
   if (l.endsWith(';')) l = l.slice(0, -1);
   return l;
 }).filter(l => l !== null).join("\n")
 
-// --- 3. PARSEO Y CONVERSIÓN ---
-data = d3.dsvFormat(";").parse(clean_csv, (d) => {
-  for (const key in d) {
-    if (key.includes("Ventas") && d[key]) {
-      // Formato español 1.000,00 -> 1000.00
-      let val = d[key].toString().replace(/\./g, "").replace(",", ".");
-      d[key] = parseFloat(val) || 0;
+// 3. PARSEO DINÁMICO (SIN ASUMIR NOMBRES DE COLUMNAS)
+data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
+  // columns es la lista de encabezados detectados (ej: NIF, Razón Social, Ventas 2019...)
+  
+  // Mapeo seguro por ÍNDICE (para evitar errores de tildes en "Razón")
+  const nif = d[columns[0]]; 
+  const nombre = d[columns[1]];
+  
+  const row = {
+    "NIF": nif,
+    "Empresa": nombre
+  };
+
+  // Detectar automáticamente columnas de años
+  columns.forEach(col => {
+    if (col.includes("Ventas")) {
+      // Limpiar numero español (1.000,00 -> 1000.00)
+      let valStr = d[col] ? d[col].toString() : "0";
+      let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
+      
+      // Guardamos el año limpio (ej: "Ventas 2022" -> "2022")
+      let year = col.replace("Ventas", "").trim();
+      row[`Ventas ${year}`] = val; // Guardamos como "Ventas 2022" para la tabla
+      row[year] = val; // Guardamos como "2022" para facilitar lógica
     }
-  }
-  return d;
+  });
+  
+  return row;
 })
 
-// --- 4. FORMATO LARGO (GRÁFICAS) ---
+// 4. DETECTAR AÑOS DISPONIBLES AUTOMÁTICAMENTE
+// Miramos la primera fila para ver qué años existen realmente en el archivo
+years_found = Object.keys(data[0])
+  .filter(k => !isNaN(k) && k.length === 4) // Filtra solo claves que sean años (2019, 2020...)
+  .sort();
+
+// 5. DATOS FORMATO LARGO (Para gráficas)
 data_long = data.flatMap(d => {
-  const years = [2019, 2020, 2021, 2022, 2023, 2024];
-  return years.map(year => ({
-    "Empresa": d["Razón Social"],
+  return years_found.map(year => ({
+    "Empresa": d["Empresa"],
     "NIF": d["NIF"],
-    "Año": year,
-    "Ventas": d[`Ventas ${year}`] || 0
+    "Año": parseInt(year),
+    "Ventas": d[year] || 0
   }));
 })
 ```
@@ -100,38 +87,36 @@ data_long = data.flatMap(d => {
 
 ## 🔍 Buscador
 
-Base de datos completa del sistema energético.
+Base de datos oficial. (Años detectados: ${years_found.join(", ")})
 
 ```{ojs}
 //| echo: false
 viewof search = Inputs.search(data, {
   label: "Buscar:",
-  placeholder: "Ej: ENDESA, FENOSA...",
-  columns: ["Razón Social", "NIF"]
+  placeholder: "Empresa o NIF...",
+  columns: ["Empresa", "NIF"]
 })
 
+// Tabla Dinámica: Muestra solo las columnas que existen en el CSV
 Inputs.table(search, {
-  columns: ["NIF", "Razón Social", "Ventas 2022", "Ventas 2023", "Ventas 2024"],
+  columns: ["NIF", "Empresa", ...years_found.map(y => `Ventas ${y}`).reverse()], 
   header: {
-    "Razón Social": "Comercializadora",
-    "Ventas 2022": "2022 (GWh)",
-    "Ventas 2023": "2023 (GWh)",
-    "Ventas 2024": "2024 (GWh)"
+    "Empresa": "Comercializadora",
+    // Mapeamos dinámicamente las cabeceras
+    ...Object.fromEntries(years_found.map(y => [`Ventas ${y}`, `${y}`]))
   },
-  sort: "Ventas 2024",
+  sort: `Ventas ${years_found[years_found.length-1]}`, // Ordenar por el último año disponible
   reverse: true,
   rows: 15,
-  format: {
-    "Ventas 2022": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}),
-    "Ventas 2023": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0}),
-    "Ventas 2024": x => x.toLocaleString("es-ES", {maximumFractionDigits: 0})
-  }
+  format: Object.fromEntries(years_found.map(y => [
+    `Ventas ${y}`, x => x.toLocaleString("es-ES", {maximumFractionDigits: 0})
+  ]))
 })
 ```
 
 ## 📊 Mercado Global
 
-Evolución del volumen total gestionado (GWh).
+Volumen total.
 
 ```{ojs}
 //| echo: false
@@ -147,7 +132,8 @@ Plot.plot({
       y: "Ventas", 
       fill: "#2dd4bf", 
       fillOpacity: 0.8,
-      tip: true
+      tip: true,
+      title: d => `${d.Año}: ${d.Ventas.toLocaleString("es-ES")} GWh`
     })),
     Plot.ruleY([0], {stroke: "#475569"})
   ]
@@ -156,14 +142,12 @@ Plot.plot({
 
 ## 🆚 Comparador
 
-Análisis competitivo y cuota de mercado.
-
 ```{ojs}
 //| echo: false
-viewof selected_companies = Inputs.select(data.map(d => d["Razón Social"]).sort(), {
-  label: "Selecciona Empresas:",
+viewof selected_companies = Inputs.select(data.map(d => d["Empresa"]).sort(), {
+  label: "Selecciona:",
   multiple: true,
-  value: ["ENDESA ENERGIA, S.A.U.", "IBERDROLA CLIENTES, S.A.U."], 
+  value: [data[0]["Empresa"], data[1]["Empresa"]], // Selecciona las 2 primeras por defecto para que no salga vacío
   unique: true
 })
 
@@ -173,7 +157,7 @@ Plot.plot({
   style: { background: "transparent", color: "#94a3b8", fontSize: "13px" },
   height: 450,
   marginRight: 130,
-  x: { label: "Año", tickFormat: "d", domain: [2019, 2024] },
+  x: { label: "Año", tickFormat: "d" },
   y: { label: "Ventas (GWh)", grid: true },
   marks: [
     Plot.lineY(filtered_data, {
