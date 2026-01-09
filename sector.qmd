@@ -8,7 +8,7 @@ format:
 ---
 
 <style>
-/* 1. CONTENEDOR PRINCIPAL */
+/* 1. ESTRUCTURA */
 .dashboard-container {
   font-family: 'Segoe UI', system-ui, sans-serif;
   color: #cbd5e1;
@@ -16,16 +16,16 @@ format:
   margin: 0 auto;
 }
 
-/* 2. SISTEMA DE PESTAÑAS (Estilo Botón como en tu HTML) */
-.tab-nav {
+/* 2. PESTAÑAS SUPERIORES (Estilo FNEE adaptado a Dark) */
+.tab-header {
   display: flex;
   gap: 10px;
-  margin-bottom: 20px;
   border-bottom: 1px solid #334155;
+  margin-bottom: 25px;
   padding-bottom: 10px;
 }
-.tab-btn {
-  padding: 10px 20px;
+.tab-button {
+  padding: 10px 24px;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
@@ -33,26 +33,28 @@ format:
   background: transparent;
   color: #94a3b8;
   transition: all 0.2s;
+  display: flex; align-items: center; gap: 8px;
 }
-.tab-btn:hover { color: #fff; background: rgba(30, 41, 59, 0.5); }
-.tab-btn.active {
+.tab-button:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
+.tab-button.active {
   background-color: #1e293b;
   color: #2dd4bf;
-  border-color: #2dd4bf;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
 }
 
 /* 3. TARJETAS (CARDS) */
-.card {
-  background-color: rgba(30, 41, 59, 0.4);
+.fnee-card {
+  background-color: rgba(30, 41, 59, 0.4); /* Fondo semitransparente */
   border: 1px solid #334155;
   border-radius: 12px;
   padding: 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
-/* 4. TABLA PERSONALIZADA (Idéntica a tu HTML) */
+/* 4. TABLA FNEE (Clonada y oscurecida) */
+.table-container { overflow-x: auto; }
 .fnee-table {
   width: 100%;
   border-collapse: collapse;
@@ -60,12 +62,13 @@ format:
 }
 .fnee-table th {
   text-align: left;
-  padding: 12px 15px;
+  padding: 15px;
   color: #2dd4bf;
   border-bottom: 2px solid #2dd4bf;
   text-transform: uppercase;
   font-size: 0.8rem;
   letter-spacing: 1px;
+  background: rgba(15, 23, 42, 0.5);
 }
 .fnee-table td {
   padding: 12px 15px;
@@ -73,64 +76,71 @@ format:
   color: #e2e8f0;
 }
 .fnee-table tr:hover {
-  background-color: rgba(45, 212, 191, 0.05);
+  background-color: rgba(45, 212, 191, 0.05); /* Hover Teal muy suave */
 }
 
-/* 5. BOTÓN DE ACCIÓN (OJO) */
-.btn-action {
-  background: #0f172a;
+/* 5. BOTONES DE ACCIÓN (OJO) */
+.btn-icon {
+  background: rgba(15, 23, 42, 0.8);
   border: 1px solid #475569;
   color: #2dd4bf;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.85rem;
-  display: inline-flex; align-items: center; gap: 5px;
   transition: all 0.2s;
+  font-size: 0.85rem;
+  display: inline-flex; align-items: center; gap: 6px;
 }
-.btn-action:hover {
-  background: #2dd4bf; color: #0f172a; border-color: #2dd4bf;
+.btn-icon:hover {
+  background: #2dd4bf;
+  color: #0f172a;
+  border-color: #2dd4bf;
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.3);
 }
 
-/* 6. MODAL / POPUP */
-dialog.modal {
+/* 6. MODAL (VENTANA FLOTANTE) */
+dialog.fnee-modal {
   background: #0f172a;
   color: #fff;
   border: 1px solid #2dd4bf;
-  border-radius: 15px;
+  border-radius: 16px;
   padding: 0;
-  width: 80%; max-width: 900px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  width: 85%; max-width: 900px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
 }
-dialog.modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
-.modal-header { padding: 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(30,41,59,0.5); }
-.modal-body { padding: 30px; }
-.close-modal { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
-.close-modal:hover { color: #fff; }
+dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
 
-/* 7. INPUTS */
+.modal-header {
+  padding: 20px;
+  border-bottom: 1px solid #334155;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(30, 41, 59, 0.3);
+}
+.modal-body { padding: 30px; }
+.close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
+.close-btn:hover { color: #fff; }
+
+/* 7. INPUT DE BÚSQUEDA */
 input[type="search"] {
   width: 100%;
-  padding: 12px;
-  background: #0f172a;
-  border: 1px solid #334155;
-  color: #fff;
+  padding: 12px 15px;
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  color: #fff !important;
   border-radius: 8px;
-  outline: none;
 }
-input[type="search"]:focus { border-color: #2dd4bf; }
 </style>
 
 ```{ojs}
 //| echo: false
 
-// 1. CARGA DE DATOS
+// --- 1. CARGA DE DATOS ---
 raw = await FileAttachment("ventas_boe.csv").text()
 
-// Limpieza (Comillas y puntos y coma)
+// Limpieza de formato (comillas y puntos y coma)
 clean_csv = raw.split(/\r?\n/).map(line => {
   let l = line.trim();
-  if (!l) return null;
+  if (!l) return null; 
   if (l.startsWith('"') && l.endsWith('"')) l = l.slice(1, -1);
   if (l.endsWith(';')) l = l.slice(0, -1);
   return l;
@@ -146,6 +156,7 @@ data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
   columns.forEach(col => {
     if (col.includes("Ventas")) {
       let valStr = d[col] ? d[col].toString() : "0";
+      // 1.234,56 -> 1234.56
       let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
       let year = col.replace("Ventas", "").trim();
       row[year] = val; 
@@ -154,7 +165,7 @@ data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
   return row;
 })
 
-// Lista de años (Excluyendo 2025 explícitamente)
+// Filtrar años (BORRANDO 2025)
 years = Object.keys(data[0])
   .filter(k => !isNaN(k) && k.length === 4 && k !== "2025")
   .sort();
@@ -169,26 +180,26 @@ data_long = data.flatMap(d => {
   }));
 })
 
-// VARIABLES DE ESTADO (Para la interactividad)
+// VARIABLES DE ESTADO (REACTIVIDAD)
 mutable activeTab = "comparador"; // Pestaña activa por defecto
-mutable selectedCompany = null;   // Empresa seleccionada para el popup
+mutable selectedCompany = null;   // Empresa seleccionada
 ```
 
 <div class="dashboard-container">
 
-  <div class="tab-nav">
-    <button class="tab-btn ${activeTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable activeTab = 'mercado'}>
+  <div class="tab-header">
+    <button class="tab-button ${activeTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable activeTab = 'mercado'}>
       <i class="fa-solid fa-chart-pie"></i> Mercado Global
     </button>
-    <button class="tab-btn ${activeTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable activeTab = 'comparador'}>
-      <i class="fa-solid fa-list"></i> Comparador y Datos
+    <button class="tab-button ${activeTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable activeTab = 'comparador'}>
+      <i class="fa-solid fa-table-list"></i> Comparador y Análisis
     </button>
   </div>
 
   <div style="display: ${activeTab === 'mercado' ? 'block' : 'none'}">
-    <div class="card">
-      <h3 style="color:#2dd4bf; margin-top:0;">Evolución Total del Mercado</h3>
-      <p style="color:#94a3b8; font-size:0.9rem;">Volumen agregado de todas las comercializadoras (GWh).</p>
+    <div class="fnee-card">
+      <h3 style="color:#2dd4bf; margin-top:0;">Evolución del Mercado (GWh)</h3>
+      <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:20px;">Volumen total agregado de todas las comercializadoras del sistema.</p>
       
       ${Plot.plot({
         style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
@@ -198,7 +209,8 @@ mutable selectedCompany = null;   // Empresa seleccionada para el popup
         x: { label: null, tickFormat: "d" },
         marks: [
           Plot.barY(data_long, Plot.groupX({y: "sum"}, {
-            x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.8, tip: true
+            x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.8, tip: true,
+            title: d => `${d.Año}: ${d.Ventas.toLocaleString("es-ES")} GWh`
           }))
         ]
       })}
@@ -206,11 +218,8 @@ mutable selectedCompany = null;   // Empresa seleccionada para el popup
   </div>
 
   <div style="display: ${activeTab === 'comparador' ? 'block' : 'none'}">
-    <div class="card">
-      <div style="margin-bottom: 20px;">
-        <h3 style="margin:0; color:#fff;">Directorio de Comercializadoras</h3>
-      </div>
-
+    <div class="fnee-card">
+      
       <div style="margin-bottom: 20px;">
         ${viewof searchTerm = Inputs.search(data, {
           placeholder: "🔍 Buscar por NIF o Razón Social...",
@@ -218,7 +227,8 @@ mutable selectedCompany = null;   // Empresa seleccionada para el popup
         })}
       </div>
 
-      ${htl.html`<div style="overflow-x: auto;">
+      <div class="table-container">
+        ${htl.html`
         <table class="fnee-table">
           <thead>
             <tr>
@@ -233,11 +243,11 @@ mutable selectedCompany = null;   // Empresa seleccionada para el popup
               <tr>
                 <td style="font-family:monospace; color:#94a3b8;">${row.NIF}</td>
                 <td style="font-weight:600; color:#f1f5f9;">${row.Empresa}</td>
-                <td style="text-align:right">
+                <td style="text-align:right; color:#cbd5e1;">
                   ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                 </td>
                 <td style="text-align:center">
-                  <button class="btn-action" onclick=${() => mutable selectedCompany = row}>
+                  <button class="btn-icon" onclick=${() => mutable selectedCompany = row}>
                     👁️ Ver
                   </button>
                 </td>
@@ -245,11 +255,12 @@ mutable selectedCompany = null;   // Empresa seleccionada para el popup
             `)}
           </tbody>
         </table>
-        ${searchTerm.length === 0 ? htl.html`<div style="padding:20px; text-align:center">No hay resultados</div>` : ''}
-      </div>`}
+        ${searchTerm.length === 0 ? htl.html`<div style="padding:40px; text-align:center; color:#64748b;">No se encontraron resultados</div>` : ''}
+        `}
+      </div>
       
-      <div style="margin-top:10px; text-align:right; font-size:0.8rem; color:#64748b;">
-        Resultados: ${searchTerm.length}
+      <div style="margin-top:15px; text-align:right; font-size:0.8rem; color:#64748b;">
+        Mostrando ${Math.min(50, searchTerm.length)} resultados
       </div>
     </div>
   </div>
@@ -258,24 +269,36 @@ mutable selectedCompany = null;   // Empresa seleccionada para el popup
 
 ${(() => {
   if (selectedCompany) {
-    const dialog = htl.html`<dialog class="modal" open>
+    const dialog = htl.html`<dialog class="fnee-modal" open>
       <div class="modal-header">
         <div>
-          <h2 style="margin:0; color:#2dd4bf">${selectedCompany.Empresa}</h2>
-          <span style="font-family:monospace; color:#94a3b8">${selectedCompany.NIF}</span>
+          <h2 style="margin:0; color:#2dd4bf; font-size:1.3rem;">${selectedCompany.Empresa}</h2>
+          <span style="font-family:monospace; color:#94a3b8;">${selectedCompany.NIF}</span>
         </div>
-        <button class="close-modal" onclick=${() => mutable selectedCompany = null}>&times;</button>
+        <button class="close-btn" onclick=${() => mutable selectedCompany = null}>&times;</button>
       </div>
+      
       <div class="modal-body">
         <div id="chart-area"></div>
+        
+        <div style="margin-top:25px; display:grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap:10px;">
+          ${years.map(y => htl.html`
+            <div style="background:rgba(30,41,59,0.5); padding:10px; border-radius:8px; border:1px solid #334155; text-align:center;">
+              <div style="color:#64748b; font-size:0.8rem; margin-bottom:5px;">${y}</div>
+              <div style="color:#fff; font-weight:bold;">
+                ${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
+              </div>
+            </div>
+          `)}
+        </div>
       </div>
     </dialog>`;
 
-    // Gráfico dentro del modal
+    // Gráfico Lineal dentro del modal
     const chart = Plot.plot({
-      style: { background: "transparent", color: "#cbd5e1" },
-      height: 300,
-      width: 800,
+      style: { background: "transparent", color: "#cbd5e1", fontSize: "13px" },
+      height: 350,
+      width: 850,
       grid: true,
       x: { label: "Año", tickFormat: "d", domain: years.map(Number) },
       y: { label: "Ventas (GWh)" },
@@ -291,7 +314,7 @@ ${(() => {
 
     dialog.querySelector("#chart-area").append(chart);
     
-    // Cerrar al hacer click fuera
+    // Cerrar al pulsar fuera
     dialog.addEventListener("click", e => {
       const rect = dialog.getBoundingClientRect();
       if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
