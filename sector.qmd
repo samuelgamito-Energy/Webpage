@@ -8,71 +8,134 @@ format:
 ---
 
 <style>
-.observablehq { color: #cbd5e1 !important; font-family: 'Inter', sans-serif; }
-.observablehq-table { color: #cbd5e1 !important; background: transparent !important; }
-.observablehq-table thead { background-color: rgba(15, 23, 42, 0.9) !important; border-bottom: 2px solid #2dd4bf !important; }
-.observablehq-table th { color: #2dd4bf !important; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
-.observablehq-table tr:hover { background-color: rgba(45, 212, 191, 0.1) !important; }
-form.observablehq-input input, form.observablehq-input select { background-color: #1e293b !important; border: 1px solid #334155 !important; color: #f1f5f9 !important; border-radius: 6px; padding: 8px 12px; }
-.nav-tabs { border-bottom: 1px solid #334155; margin-bottom: 20px; }
-.nav-tabs .nav-link.active { background-color: transparent; border-bottom: 3px solid #2dd4bf; color: #2dd4bf; font-weight: bold; }
-.nav-tabs .nav-link { color: #94a3b8; border: none; }
+/* General */
+.observablehq { color: #cbd5e1; font-family: 'Inter', sans-serif; }
+
+/* Tabla Personalizada "Pro" */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+.custom-table thead th {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 2px solid #2dd4bf;
+  color: #2dd4bf;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+.custom-table tbody tr {
+  border-bottom: 1px solid #334155;
+  transition: background 0.2s;
+}
+.custom-table tbody tr:hover {
+  background-color: rgba(45, 212, 191, 0.1);
+}
+.custom-table td {
+  padding: 10px 12px;
+}
+
+/* Botón de Acción (Ojo) */
+.btn-action {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #2dd4bf;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+.btn-action:hover {
+  background: #2dd4bf;
+  color: #0f172a;
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.4);
+}
+
+/* POPUP MODAL (La ventana flotante) */
+dialog.company-modal {
+  background: #0f172a;
+  border: 2px solid #2dd4bf;
+  border-radius: 12px;
+  padding: 20px;
+  color: #fff;
+  max-width: 800px;
+  width: 90%;
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+dialog.company-modal::backdrop {
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+}
+.close-btn {
+  float: right;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.close-btn:hover { color: #fff; }
+
+/* Inputs y Tabs */
+form.observablehq-input input { 
+  background-color: #1e293b !important; 
+  border: 1px solid #334155 !important; 
+  color: #fff !important; 
+  padding: 8px; border-radius: 5px; 
+}
+.nav-tabs .nav-link.active { 
+  background: transparent; 
+  border-bottom: 3px solid #2dd4bf; 
+  color: #2dd4bf !important; 
+  font-weight: bold; 
+}
+.nav-tabs .nav-link { color: #94a3b8; }
 </style>
 
 ```{ojs}
 //| echo: false
 
-// 1. CARGA SEGURA
+// --- 1. CARGA DE DATOS ---
 raw = await FileAttachment("ventas_boe.csv").text()
 
-// 2. LIMPIEZA DE ESTRUCTURA (Quitar comillas envolventes)
+// --- 2. LIMPIEZA ---
 clean_csv = raw.split(/\r?\n/).map(line => {
   let l = line.trim();
-  if (!l) return null;
-  // Si la línea entera está entre comillas, las quitamos
+  if (!l) return null; 
   if (l.startsWith('"') && l.endsWith('"')) l = l.slice(1, -1);
-  // Si termina en punto y coma, lo quitamos para que no cree una columna vacía
   if (l.endsWith(';')) l = l.slice(0, -1);
   return l;
 }).filter(l => l !== null).join("\n")
 
-// 3. PARSEO DINÁMICO (SIN ASUMIR NOMBRES DE COLUMNAS)
+// --- 3. PARSEO DINÁMICO ---
 data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
-  // columns es la lista de encabezados detectados (ej: NIF, Razón Social, Ventas 2019...)
-  
-  // Mapeo seguro por ÍNDICE (para evitar errores de tildes en "Razón")
-  const nif = d[columns[0]]; 
-  const nombre = d[columns[1]];
-  
   const row = {
-    "NIF": nif,
-    "Empresa": nombre
+    "NIF": d[columns[0]],       // Columna 1 siempre es NIF
+    "Empresa": d[columns[1]]    // Columna 2 siempre es Nombre
   };
 
-  // Detectar automáticamente columnas de años
+  // Detectar años automáticamente
   columns.forEach(col => {
     if (col.includes("Ventas")) {
-      // Limpiar numero español (1.000,00 -> 1000.00)
       let valStr = d[col] ? d[col].toString() : "0";
       let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
-      
-      // Guardamos el año limpio (ej: "Ventas 2022" -> "2022")
       let year = col.replace("Ventas", "").trim();
-      row[`Ventas ${year}`] = val; // Guardamos como "Ventas 2022" para la tabla
-      row[year] = val; // Guardamos como "2022" para facilitar lógica
+      row[year] = val; // Guardamos "2024" => 1000
     }
   });
-  
   return row;
 })
 
-// 4. DETECTAR AÑOS DISPONIBLES AUTOMÁTICAMENTE
-// Miramos la primera fila para ver qué años existen realmente en el archivo
+// --- 4. FILTRADO DE AÑOS (BORRAR 2025) ---
+// Detectamos años y EXCLUIMOS explícitamente el 2025
 years_found = Object.keys(data[0])
-  .filter(k => !isNaN(k) && k.length === 4) // Filtra solo claves que sean años (2019, 2020...)
+  .filter(k => !isNaN(k) && k.length === 4 && k !== "2025") // <--- AQUÍ BORRAMOS EL 2025
   .sort();
 
-// 5. DATOS FORMATO LARGO (Para gráficas)
+// Datos formato largo
 data_long = data.flatMap(d => {
   return years_found.map(year => ({
     "Empresa": d["Empresa"],
@@ -81,42 +144,17 @@ data_long = data.flatMap(d => {
     "Ventas": d[year] || 0
   }));
 })
+
+// --- 5. LÓGICA DEL POPUP ---
+// Variable mutable para guardar la empresa seleccionada
+mutable company_view = null;
 ```
 
 ::: {.panel-tabset}
 
-## 🔍 Buscador
-
-Base de datos oficial. (Años detectados: ${years_found.join(", ")})
-
-```{ojs}
-//| echo: false
-viewof search = Inputs.search(data, {
-  label: "Buscar:",
-  placeholder: "Empresa o NIF...",
-  columns: ["Empresa", "NIF"]
-})
-
-// Tabla Dinámica: Muestra solo las columnas que existen en el CSV
-Inputs.table(search, {
-  columns: ["NIF", "Empresa", ...years_found.map(y => `Ventas ${y}`).reverse()], 
-  header: {
-    "Empresa": "Comercializadora",
-    // Mapeamos dinámicamente las cabeceras
-    ...Object.fromEntries(years_found.map(y => [`Ventas ${y}`, `${y}`]))
-  },
-  sort: `Ventas ${years_found[years_found.length-1]}`, // Ordenar por el último año disponible
-  reverse: true,
-  rows: 15,
-  format: Object.fromEntries(years_found.map(y => [
-    `Ventas ${y}`, x => x.toLocaleString("es-ES", {maximumFractionDigits: 0})
-  ]))
-})
-```
-
 ## 📊 Mercado Global
 
-Volumen total.
+Visión macro del volumen total gestionado en España (GWh).
 
 ```{ojs}
 //| echo: false
@@ -140,46 +178,102 @@ Plot.plot({
 })
 ```
 
-## 🆚 Comparador
+## 🆚 Comparador y Buscador
+
+Localiza cualquier comercializadora y pulsa el **ojo (👁️)** para ver su ficha detallada.
 
 ```{ojs}
 //| echo: false
-viewof selected_companies = Inputs.select(data.map(d => d["Empresa"]).sort(), {
-  label: "Selecciona:",
-  multiple: true,
-  value: [data[0]["Empresa"], data[1]["Empresa"]], // Selecciona las 2 primeras por defecto para que no salga vacío
-  unique: true
+// 1. Buscador
+viewof searchTerm = Inputs.search(data, {
+  placeholder: "Buscar por nombre o NIF...",
+  columns: ["Empresa", "NIF"]
 })
 
-filtered_data = data_long.filter(d => selected_companies.includes(d["Empresa"]))
+// 2. Tabla HTML Personalizada con Botón de Acción
+// Usamos HTML puro para tener control total del diseño y los botones
+htl.html`<div style="overflow-x: auto;">
+  <table class="custom-table">
+    <thead>
+      <tr>
+        <th>NIF</th>
+        <th>COMERCIALIZADORA</th>
+        <th style="text-align: right">VENTAS 2024 (GWh)</th>
+        <th style="text-align: center">ACCIÓN</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${searchTerm.slice(0, 15).map(row => htl.html`
+        <tr>
+          <td style="font-family: monospace; color: #94a3b8;">${row.NIF}</td>
+          <td style="font-weight: 600; color: #f1f5f9;">${row.Empresa}</td>
+          <td style="text-align: right; color: #cbd5e1;">
+            ${(row["2024"] || 0).toLocaleString("es-ES", {maximumFractionDigits: 2})}
+          </td>
+          <td style="text-align: center">
+            <button class="btn-action" onclick=${() => { mutable company_view = row; }}>
+              👁️ Ver Gráfica
+            </button>
+          </td>
+        </tr>
+      `)}
+    </tbody>
+  </table>
+  <div style="margin-top: 10px; color: #64748b; font-size: 0.8rem; text-align: center;">
+    Mostrando los primeros 15 resultados de la búsqueda.
+  </div>
+</div>`
+```
 
-Plot.plot({
-  style: { background: "transparent", color: "#94a3b8", fontSize: "13px" },
-  height: 450,
-  marginRight: 130,
-  x: { label: "Año", tickFormat: "d" },
-  y: { label: "Ventas (GWh)", grid: true },
-  marks: [
-    Plot.lineY(filtered_data, {
-      x: "Año", 
-      y: "Ventas", 
-      stroke: "Empresa", 
-      strokeWidth: 3, 
-      marker: "circle",
-      curve: "monotone-x", 
-      tip: true
-    }),
-    Plot.text(filtered_data, Plot.selectLast({
-      x: "Año", 
-      y: "Ventas", 
-      z: "Empresa", 
-      text: "Empresa", 
-      textAnchor: "start", 
-      dx: 10,
-      fill: "#cbd5e1",
-      fontWeight: "bold"
-    }))
-  ],
-  color: { scheme: "spectral", legend: true }
-})
+:::
+
+```{ojs}
+//| echo: false
+// Bloque reactivo: Dibuja el diálogo cuando se selecciona una empresa
+{
+  if (company_view) {
+    // Crear el elemento Dialog
+    const dialog = htl.html`<dialog class="company-modal" open>
+      <button class="close-btn" onclick=${() => dialog.close()}>&times;</button>
+      
+      <h2 style="color: #2dd4bf; margin-top: 0; border-bottom: 1px solid #334155; padding-bottom: 10px;">
+        ${company_view.Empresa}
+      </h2>
+      
+      <div style="display: flex; gap: 20px; margin-bottom: 20px; font-size: 0.9rem; color: #94a3b8;">
+        <span><strong>NIF:</strong> ${company_view.NIF}</span>
+        <span><strong>Total 2024:</strong> ${(company_view["2024"] || 0).toLocaleString("es-ES")} GWh</span>
+      </div>
+
+      <div id="chart-container"></div>
+    </dialog>`;
+
+    // Insertar el gráfico dentro del diálogo
+    const chart = Plot.plot({
+      style: { background: "transparent", color: "#cbd5e1" },
+      height: 300,
+      x: { label: "Año", tickFormat: "d", domain: years_found.map(y => parseInt(y)) },
+      y: { label: "Ventas (GWh)", grid: true },
+      marks: [
+        Plot.lineY(data_long.filter(d => d.Empresa === company_view.Empresa), {
+          x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle", tip: true
+        }),
+        Plot.areaY(data_long.filter(d => d.Empresa === company_view.Empresa), {
+          x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.1
+        })
+      ]
+    });
+
+    dialog.querySelector("#chart-container").append(chart);
+
+    // Evento para limpiar la variable cuando se cierra
+    dialog.addEventListener("close", () => { mutable company_view = null; });
+    
+    // Mostrar en pantalla
+    document.body.append(dialog);
+    
+    // Retornar para limpieza (OJS standard)
+    return dialog;
+  }
+}
 ```
