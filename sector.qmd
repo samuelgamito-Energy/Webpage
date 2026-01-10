@@ -1,224 +1,203 @@
 ---
 title: "SECTOR ANALYTICS"
-page-layout: full
-echo: false
-warning: false
-format: 
+page-layout: custom
+execute:
+  echo: false
+  warning: false
+format:
   html:
+    css: styles.css
     toc: false
 ---
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* Forzamos el fondo y fuente para evitar herencias rotas del index */
 body {
-  background-color: #0f172a !important; 
-  color: #cbd5e1 !important;
-  font-family: 'Segoe UI', sans-serif !important;
+  background-color: #0f172a;
+  color: #cbd5e1;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
 }
-
-/* Estructura Dashboard */
-.dashboard-wrap { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.main-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
 
 /* Tabs */
-.nav-pills { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
-.nav-item {
-  padding: 10px 20px; border-radius: 8px; cursor: pointer; color: #94a3b8; font-weight: 600;
-  border: 1px solid transparent; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+.nav-tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.nav-btn {
+  background: rgba(30, 41, 59, 0.5); border: 1px solid transparent; color: #94a3b8;
+  padding: 12px 24px; border-radius: 8px; cursor: pointer; font-weight: 600;
+  display: flex; align-items: center; gap: 8px; transition: all 0.2s;
 }
-.nav-item:hover { background: rgba(45, 212, 191, 0.1); color: #fff; }
-.nav-item.active-tab {
+.nav-btn:hover { color: #fff; background: rgba(45, 212, 191, 0.1); }
+.nav-btn.active {
   background: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf;
-  box-shadow: 0 4px 10px rgba(45, 212, 191, 0.2);
+  box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
 }
 
-/* Tarjetas */
-.dash-card {
-  background: rgba(30, 41, 59, 0.5); border: 1px solid #334155; border-radius: 12px;
-  padding: 25px; margin-bottom: 25px; backdrop-filter: blur(5px);
+/* Cards */
+.card-box {
+  background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 16px;
+  padding: 30px; margin-bottom: 30px; backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
 }
-.d-title { color: #fff; font-size: 1.25rem; font-weight: 700; margin-bottom: 5px; }
 
 /* Tabla */
-.t-container { overflow-x: auto; border: 1px solid #334155; border-radius: 8px; }
-.d-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-.d-table th {
-  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.95);
-  color: #2dd4bf; border-bottom: 2px solid #2dd4bf; font-size: 0.85rem; text-transform: uppercase;
+.table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
+.data-table { width: 100%; border-collapse: collapse; min-width: 600px; }
+.data-table th {
+  background: rgba(15, 23, 42, 0.95); color: #2dd4bf; padding: 15px; text-align: left;
+  border-bottom: 2px solid #2dd4bf; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
 }
-.d-table td { padding: 12px 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
-.d-table tr:hover { background: rgba(45, 212, 191, 0.05); }
+.data-table td { padding: 14px 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
+.data-table tr:hover { background: rgba(45, 212, 191, 0.05); }
 
-/* Botón Ojo */
-.btn-eye {
+/* Botones */
+.action-btn {
   background: #0f172a; border: 1px solid #475569; color: #2dd4bf;
-  padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.85rem;
-  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
 }
-.btn-eye:hover { background: #2dd4bf; color: #0f172a; }
+.action-btn:hover { background: #2dd4bf; color: #0f172a; }
 
-/* Modal */
-dialog.popup {
-  background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 15px;
-  padding: 0; width: 90%; max-width: 850px;
-  box-shadow: 0 0 50px rgba(0,0,0,0.8);
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+/* Popup */
+dialog.chart-popup {
+  background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
+  padding: 0; width: 90%; max-width: 900px; position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); box-shadow: 0 0 50px rgba(0,0,0,0.9);
 }
-dialog.popup::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(2px); }
-.popup-head { padding: 20px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; }
-.popup-body { padding: 20px; }
-.x-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
+dialog.chart-popup::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
 </style>
 
 ```{ojs}
 //| echo: false
-//| output: false
 
-// DATOS INCRUSTADOS (Blindados)
-csvRaw = `NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024
-A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00
-A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00
-B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00
-A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00
-B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73
-B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54
-B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64
-A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67
-B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32
-B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`;
+// 1. DATOS SEGUROS
+rawData = [
+  {NIF: "A81948077", Empresa: "ENDESA ENERGIA, S.A.U.", V2021: 78500, V2022: 76200, V2023: 74100, V2024: 72050},
+  {NIF: "A95758389", Empresa: "IBERDROLA CLIENTES, S.A.U.", V2021: 65400, V2022: 66800, V2023: 68900, V2024: 70100},
+  {NIF: "B82846817", Empresa: "NATURGY IBERIA, S.A.", V2021: 45200, V2022: 44100, V2023: 43500, V2024: 42800},
+  {NIF: "A33005396", Empresa: "TOTALENERGIES MERCADO ESPAÑA", V2021: 25000, V2022: 26500, V2023: 28000, V2024: 29500},
+  {NIF: "B31737422", Empresa: "ACCIONA GREEN ENERGY", V2021: 6349, V2022: 7441, V2023: 8334, V2024: 7806},
+  {NIF: "B26500231", Empresa: "ADELFAS ENERGIA SL", V2021: 217, V2022: 108, V2023: 232, V2024: 142},
+  {NIF: "B25794207", Empresa: "ADEINNOVA ENERGIA SL", V2021: 81, V2022: 81, V2023: 73, V2024: 98},
+  {NIF: "A87623971", Empresa: "ACSOL ENERGIA GLOBAL SA", V2021: 45, V2022: 36, V2023: 31, V2024: 28},
+  {NIF: "B87177408", Empresa: "ABOUTWHITE SL", V2021: 52, V2022: 31, V2023: 28, V2024: 32},
+  {NIF: "B22350466", Empresa: "AB ENERGIA 1903 S.L.", V2021: 87, V2022: 60, V2023: 50, V2024: 63}
+];
 
-// PROCESAMIENTO
-data = d3.dsvFormat(";").parse(csvRaw, (d) => {
-  const row = { "NIF": d.NIF, "Empresa": d.Empresa };
-  Object.keys(d).forEach(k => {
-    if (k.includes("Ventas")) {
-      let year = k.replace("Ventas", "").trim();
-      let val = parseFloat(d[k].replace(",", ".")) || 0;
-      row[year] = val;
-    }
-  });
-  return row;
-})
-
-years = Object.keys(data[0]).filter(k => !isNaN(k)).sort();
-
-data_long = data.flatMap(d => {
-  return years.map(year => ({
-    "Empresa": d.Empresa, "NIF": d.NIF, "Año": parseInt(year), "Ventas": d[year] || 0
-  }));
-})
+// Procesar para gráficas
+years = [2021, 2022, 2023, 2024];
+dataLong = rawData.flatMap(d => years.map(y => ({
+  Empresa: d.Empresa, NIF: d.NIF, Año: y, Ventas: d[`V${y}`]
+})));
 
 // Variables Reactivas
-mutable currentTab = "comparador"; 
-mutable selectedCompany = null;
-searchWidget = Inputs.search(data, { placeholder: "🔍 Buscar...", columns: ["Empresa", "NIF"] });
+mutable currentTab = "comparador";
+mutable selectedRow = null;
+searchWidget = Inputs.search(rawData, {placeholder: "Buscar empresa...", columns: ["Empresa", "NIF"]});
 searchTerm = Generators.input(searchWidget);
 ```
 
-<div class="dashboard-wrap">
-
-  <div class="nav-pills">
-    <div class="nav-item ${currentTab === 'mercado' ? 'active-tab' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
-      <i class="fa-solid fa-chart-pie"></i> Mercado
+```{ojs}
+//| echo: false
+// 2. INTERFAZ GRÁFICA (Toda generada aquí para evitar errores)
+htl.html`
+<div class="main-container">
+  
+  <div class="nav-tabs">
+    <div class="nav-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
+      <i class="fa-solid fa-chart-pie"></i> Mercado Global
     </div>
-    <div class="nav-item ${currentTab === 'comparador' ? 'active-tab' : ''}" onclick=${() => mutable currentTab = 'comparador'}>
-      <i class="fa-solid fa-table-list"></i> Comparador
+    <div class="nav-btn ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable currentTab = 'comparador'}>
+      <i class="fa-solid fa-list-check"></i> Comparador
     </div>
   </div>
 
-  <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
-    <div class="dash-card">
-      <div class="d-title">Mercado Global</div>
-      <div style="color:#94a3b8; margin-bottom:20px;">Evolución total del volumen (GWh).</div>
-      
+  <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'};">
+    <div class="card-box">
+      <h2 style="color:#fff; margin-top:0;">Evolución del Mercado</h2>
+      <p style="color:#94a3b8;">Volumen total agregado (GWh)</p>
       ${Plot.plot({
-        style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
+        style: {background: "transparent", color: "#cbd5e1", fontSize: "14px"},
         height: 400, marginLeft: 60,
-        y: { grid: true, label: "Total GWh", tickFormat: "s" },
-        x: { label: null, tickFormat: "d" },
+        y: {grid: true, label: "Total GWh", tickFormat: "s"},
         marks: [
-          Plot.barY(data_long, Plot.groupX({y: "sum"}, {
-            x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.8, tip: true,
-            title: d => `${d.Año}: ${d.Ventas.toLocaleString("es-ES")}`
-          })),
+          Plot.barY(dataLong, Plot.groupX({y: "sum"}, {x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.8, tip: true})),
           Plot.ruleY([0], {stroke: "#334155"})
         ]
       })}
     </div>
   </div>
 
-  <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
-    <div class="dash-card">
-      <div class="d-title">Directorio</div>
+  <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'};">
+    <div class="card-box">
+      <h2 style="color:#fff; margin-top:0;">Directorio de Empresas</h2>
+      <div style="margin-bottom: 20px;">${searchWidget}</div>
       
-      <div style="margin-bottom: 20px;">
-        ${searchWidget}
-      </div>
-
-      <div class="t-container">
-        ${htl.html`
-        <table class="d-table">
+      <div class="table-wrap">
+        <table class="data-table">
           <thead>
             <tr>
-              <th style="width:20%">NIF</th>
-              <th style="width:40%">COMERCIALIZADORA</th>
-              <th style="width:25%; text-align:right">2024 (GWh)</th>
-              <th style="width:15%; text-align:center">VER</th>
+              <th>NIF</th>
+              <th>EMPRESA</th>
+              <th style="text-align:right">2024 (GWh)</th>
+              <th style="text-align:center">ACCIÓN</th>
             </tr>
           </thead>
           <tbody>
-            ${searchTerm.slice(0, 50).map(row => htl.html`
+            ${searchTerm.map(row => htl.html`
               <tr>
                 <td style="font-family:monospace; color:#94a3b8;">${row.NIF}</td>
                 <td style="font-weight:600; color:#f1f5f9;">${row.Empresa}</td>
-                <td style="text-align:right">
-                  ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 0, maximumFractionDigits: 0})}
-                </td>
+                <td style="text-align:right">${row.V2024.toLocaleString("es-ES")}</td>
                 <td style="text-align:center">
-                  <button class="btn-eye" onclick=${() => mutable selectedCompany = row}>
-                    <i class="fa-solid fa-eye"></i>
+                  <button class="action-btn" onclick=${() => mutable selectedRow = row}>
+                    <i class="fa-solid fa-eye"></i> Ver
                   </button>
                 </td>
               </tr>
             `)}
           </tbody>
-        </table>`}
+        </table>
       </div>
     </div>
   </div>
 
-</div>
+</div>`
+```
 
-${(() => {
-  if (selectedCompany) {
-    const dialog = htl.html`<dialog class="popup" open>
-      <div class="popup-head">
-        <h2 style="margin:0; color:#2dd4bf;">${selectedCompany.Empresa}</h2>
-        <button class="x-btn" onclick=${() => mutable selectedCompany = null}>&times;</button>
+```{ojs}
+//| echo: false
+// 3. POPUP MODAL
+{
+  if (selectedRow) {
+    const dialog = htl.html`<dialog class="chart-popup" open>
+      <div style="padding:20px; border-bottom:1px solid #334155; display:flex; justify-content:space-between; align-items:center; background:rgba(30,41,59,0.5);">
+        <h2 style="margin:0; color:#2dd4bf;">${selectedRow.Empresa}</h2>
+        <button style="background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer;" onclick=${() => mutable selectedRow = null}>&times;</button>
       </div>
-      <div class="popup-body">
-        <div id="chart-mount"></div>
+      <div style="padding:30px;">
+        <div id="chart-area"></div>
       </div>
     </dialog>`;
 
     const chart = Plot.plot({
-      style: { background: "transparent", color: "#cbd5e1" },
-      height: 300, width: 800, grid: true, marginLeft: 60,
-      x: { label: "Año", tickFormat: "d", domain: years.map(Number) },
-      y: { label: "Ventas (GWh)" },
+      style: {background: "transparent", color: "#cbd5e1"},
+      height: 350, width: 850, grid: true, marginLeft: 60,
+      x: {label: "Año", tickFormat: "d"},
+      y: {label: "Ventas (GWh)"},
       marks: [
-        Plot.lineY(data_long.filter(d => d.Empresa === selectedCompany.Empresa), {
-          x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle"
-        }),
-        Plot.areaY(data_long.filter(d => d.Empresa === selectedCompany.Empresa), {
-          x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2
-        })
+        Plot.lineY(dataLong.filter(d => d.Empresa === selectedRow.Empresa), {x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle"}),
+        Plot.areaY(dataLong.filter(d => d.Empresa === selectedRow.Empresa), {x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2})
       ]
     });
 
-    dialog.querySelector("#chart-mount").append(chart);
+    dialog.querySelector("#chart-area").append(chart);
     return dialog;
   }
-  return htl.html``;
-})()}
+}
+```
