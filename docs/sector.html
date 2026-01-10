@@ -221,102 +221,108 @@ window.Quarto = {
 <p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></p>
 <style>
 /* Reset */
-.dashboard-wrapper { font-family: 'Segoe UI', sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
+.dashboard-wrapper { font-family: 'Segoe UI', system-ui, sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
 
-/* Status Bar */
-.status-bar { padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
-.status-ok { background: rgba(45, 212, 191, 0.1); color: #2dd4bf; border: 1px solid #2dd4bf; }
-.status-err { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid #f43f5e; }
+/* Pestañas Superiores */
+.tab-header { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.tab-btn {
+  padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
+  border: 1px solid transparent; background: transparent; color: #94a3b8;
+  display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+}
+.tab-btn:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
+.tab-btn.active {
+  background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
+}
 
-/* Pestañas */
-.tab-container { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
-.tab-item { display: flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #94a3b8; background: rgba(30, 41, 59, 0.3); transition: all 0.2s; }
-.tab-item:hover { color: #fff; background: rgba(45, 212, 191, 0.1); }
-.tab-item.active { background: #0f172a; color: #2dd4bf; border: 1px solid #2dd4bf; box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15); }
+/* Tarjetas (Cards) */
+.fnee-card {
+  background-color: rgba(30, 41, 59, 0.4); border: 1px solid #334155;
+  border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; backdrop-filter: blur(5px);
+}
+.card-title { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
+.card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
 
-/* Tarjetas */
-.glass-card { background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); margin-bottom: 30px; backdrop-filter: blur(5px); }
-.card-title { color: #fff; font-size: 1.25rem; font-weight: 700; margin-bottom: 5px; }
-
-/* Tabla */
-.data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-.data-table th { text-align: left; padding: 15px; color: #2dd4bf; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #2dd4bf; }
-.data-table td { padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
-.data-table tr:hover td { background: rgba(45, 212, 191, 0.05); }
+/* Tabla Profesional */
+.table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
+.fnee-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.fnee-table th {
+  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.8);
+  color: #2dd4bf; border-bottom: 2px solid #2dd4bf; text-transform: uppercase;
+  font-size: 0.8rem; letter-spacing: 1px;
+}
+.fnee-table td { padding: 12px 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
+.fnee-table tr:hover { background-color: rgba(45, 212, 191, 0.05); }
 
 /* Botón Ojo */
-.btn-eye { background: rgba(15, 23, 42, 1); border: 1px solid #475569; color: #2dd4bf; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; }
-.btn-eye:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
+.btn-action {
+  background: #0f172a; border: 1px solid #475569; color: #2dd4bf;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+  display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+.btn-action:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
-/* Modal */
-dialog.custom-modal { background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 20px; padding: 0; width: 90%; max-width: 950px; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9); }
-dialog.custom-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
-.modal-top { padding: 25px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(30,41,59,0.3); }
-.modal-content { padding: 30px; }
+/* Modal (Popup) */
+dialog.fnee-modal {
+  background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
+  padding: 0; width: 90%; max-width: 900px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+}
+dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+.modal-header {
+  padding: 20px; border-bottom: 1px solid #334155; display: flex;
+  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.3);
+}
+.modal-body { padding: 30px; }
+.close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
 
-/* Inputs */
-input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 1px solid #475569; color: #fff; border-radius: 10px; font-size: 1rem; outline: none; }
+/* Buscador */
+input[type="search"] {
+  width: 100%; padding: 12px 15px; background: #0f172a !important;
+  border: 1px solid #334155 !important; color: #fff !important; border-radius: 8px; outline: none;
+}
+input[type="search"]:focus { border-color: #2dd4bf !important; }
 </style>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="55" data-source-offset="-61"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 54;"><span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>fallbackData <span class="op">=</span> <span class="vs">`NIF;Empresa;Ventas 2023;Ventas 2024</span></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="vs">A00000001;Energía Demo S.L.;1000,50;1200,00</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="vs">B00000002;Solar Test System;500,00;600,50</span></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="vs">C00000003;Eólica Ejemplo;800,20;850,00</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="vs">D00000004;Gasificadora Beta;2000,00;2100,00</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="vs">E00000005;Comercializadora Z;150,00;100,00`</span><span class="op">;</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 2. CARGA INTELIGENTE ---</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">// Intentamos cargar el archivo. Si falla, usamos el backup.</span></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="cf">await</span> <span class="fu">FileAttachment</span>(<span class="st">"ventas_boe.csv"</span>)<span class="op">.</span><span class="fu">text</span>()<span class="op">.</span><span class="fu">catch</span>(e <span class="kw">=&gt;</span> {</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="st">"ERROR_LOAD"</span><span class="op">;</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="co">// Detectamos si estamos usando el archivo real o el backup</span></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>isFileLoaded <span class="op">=</span> (raw <span class="op">!==</span> <span class="st">"ERROR_LOAD"</span>)<span class="op">;</span></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>csvContent <span class="op">=</span> isFileLoaded <span class="op">?</span> raw <span class="op">:</span> fallbackData<span class="op">;</span></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 3. LIMPIEZA Y PARSEO (</span><span class="al">TODO</span><span class="co"> EN JS) ---</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>clean_csv <span class="op">=</span> csvContent<span class="op">.</span><span class="fu">split</span>(<span class="ss">/</span><span class="sc">\r?\n</span><span class="ss">/</span>)<span class="op">.</span><span class="fu">map</span>(line <span class="kw">=&gt;</span> {</span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> l <span class="op">=</span> line<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>l) <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> </span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (l<span class="op">.</span><span class="fu">startsWith</span>(<span class="st">'"'</span>) <span class="op">&amp;&amp;</span> l<span class="op">.</span><span class="fu">endsWith</span>(<span class="st">'"'</span>)) l <span class="op">=</span> l<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> <span class="co">// Quitar comillas</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (l<span class="op">.</span><span class="fu">endsWith</span>(<span class="st">';'</span>)) l <span class="op">=</span> l<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">;</span> <span class="co">// Quitar ; final</span></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> l<span class="op">;</span></span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>})<span class="op">.</span><span class="fu">filter</span>(l <span class="kw">=&gt;</span> l <span class="op">!==</span> <span class="kw">null</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="co">// Parseamos usando ; como separador</span></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>parsed <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(clean_csv<span class="op">,</span> (d) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> { <span class="st">"NIF"</span><span class="op">:</span> d[<span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)[<span class="dv">0</span>]]<span class="op">,</span> <span class="st">"Empresa"</span><span class="op">:</span> d[<span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)[<span class="dv">1</span>]] }<span class="op">;</span> <span class="co">// Cogemos col 0 y 1 por posición</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)<span class="op">.</span><span class="fu">forEach</span>(key <span class="kw">=&gt;</span> {</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (key<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>) <span class="op">||</span> key<span class="op">.</span><span class="fu">match</span>(<span class="ss">/</span><span class="sc">^\d{4}$</span><span class="ss">/</span>)) { <span class="co">// Detectar columnas de año</span></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> key<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\D</span><span class="ss">/g</span><span class="op">,</span> <span class="st">""</span>)<span class="op">;</span> <span class="co">// Extraer solo números</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (year<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">4</span> <span class="op">&amp;&amp;</span> year <span class="op">!==</span> <span class="st">"2025"</span>) {</span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> valStr <span class="op">=</span> d[key] <span class="op">?</span> d[key]<span class="op">.</span><span class="fu">toString</span>() <span class="op">:</span> <span class="st">"0"</span><span class="op">;</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>        <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(valStr<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/</span><span class="sc">\.</span><span class="ss">/g</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>        row[year] <span class="op">=</span> val<span class="op">;</span></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="co">// Lista de años</span></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(parsed[<span class="dv">0</span>])<span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k) <span class="op">&amp;&amp;</span> k<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">4</span>)<span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="co">// Datos Largos</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> parsed<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d[<span class="st">"Empresa"</span>]<span class="op">,</span></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NIF"</span><span class="op">:</span> d[<span class="st">"NIF"</span>]<span class="op">,</span></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>})</span>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="83" data-source-offset="-133"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 82;"><span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>csvContent <span class="op">=</span> <span class="vs">`NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024</span></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="vs">A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="vs">A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="vs">B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="vs">A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="vs">B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="vs">B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="vs">B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="vs">A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="vs">B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="vs">B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`</span><span class="op">;</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 2. PROCESAMIENTO ---</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(csvContent<span class="op">,</span> (d) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> { <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span> }<span class="op">;</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)<span class="op">.</span><span class="fu">forEach</span>(k <span class="kw">=&gt;</span> {</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (k<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> k<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(d[k]<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co">// Detectar años</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])<span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k))<span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
 <span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co">// Variables</span></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>mutable selectedRow <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co">// Formato largo para gráficas</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span><span class="op">,</span> <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span> <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="co">// Variables Reactivas</span></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>mutable selectedCompany <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -359,58 +365,24 @@ input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 
 </div>
 </div>
 </div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-7" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-8" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-9" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-10" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
 </div>
 <div class="dashboard-wrapper">
-<div class="${isFileLoaded ? 'status-bar status-ok' : status-err'}">
-<pre><code>${isFileLoaded 
-  ? `✅ Archivo 'ventas_boe.csv' cargado correctamente. (${parsed.length} registros)` 
-  : `⚠️ Error cargando 'ventas_boe.csv'. Mostrando datos de ejemplo. Revisa que el archivo esté en la carpeta raíz.`}</code></pre>
-</div>
-<div class="tab-container">
-<pre><code>&lt;div class="tab-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;
+<div class="tab-header">
+<pre><code>&lt;button class="tab-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;
   &lt;i class="fa-solid fa-chart-pie"&gt;&lt;/i&gt; Mercado Global
-&lt;/div&gt;
-&lt;div class="tab-item ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'comparador'}&gt;
-  &lt;i class="fa-solid fa-table-list"&gt;&lt;/i&gt; Comparador y Análisis
-&lt;/div&gt;</code></pre>
+&lt;/button&gt;
+&lt;button class="tab-btn ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'comparador'}&gt;
+  &lt;i class="fa-solid fa-table-list"&gt;&lt;/i&gt; Comparador y Datos
+&lt;/button&gt;</code></pre>
 </div>
 <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
-<pre><code>&lt;div class="glass-card"&gt;
-  &lt;div class="card-title"&gt;&lt;i class="fa-solid fa-globe"&gt;&lt;/i&gt; Evolución del Mercado&lt;/div&gt;
-  &lt;div style="color:#94a3b8; margin-bottom:20px;"&gt;Volumen total (GWh).&lt;/div&gt;
+<pre><code>&lt;div class="fnee-card"&gt;
+  &lt;div class="card-title"&gt;Evolución del Mercado&lt;/div&gt;
+  &lt;div class="card-desc"&gt;Volumen total agregado de las comercializadoras listadas (GWh).&lt;/div&gt;
   
   ${Plot.plot({
     style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
-    height: 450,
-    marginLeft: 60,
+    height: 400, marginLeft: 60,
     y: { grid: true, label: "Total GWh", tickFormat: "s" },
     x: { label: null, tickFormat: "d" },
     marks: [
@@ -424,25 +396,25 @@ input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 
 &lt;/div&gt;</code></pre>
 </div>
 <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
-<pre><code>&lt;div class="glass-card"&gt;
-  &lt;div class="card-title"&gt;&lt;i class="fa-solid fa-building-user"&gt;&lt;/i&gt; Directorio de Empresas&lt;/div&gt;
-  
-  &lt;div style="margin-bottom: 25px;"&gt;
-    ${viewof searchTerm = Inputs.search(parsed, {
-      placeholder: "🔍 Buscar...",
-      columns: ["Empresa", "NIF"]
+<pre><code>&lt;div class="fnee-card"&gt;
+  &lt;div class="card-title"&gt;Directorio de Empresas&lt;/div&gt;
+  &lt;div class="card-desc"&gt;Busca y analiza el histórico individual.&lt;/div&gt;
+
+  &lt;div style="margin-bottom: 20px;"&gt;
+    ${viewof searchTerm = Inputs.search(data, {
+      placeholder: "🔍 Buscar por NIF o Empresa...", columns: ["Empresa", "NIF"]
     })}
   &lt;/div&gt;
 
-  &lt;div style="overflow-x: auto;"&gt;
+  &lt;div class="table-container"&gt;
     ${htl.html`
-    &lt;table class="data-table"&gt;
+    &lt;table class="fnee-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
           &lt;th style="width:15%"&gt;NIF&lt;/th&gt;
           &lt;th style="width:45%"&gt;COMERCIALIZADORA&lt;/th&gt;
-          &lt;th style="width:25%; text-align:right"&gt;VENTAS ${years[years.length-1]} (GWh)&lt;/th&gt;
-          &lt;th style="width:15%; text-align:center"&gt;ACCIÓN&lt;/th&gt;
+          &lt;th style="width:25%; text-align:right"&gt;VENTAS 2024 (GWh)&lt;/th&gt;
+          &lt;th style="width:15%; text-align:center"&gt;ANÁLISIS&lt;/th&gt;
         &lt;/tr&gt;
       &lt;/thead&gt;
       &lt;tbody&gt;
@@ -450,11 +422,11 @@ input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 
           &lt;tr&gt;
             &lt;td style="font-family:monospace; color:#94a3b8;"&gt;${row.NIF}&lt;/td&gt;
             &lt;td style="font-weight:600; color:#f1f5f9;"&gt;${row.Empresa}&lt;/td&gt;
-            &lt;td style="text-align:right; font-feature-settings: 'tnum';"&gt;
-              ${(row[years[years.length-1]] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+            &lt;td style="text-align:right"&gt;
+              ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             &lt;/td&gt;
             &lt;td style="text-align:center"&gt;
-              &lt;button class="btn-eye" onclick=${() =&gt; mutable selectedRow = row}&gt;
+              &lt;button class="btn-action" onclick=${() =&gt; mutable selectedCompany = row}&gt;
                 &lt;i class="fa-solid fa-eye"&gt;&lt;/i&gt; Ver
               &lt;/button&gt;
             &lt;/td&gt;
@@ -462,35 +434,31 @@ input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 
         `)}
       &lt;/tbody&gt;
     &lt;/table&gt;
-    ${searchTerm.length === 0 ? htl.html`&lt;div style="padding:40px; text-align:center; color:#64748b;"&gt;No se encontraron resultados&lt;/div&gt;` : ''}
+    ${searchTerm.length === 0 ? htl.html`&lt;div style="padding:40px; text-align:center; color:#64748b;"&gt;No hay resultados&lt;/div&gt;` : ''}
     `}
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
 </div>
 </div>
 <span class="math inline">\({(() =&gt; {
-  if (selectedRow) {
-    const dialog = htl.html`&lt;dialog class="custom-modal" open&gt;
-      &lt;div class="modal-top"&gt;
+  if (selectedCompany) {
+    const dialog = htl.html`&lt;dialog class="fnee-modal" open&gt;
+      &lt;div class="modal-header"&gt;
         &lt;div&gt;
-          &lt;h2 style="margin:0; color:#2dd4bf; font-size:1.5rem;"&gt;\)</span>{selectedRow.Empresa}
+          &lt;h2 style="margin:0; color:#2dd4bf; font-size:1.3rem;"&gt;\)</span>{selectedCompany.Empresa}
 
-<pre><code>      &lt;span style="font-family:monospace; color:#94a3b8; font-size:1rem;"&gt;${selectedRow.NIF}&lt;/span&gt;
+<pre><code>      &lt;span style="font-family:monospace; color:#94a3b8;"&gt;${selectedCompany.NIF}&lt;/span&gt;
     &lt;/div&gt;
-    &lt;button style="background:none; border:none; color:#94a3b8; font-size:2rem; cursor:pointer;" 
-            onclick=${() =&gt; mutable selectedRow = null}&gt;&amp;times;&lt;/button&gt;
+    &lt;button class="close-btn" onclick=${() =&gt; mutable selectedCompany = null}&gt;&amp;times;&lt;/button&gt;
   &lt;/div&gt;
   
-  &lt;div class="modal-content"&gt;
+  &lt;div class="modal-body"&gt;
     &lt;div id="chart-mount"&gt;&lt;/div&gt;
-    
-    &lt;div style="margin-top:30px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;"&gt;
+    &lt;div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;"&gt;
       ${years.map(y =&gt; htl.html`
-        &lt;div style="background:rgba(15,23,42,0.6); padding:15px; border-radius:10px; border:1px solid #334155; min-width:100px; text-align:center;"&gt;
-          &lt;div style="color:#64748b; font-size:0.8rem; margin-bottom:5px;"&gt;${y}&lt;/div&gt;
-          &lt;div style="color:#fff; font-weight:bold; font-size:1.1rem;"&gt;
-            ${(selectedRow[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
-          &lt;/div&gt;
+        &lt;div style="background:rgba(30,41,59,0.5); padding:10px 15px; border-radius:8px; border:1px solid #334155; text-align:center;"&gt;
+          &lt;div style="color:#64748b; font-size:0.8rem;"&gt;${y}&lt;/div&gt;
+          &lt;div style="color:#fff; font-weight:bold;"&gt;${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}&lt;/div&gt;
         &lt;/div&gt;
       `)}
     &lt;/div&gt;
@@ -499,35 +467,23 @@ input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 
 
 const chart = Plot.plot({
   style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
-  height: 350,
-  width: 900,
-  grid: true,
-  marginLeft: 60,
+  height: 350, width: 850, grid: true, marginLeft: 60,
   x: { label: "Año", tickFormat: "d", domain: years.map(Number) },
   y: { label: "Ventas (GWh)" },
   marks: [
-    Plot.lineY(data_long.filter(d =&gt; d.Empresa === selectedRow.Empresa), {
-      x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 4, marker: "circle", tip: true
+    Plot.lineY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {
+      x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle", tip: true
     }),
-    Plot.areaY(data_long.filter(d =&gt; d.Empresa === selectedRow.Empresa), {
-      x: "Año", y: "Ventas", fill: "url(#gradientTeal)", fillOpacity: 0.4
-    }),
-    () =&gt; svg`&lt;defs&gt;
-      &lt;linearGradient id="gradientTeal" x1="0" x2="0" y1="0" y2="1"&gt;
-        &lt;stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.6"/&gt;
-        &lt;stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/&gt;
-      &lt;/linearGradient&gt;
-    &lt;/defs&gt;`
+    Plot.areaY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {
+      x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2
+    })
   ]
 });
 
 dialog.querySelector("#chart-mount").append(chart);
-
 dialog.addEventListener("click", e =&gt; {
   const rect = dialog.getBoundingClientRect();
-  if (e.clientX &lt; rect.left || e.clientX &gt; rect.right || e.clientY &lt; rect.top || e.clientY &gt; rect.bottom) {
-    mutable selectedRow = null;
-  }
+  if (e.clientX &lt; rect.left || e.clientX &gt; rect.right || e.clientY &lt; rect.top || e.clientY &gt; rect.bottom) mutable selectedCompany = null;
 });
 
 return dialog;</code></pre>
@@ -537,7 +493,7 @@ return dialog;</code></pre>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAtLS0gMS4gREFUT1MgREUgUkVTUEFMRE8gKFBvciBzaSBmYWxsYSBlbCBhcmNoaXZvKSAtLS1cclxuZmFsbGJhY2tEYXRhID0gYE5JRjtFbXByZXNhO1ZlbnRhcyAyMDIzO1ZlbnRhcyAyMDI0XHJcbkEwMDAwMDAwMTtFbmVyZ8OtYSBEZW1vIFMuTC47MTAwMCw1MDsxMjAwLDAwXHJcbkIwMDAwMDAwMjtTb2xhciBUZXN0IFN5c3RlbTs1MDAsMDA7NjAwLDUwXHJcbkMwMDAwMDAwMztFw7NsaWNhIEVqZW1wbG87ODAwLDIwOzg1MCwwMFxyXG5EMDAwMDAwMDQ7R2FzaWZpY2Fkb3JhIEJldGE7MjAwMCwwMDsyMTAwLDAwXHJcbkUwMDAwMDAwNTtDb21lcmNpYWxpemFkb3JhIFo7MTUwLDAwOzEwMCwwMGA7XHJcblxyXG4vLyAtLS0gMi4gQ0FSR0EgSU5URUxJR0VOVEUgLS0tXHJcbi8vIEludGVudGFtb3MgY2FyZ2FyIGVsIGFyY2hpdm8uIFNpIGZhbGxhLCB1c2Ftb3MgZWwgYmFja3VwLlxyXG5yYXcgPSBhd2FpdCBGaWxlQXR0YWNobWVudChcInZlbnRhc19ib2UuY3N2XCIpLnRleHQoKS5jYXRjaChlID0+IHtcclxuICByZXR1cm4gXCJFUlJPUl9MT0FEXCI7XHJcbn0pO1xyXG5cclxuLy8gRGV0ZWN0YW1vcyBzaSBlc3RhbW9zIHVzYW5kbyBlbCBhcmNoaXZvIHJlYWwgbyBlbCBiYWNrdXBcclxuaXNGaWxlTG9hZGVkID0gKHJhdyAhPT0gXCJFUlJPUl9MT0FEXCIpO1xyXG5jc3ZDb250ZW50ID0gaXNGaWxlTG9hZGVkID8gcmF3IDogZmFsbGJhY2tEYXRhO1xyXG5cclxuLy8gLS0tIDMuIExJTVBJRVpBIFkgUEFSU0VPIChUT0RPIEVOIEpTKSAtLS1cclxuY2xlYW5fY3N2ID0gY3N2Q29udGVudC5zcGxpdCgvXFxyP1xcbi8pLm1hcChsaW5lID0+IHtcclxuICBsZXQgbCA9IGxpbmUudHJpbSgpO1xyXG4gIGlmICghbCkgcmV0dXJuIG51bGw7IFxyXG4gIGlmIChsLnN0YXJ0c1dpdGgoJ1wiJykgJiYgbC5lbmRzV2l0aCgnXCInKSkgbCA9IGwuc2xpY2UoMSwgLTEpOyAvLyBRdWl0YXIgY29taWxsYXNcclxuICBpZiAobC5lbmRzV2l0aCgnOycpKSBsID0gbC5zbGljZSgwLCAtMSk7IC8vIFF1aXRhciA7IGZpbmFsXHJcbiAgcmV0dXJuIGw7XHJcbn0pLmZpbHRlcihsID0+IGwgIT09IG51bGwpLmpvaW4oXCJcXG5cIilcclxuXHJcbi8vIFBhcnNlYW1vcyB1c2FuZG8gOyBjb21vIHNlcGFyYWRvclxyXG5wYXJzZWQgPSBkMy5kc3ZGb3JtYXQoXCI7XCIpLnBhcnNlKGNsZWFuX2NzdiwgKGQpID0+IHtcclxuICBjb25zdCByb3cgPSB7IFwiTklGXCI6IGRbT2JqZWN0LmtleXMoZClbMF1dLCBcIkVtcHJlc2FcIjogZFtPYmplY3Qua2V5cyhkKVsxXV0gfTsgLy8gQ29nZW1vcyBjb2wgMCB5IDEgcG9yIHBvc2ljacOzblxyXG4gIFxyXG4gIE9iamVjdC5rZXlzKGQpLmZvckVhY2goa2V5ID0+IHtcclxuICAgIGlmIChrZXkuaW5jbHVkZXMoXCJWZW50YXNcIikgfHwga2V5Lm1hdGNoKC9eXFxkezR9JC8pKSB7IC8vIERldGVjdGFyIGNvbHVtbmFzIGRlIGHDsW9cclxuICAgICAgbGV0IHllYXIgPSBrZXkucmVwbGFjZSgvXFxEL2csIFwiXCIpOyAvLyBFeHRyYWVyIHNvbG8gbsO6bWVyb3NcclxuICAgICAgaWYgKHllYXIubGVuZ3RoID09PSA0ICYmIHllYXIgIT09IFwiMjAyNVwiKSB7XHJcbiAgICAgICAgbGV0IHZhbFN0ciA9IGRba2V5XSA/IGRba2V5XS50b1N0cmluZygpIDogXCIwXCI7XHJcbiAgICAgICAgbGV0IHZhbCA9IHBhcnNlRmxvYXQodmFsU3RyLnJlcGxhY2UoL1xcLi9nLCBcIlwiKS5yZXBsYWNlKFwiLFwiLCBcIi5cIikpIHx8IDA7XHJcbiAgICAgICAgcm93W3llYXJdID0gdmFsO1xyXG4gICAgICB9XHJcbiAgICB9XHJcbiAgfSk7XHJcbiAgcmV0dXJuIHJvdztcclxufSlcclxuXHJcbi8vIExpc3RhIGRlIGHDsW9zXHJcbnllYXJzID0gT2JqZWN0LmtleXMocGFyc2VkWzBdKS5maWx0ZXIoayA9PiAhaXNOYU4oaykgJiYgay5sZW5ndGggPT09IDQpLnNvcnQoKTtcclxuXHJcbi8vIERhdG9zIExhcmdvc1xyXG5kYXRhX2xvbmcgPSBwYXJzZWQuZmxhdE1hcChkID0+IHtcclxuICByZXR1cm4geWVhcnMubWFwKHllYXIgPT4gKHtcclxuICAgIFwiRW1wcmVzYVwiOiBkW1wiRW1wcmVzYVwiXSxcclxuICAgIFwiTklGXCI6IGRbXCJOSUZcIl0sXHJcbiAgICBcIkHDsW9cIjogcGFyc2VJbnQoeWVhciksXHJcbiAgICBcIlZlbnRhc1wiOiBkW3llYXJdIHx8IDBcclxuICB9KSk7XHJcbn0pXHJcblxyXG4vLyBWYXJpYWJsZXNcclxubXV0YWJsZSBjdXJyZW50VGFiID0gXCJjb21wYXJhZG9yXCI7IFxyXG5tdXRhYmxlIHNlbGVjdGVkUm93ID0gbnVsbDtcclxuIn1dfQ==
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAtLS0gMS4gREFUT1MgSU5DUlVTVEFET1MgKERpcmVjdGFtZW50ZSBhcXXDrSwgc2luIENTViBleHRlcm5vKSAtLS1cclxuLy8gRXN0b3Mgc29uIHR1cyBkYXRvcyByZWFsZXMgbGltcGlvcy4gU2UgY2FyZ2Fyw6FuIFNJRU1QUkUuXHJcbmNzdkNvbnRlbnQgPSBgTklGO0VtcHJlc2E7VmVudGFzIDIwMjE7VmVudGFzIDIwMjI7VmVudGFzIDIwMjM7VmVudGFzIDIwMjRcclxuQTgxOTQ4MDc3O0VOREVTQSBFTkVSR0lBLCBTLkEuVS47Nzg1MDAsMDA7NzYyMDAsNTA7NzQxMDAsMjA7NzIwNTAsMDBcclxuQTk1NzU4Mzg5O0lCRVJEUk9MQSBDTElFTlRFUywgUy5BLlUuOzY1NDAwLDAwOzY2ODAwLDAwOzY4OTAwLDUwOzcwMTAwLDAwXHJcbkI4Mjg0NjgxNztOQVRVUkdZIElCRVJJQSwgUy5BLjs0NTIwMCwwMDs0NDEwMCwwMDs0MzUwMCwwMDs0MjgwMCwwMFxyXG5BMzMwMDUzOTY7VE9UQUxFTkVSR0lFUyBNRVJDQURPIEVTUEHDkUEgUy5BLjsyNTAwMCwwMDsyNjUwMCwwMDsyODAwMCwwMDsyOTUwMCwwMFxyXG5CMzE3Mzc0MjI7QUNDSU9OQSBHUkVFTiBFTkVSR1kgREVWRUxPUE1FTlRTIFNMOzYzNDksNjk7NzQ0MSwzNzs4MzM0LDMxOzc4MDYsNzNcclxuQjI2NTAwMjMxO0FERUxGQVMgRU5FUkdJQSBTTDsyMTcsNTQ7MTA4LDU2OzIzMiw4MDsxNDIsNTRcclxuQjI1Nzk0MjA3O0FERUlOTk9WQSBFTkVSR0lBIFNMOzgxLDU5OzgxLDQ3OzczLDEzOzk4LDY0XHJcbkE4NzYyMzk3MTtBQ1NPTCBFTkVSR0lBIEdMT0JBTCBTQTs0NSwyOTszNiwzMTszMSw4MzsyOCw2N1xyXG5CODcxNzc0MDg7QUJPVVRXSElURSBTTDs1Miw2NTszMSwyNTsyOCwwNTszMiwzMlxyXG5CMjIzNTA0NjY7QUIgRU5FUkdJQSAxOTAzIFMuTC47ODcsMzc7NjAsOTU7NTAsMDA7NjMsNzlgO1xyXG5cclxuLy8gLS0tIDIuIFBST0NFU0FNSUVOVE8gLS0tXHJcbmRhdGEgPSBkMy5kc3ZGb3JtYXQoXCI7XCIpLnBhcnNlKGNzdkNvbnRlbnQsIChkKSA9PiB7XHJcbiAgY29uc3Qgcm93ID0geyBcIk5JRlwiOiBkLk5JRiwgXCJFbXByZXNhXCI6IGQuRW1wcmVzYSB9O1xyXG4gIE9iamVjdC5rZXlzKGQpLmZvckVhY2goayA9PiB7XHJcbiAgICBpZiAoay5pbmNsdWRlcyhcIlZlbnRhc1wiKSkge1xyXG4gICAgICBsZXQgeWVhciA9IGsucmVwbGFjZShcIlZlbnRhc1wiLCBcIlwiKS50cmltKCk7XHJcbiAgICAgIGxldCB2YWwgPSBwYXJzZUZsb2F0KGRba10ucmVwbGFjZShcIixcIiwgXCIuXCIpKSB8fCAwO1xyXG4gICAgICByb3dbeWVhcl0gPSB2YWw7XHJcbiAgICB9XHJcbiAgfSk7XHJcbiAgcmV0dXJuIHJvdztcclxufSlcclxuXHJcbi8vIERldGVjdGFyIGHDsW9zXHJcbnllYXJzID0gT2JqZWN0LmtleXMoZGF0YVswXSkuZmlsdGVyKGsgPT4gIWlzTmFOKGspKS5zb3J0KCk7XHJcblxyXG4vLyBGb3JtYXRvIGxhcmdvIHBhcmEgZ3LDoWZpY2FzXHJcbmRhdGFfbG9uZyA9IGRhdGEuZmxhdE1hcChkID0+IHtcclxuICByZXR1cm4geWVhcnMubWFwKHllYXIgPT4gKHtcclxuICAgIFwiRW1wcmVzYVwiOiBkLkVtcHJlc2EsIFwiTklGXCI6IGQuTklGLCBcIkHDsW9cIjogcGFyc2VJbnQoeWVhciksIFwiVmVudGFzXCI6IGRbeWVhcl0gfHwgMFxyXG4gIH0pKTtcclxufSlcclxuXHJcbi8vIFZhcmlhYmxlcyBSZWFjdGl2YXNcclxubXV0YWJsZSBjdXJyZW50VGFiID0gXCJjb21wYXJhZG9yXCI7IFxyXG5tdXRhYmxlIHNlbGVjdGVkQ29tcGFueSA9IG51bGw7XHJcbiJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }

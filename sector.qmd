@@ -11,134 +11,134 @@ format:
 
 <style>
 /* Reset */
-.dashboard-wrapper { font-family: 'Segoe UI', sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
+.dashboard-wrapper { font-family: 'Segoe UI', system-ui, sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
 
-/* Status Bar */
-.status-bar { padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
-.status-ok { background: rgba(45, 212, 191, 0.1); color: #2dd4bf; border: 1px solid #2dd4bf; }
-.status-err { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid #f43f5e; }
+/* Pestañas Superiores */
+.tab-header { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.tab-btn {
+  padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
+  border: 1px solid transparent; background: transparent; color: #94a3b8;
+  display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+}
+.tab-btn:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
+.tab-btn.active {
+  background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf;
+  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
+}
 
-/* Pestañas */
-.tab-container { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
-.tab-item { display: flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #94a3b8; background: rgba(30, 41, 59, 0.3); transition: all 0.2s; }
-.tab-item:hover { color: #fff; background: rgba(45, 212, 191, 0.1); }
-.tab-item.active { background: #0f172a; color: #2dd4bf; border: 1px solid #2dd4bf; box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15); }
+/* Tarjetas (Cards) */
+.fnee-card {
+  background-color: rgba(30, 41, 59, 0.4); border: 1px solid #334155;
+  border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; backdrop-filter: blur(5px);
+}
+.card-title { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
+.card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
 
-/* Tarjetas */
-.glass-card { background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); margin-bottom: 30px; backdrop-filter: blur(5px); }
-.card-title { color: #fff; font-size: 1.25rem; font-weight: 700; margin-bottom: 5px; }
-
-/* Tabla */
-.data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-.data-table th { text-align: left; padding: 15px; color: #2dd4bf; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #2dd4bf; }
-.data-table td { padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
-.data-table tr:hover td { background: rgba(45, 212, 191, 0.05); }
+/* Tabla Profesional */
+.table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
+.fnee-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.fnee-table th {
+  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.8);
+  color: #2dd4bf; border-bottom: 2px solid #2dd4bf; text-transform: uppercase;
+  font-size: 0.8rem; letter-spacing: 1px;
+}
+.fnee-table td { padding: 12px 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
+.fnee-table tr:hover { background-color: rgba(45, 212, 191, 0.05); }
 
 /* Botón Ojo */
-.btn-eye { background: rgba(15, 23, 42, 1); border: 1px solid #475569; color: #2dd4bf; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; }
-.btn-eye:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
+.btn-action {
+  background: #0f172a; border: 1px solid #475569; color: #2dd4bf;
+  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+  display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+}
+.btn-action:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
-/* Modal */
-dialog.custom-modal { background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 20px; padding: 0; width: 90%; max-width: 950px; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9); }
-dialog.custom-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
-.modal-top { padding: 25px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(30,41,59,0.3); }
-.modal-content { padding: 30px; }
+/* Modal (Popup) */
+dialog.fnee-modal {
+  background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
+  padding: 0; width: 90%; max-width: 900px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+}
+dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+.modal-header {
+  padding: 20px; border-bottom: 1px solid #334155; display: flex;
+  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.3);
+}
+.modal-body { padding: 30px; }
+.close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
 
-/* Inputs */
-input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 1px solid #475569; color: #fff; border-radius: 10px; font-size: 1rem; outline: none; }
+/* Buscador */
+input[type="search"] {
+  width: 100%; padding: 12px 15px; background: #0f172a !important;
+  border: 1px solid #334155 !important; color: #fff !important; border-radius: 8px; outline: none;
+}
+input[type="search"]:focus { border-color: #2dd4bf !important; }
 </style>
 
 ```{ojs}
 //| echo: false
 
-// --- 1. DATOS DE RESPALDO (Por si falla el archivo) ---
-fallbackData = `NIF;Empresa;Ventas 2023;Ventas 2024
-A00000001;Energía Demo S.L.;1000,50;1200,00
-B00000002;Solar Test System;500,00;600,50
-C00000003;Eólica Ejemplo;800,20;850,00
-D00000004;Gasificadora Beta;2000,00;2100,00
-E00000005;Comercializadora Z;150,00;100,00`;
+// --- 1. DATOS INCRUSTADOS (Directamente aquí, sin CSV externo) ---
+// Estos son tus datos reales limpios. Se cargarán SIEMPRE.
+csvContent = `NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024
+A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00
+A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00
+B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00
+A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00
+B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73
+B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54
+B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64
+A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67
+B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32
+B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`;
 
-// --- 2. CARGA INTELIGENTE ---
-// Intentamos cargar el archivo. Si falla, usamos el backup.
-raw = await FileAttachment("ventas_boe.csv").text().catch(e => {
-  return "ERROR_LOAD";
-});
-
-// Detectamos si estamos usando el archivo real o el backup
-isFileLoaded = (raw !== "ERROR_LOAD");
-csvContent = isFileLoaded ? raw : fallbackData;
-
-// --- 3. LIMPIEZA Y PARSEO (TODO EN JS) ---
-clean_csv = csvContent.split(/\r?\n/).map(line => {
-  let l = line.trim();
-  if (!l) return null; 
-  if (l.startsWith('"') && l.endsWith('"')) l = l.slice(1, -1); // Quitar comillas
-  if (l.endsWith(';')) l = l.slice(0, -1); // Quitar ; final
-  return l;
-}).filter(l => l !== null).join("\n")
-
-// Parseamos usando ; como separador
-parsed = d3.dsvFormat(";").parse(clean_csv, (d) => {
-  const row = { "NIF": d[Object.keys(d)[0]], "Empresa": d[Object.keys(d)[1]] }; // Cogemos col 0 y 1 por posición
-  
-  Object.keys(d).forEach(key => {
-    if (key.includes("Ventas") || key.match(/^\d{4}$/)) { // Detectar columnas de año
-      let year = key.replace(/\D/g, ""); // Extraer solo números
-      if (year.length === 4 && year !== "2025") {
-        let valStr = d[key] ? d[key].toString() : "0";
-        let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
-        row[year] = val;
-      }
+// --- 2. PROCESAMIENTO ---
+data = d3.dsvFormat(";").parse(csvContent, (d) => {
+  const row = { "NIF": d.NIF, "Empresa": d.Empresa };
+  Object.keys(d).forEach(k => {
+    if (k.includes("Ventas")) {
+      let year = k.replace("Ventas", "").trim();
+      let val = parseFloat(d[k].replace(",", ".")) || 0;
+      row[year] = val;
     }
   });
   return row;
 })
 
-// Lista de años
-years = Object.keys(parsed[0]).filter(k => !isNaN(k) && k.length === 4).sort();
+// Detectar años
+years = Object.keys(data[0]).filter(k => !isNaN(k)).sort();
 
-// Datos Largos
-data_long = parsed.flatMap(d => {
+// Formato largo para gráficas
+data_long = data.flatMap(d => {
   return years.map(year => ({
-    "Empresa": d["Empresa"],
-    "NIF": d["NIF"],
-    "Año": parseInt(year),
-    "Ventas": d[year] || 0
+    "Empresa": d.Empresa, "NIF": d.NIF, "Año": parseInt(year), "Ventas": d[year] || 0
   }));
 })
 
-// Variables
+// Variables Reactivas
 mutable currentTab = "comparador"; 
-mutable selectedRow = null;
+mutable selectedCompany = null;
 ```
 
 <div class="dashboard-wrapper">
 
-  <div class="${isFileLoaded ? 'status-bar status-ok' : 'status-bar status-err'}">
-    ${isFileLoaded 
-      ? `✅ Archivo 'ventas_boe.csv' cargado correctamente. (${parsed.length} registros)` 
-      : `⚠️ Error cargando 'ventas_boe.csv'. Mostrando datos de ejemplo. Revisa que el archivo esté en la carpeta raíz.`}
-  </div>
-
-  <div class="tab-container">
-    <div class="tab-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
+  <div class="tab-header">
+    <button class="tab-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
       <i class="fa-solid fa-chart-pie"></i> Mercado Global
-    </div>
-    <div class="tab-item ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable currentTab = 'comparador'}>
-      <i class="fa-solid fa-table-list"></i> Comparador y Análisis
-    </div>
+    </button>
+    <button class="tab-btn ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable currentTab = 'comparador'}>
+      <i class="fa-solid fa-table-list"></i> Comparador y Datos
+    </button>
   </div>
 
   <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
-    <div class="glass-card">
-      <div class="card-title"><i class="fa-solid fa-globe"></i> Evolución del Mercado</div>
-      <div style="color:#94a3b8; margin-bottom:20px;">Volumen total (GWh).</div>
+    <div class="fnee-card">
+      <div class="card-title">Evolución del Mercado</div>
+      <div class="card-desc">Volumen total agregado de las comercializadoras listadas (GWh).</div>
       
       ${Plot.plot({
         style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
-        height: 450,
-        marginLeft: 60,
+        height: 400, marginLeft: 60,
         y: { grid: true, label: "Total GWh", tickFormat: "s" },
         x: { label: null, tickFormat: "d" },
         marks: [
@@ -153,25 +153,25 @@ mutable selectedRow = null;
   </div>
 
   <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
-    <div class="glass-card">
-      <div class="card-title"><i class="fa-solid fa-building-user"></i> Directorio de Empresas</div>
-      
-      <div style="margin-bottom: 25px;">
-        ${viewof searchTerm = Inputs.search(parsed, {
-          placeholder: "🔍 Buscar...",
-          columns: ["Empresa", "NIF"]
+    <div class="fnee-card">
+      <div class="card-title">Directorio de Empresas</div>
+      <div class="card-desc">Busca y analiza el histórico individual.</div>
+
+      <div style="margin-bottom: 20px;">
+        ${viewof searchTerm = Inputs.search(data, {
+          placeholder: "🔍 Buscar por NIF o Empresa...", columns: ["Empresa", "NIF"]
         })}
       </div>
 
-      <div style="overflow-x: auto;">
+      <div class="table-container">
         ${htl.html`
-        <table class="data-table">
+        <table class="fnee-table">
           <thead>
             <tr>
               <th style="width:15%">NIF</th>
               <th style="width:45%">COMERCIALIZADORA</th>
-              <th style="width:25%; text-align:right">VENTAS ${years[years.length-1]} (GWh)</th>
-              <th style="width:15%; text-align:center">ACCIÓN</th>
+              <th style="width:25%; text-align:right">VENTAS 2024 (GWh)</th>
+              <th style="width:15%; text-align:center">ANÁLISIS</th>
             </tr>
           </thead>
           <tbody>
@@ -179,11 +179,11 @@ mutable selectedRow = null;
               <tr>
                 <td style="font-family:monospace; color:#94a3b8;">${row.NIF}</td>
                 <td style="font-weight:600; color:#f1f5f9;">${row.Empresa}</td>
-                <td style="text-align:right; font-feature-settings: 'tnum';">
-                  ${(row[years[years.length-1]] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                <td style="text-align:right">
+                  ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                 </td>
                 <td style="text-align:center">
-                  <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
+                  <button class="btn-action" onclick=${() => mutable selectedCompany = row}>
                     <i class="fa-solid fa-eye"></i> Ver
                   </button>
                 </td>
@@ -191,7 +191,7 @@ mutable selectedRow = null;
             `)}
           </tbody>
         </table>
-        ${searchTerm.length === 0 ? htl.html`<div style="padding:40px; text-align:center; color:#64748b;">No se encontraron resultados</div>` : ''}
+        ${searchTerm.length === 0 ? htl.html`<div style="padding:40px; text-align:center; color:#64748b;">No hay resultados</div>` : ''}
         `}
       </div>
     </div>
@@ -200,27 +200,23 @@ mutable selectedRow = null;
 </div>
 
 ${(() => {
-  if (selectedRow) {
-    const dialog = htl.html`<dialog class="custom-modal" open>
-      <div class="modal-top">
+  if (selectedCompany) {
+    const dialog = htl.html`<dialog class="fnee-modal" open>
+      <div class="modal-header">
         <div>
-          <h2 style="margin:0; color:#2dd4bf; font-size:1.5rem;">${selectedRow.Empresa}</h2>
-          <span style="font-family:monospace; color:#94a3b8; font-size:1rem;">${selectedRow.NIF}</span>
+          <h2 style="margin:0; color:#2dd4bf; font-size:1.3rem;">${selectedCompany.Empresa}</h2>
+          <span style="font-family:monospace; color:#94a3b8;">${selectedCompany.NIF}</span>
         </div>
-        <button style="background:none; border:none; color:#94a3b8; font-size:2rem; cursor:pointer;" 
-                onclick=${() => mutable selectedRow = null}>&times;</button>
+        <button class="close-btn" onclick=${() => mutable selectedCompany = null}>&times;</button>
       </div>
       
-      <div class="modal-content">
+      <div class="modal-body">
         <div id="chart-mount"></div>
-        
-        <div style="margin-top:30px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+        <div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
           ${years.map(y => htl.html`
-            <div style="background:rgba(15,23,42,0.6); padding:15px; border-radius:10px; border:1px solid #334155; min-width:100px; text-align:center;">
-              <div style="color:#64748b; font-size:0.8rem; margin-bottom:5px;">${y}</div>
-              <div style="color:#fff; font-weight:bold; font-size:1.1rem;">
-                ${(selectedRow[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
-              </div>
+            <div style="background:rgba(30,41,59,0.5); padding:10px 15px; border-radius:8px; border:1px solid #334155; text-align:center;">
+              <div style="color:#64748b; font-size:0.8rem;">${y}</div>
+              <div style="color:#fff; font-weight:bold;">${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}</div>
             </div>
           `)}
         </div>
@@ -229,35 +225,23 @@ ${(() => {
 
     const chart = Plot.plot({
       style: { background: "transparent", color: "#cbd5e1", fontSize: "14px" },
-      height: 350,
-      width: 900,
-      grid: true,
-      marginLeft: 60,
+      height: 350, width: 850, grid: true, marginLeft: 60,
       x: { label: "Año", tickFormat: "d", domain: years.map(Number) },
       y: { label: "Ventas (GWh)" },
       marks: [
-        Plot.lineY(data_long.filter(d => d.Empresa === selectedRow.Empresa), {
-          x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 4, marker: "circle", tip: true
+        Plot.lineY(data_long.filter(d => d.Empresa === selectedCompany.Empresa), {
+          x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle", tip: true
         }),
-        Plot.areaY(data_long.filter(d => d.Empresa === selectedRow.Empresa), {
-          x: "Año", y: "Ventas", fill: "url(#gradientTeal)", fillOpacity: 0.4
-        }),
-        () => svg`<defs>
-          <linearGradient id="gradientTeal" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
-          </linearGradient>
-        </defs>`
+        Plot.areaY(data_long.filter(d => d.Empresa === selectedCompany.Empresa), {
+          x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2
+        })
       ]
     });
 
     dialog.querySelector("#chart-mount").append(chart);
-    
     dialog.addEventListener("click", e => {
       const rect = dialog.getBoundingClientRect();
-      if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) {
-        mutable selectedRow = null;
-      }
+      if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) mutable selectedCompany = null;
     });
 
     return dialog;
