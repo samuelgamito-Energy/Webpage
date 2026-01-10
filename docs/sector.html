@@ -220,118 +220,125 @@ window.Quarto = {
 
 <p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></p>
 <style>
-/* Contenedor */
-.dashboard-container {
+/* Estructura General */
+.dashboard-wrapper {
   font-family: 'Segoe UI', system-ui, sans-serif;
   color: #cbd5e1;
   max-width: 1400px;
   margin: 0 auto;
+  padding-top: 20px;
 }
 
-/* Pestañas Superiores */
-.tab-header {
-  display: flex; gap: 10px; border-bottom: 1px solid #334155;
-  margin-bottom: 25px; padding-bottom: 10px;
+/* Sistema de Pestañas */
+.tab-nav {
+  display: flex; gap: 15px; margin-bottom: 25px;
+  border-bottom: 1px solid #334155; padding-bottom: 15px;
 }
 .tab-btn {
-  padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
-  background: transparent; color: #94a3b8; border: 1px solid transparent;
-  display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+  background: rgba(30, 41, 59, 0.5); border: 1px solid transparent;
+  color: #94a3b8; padding: 12px 25px; border-radius: 8px;
+  cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 10px;
+  transition: all 0.2s ease;
 }
-.tab-btn:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
+.tab-btn:hover { background: rgba(45, 212, 191, 0.1); color: #fff; }
 .tab-btn.active {
-  background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf;
-  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
+  background: #0f172a; color: #2dd4bf; border: 1px solid #2dd4bf;
+  box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
 }
 
-/* Tarjetas */
-.fnee-card {
-  background-color: rgba(30, 41, 59, 0.4); border: 1px solid #334155;
-  border-radius: 12px; padding: 25px; margin-bottom: 20px;
-  backdrop-filter: blur(5px);
+/* Tarjetas de Contenido */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
+  border-radius: 16px; padding: 30px; margin-bottom: 30px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3); backdrop-filter: blur(5px);
 }
-.card-title { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
-.card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
+.panel-title { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
+.panel-desc { font-size: 0.95rem; color: #94a3b8; margin-bottom: 25px; }
 
-/* Tabla Profesional */
-.table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
-.fnee-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-.fnee-table th {
-  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.9);
-  color: #2dd4bf; border-bottom: 2px solid #2dd4bf; text-transform: uppercase;
-  font-size: 0.8rem; letter-spacing: 1px;
+/* Tabla de Datos */
+.table-container { overflow-x: auto; border-radius: 10px; border: 1px solid #334155; }
+.custom-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.custom-table th {
+  background: rgba(15, 23, 42, 0.9); color: #2dd4bf; padding: 15px; text-align: left;
+  text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
+  border-bottom: 2px solid #2dd4bf;
 }
-.fnee-table td { padding: 12px 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
-.fnee-table tr:hover { background-color: rgba(45, 212, 191, 0.05); }
+.custom-table td {
+  padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0;
+}
+.custom-table tr:hover { background: rgba(45, 212, 191, 0.05); }
 
-/* Botón Ojo */
-.btn-action {
+/* Botón Acción (Ojo) */
+.btn-view {
   background: #0f172a; border: 1px solid #475569; color: #2dd4bf;
-  padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
-  display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;
+  padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
+  display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s;
 }
-.btn-action:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
+.btn-view:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
-/* Modal (Popup) */
-dialog.fnee-modal {
+/* Ventana Modal (Popup) */
+dialog.chart-modal {
   background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
-  padding: 0; width: 90%; max-width: 900px;
+  padding: 0; width: 90%; max-width: 950px;
   box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
   position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
-dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
-.modal-header {
-  padding: 20px; border-bottom: 1px solid #334155; display: flex;
-  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.5);
+dialog.chart-modal::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+.modal-head {
+  padding: 20px 30px; border-bottom: 1px solid #334155; background: rgba(30, 41, 59, 0.5);
+  display: flex; justify-content: space-between; align-items: center;
 }
 .modal-body { padding: 30px; }
-.close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
-.close-btn:hover { color: #fff; }
+.btn-close { background: none; border: none; color: #94a3b8; font-size: 1.8rem; cursor: pointer; }
+.btn-close:hover { color: #fff; }
 
-/* Buscador */
+/* Buscador Estilizado */
 input[type="search"] {
-  width: 100%; padding: 12px 15px; background: #0f172a !important;
-  border: 1px solid #334155 !important; color: #fff !important; border-radius: 8px; outline: none;
+  background: #0f172a !important; border: 1px solid #334155 !important;
+  color: #fff !important; padding: 12px 15px !important; border-radius: 8px !important;
+  width: 100%; outline: none; transition: border 0.3s;
 }
 input[type="search"]:focus { border-color: #2dd4bf !important; }
 </style>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="94" data-source-offset="-108"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 93;"><span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>csvContent <span class="op">=</span> <span class="vs">`NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="vs">A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="vs">A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00</span></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="vs">B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="vs">A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00</span></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="vs">B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="vs">B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54</span></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="vs">B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="vs">A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67</span></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="vs">B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32</span></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="vs">B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`</span><span class="op">;</span></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="co">// 2. PROCESAMIENTO</span></span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(csvContent<span class="op">,</span> (d) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> { <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span> }<span class="op">;</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)<span class="op">.</span><span class="fu">forEach</span>(k <span class="kw">=&gt;</span> {</span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (k<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> k<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(d[k]<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])<span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k))<span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span><span class="op">,</span> <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span> <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="co">// Variables Reactivas (Controlan la interfaz)</span></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>mutable selectedCompany <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="98" data-source-offset="-73"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 97;"><span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>csvData <span class="op">=</span> <span class="vs">`NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="vs">A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="vs">A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="vs">B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="vs">A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="vs">B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="vs">B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="vs">B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="vs">A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="vs">B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32</span></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="vs">B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`</span><span class="op">;</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 2. PROCESAMIENTO DE DATOS ---</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(csvData<span class="op">,</span> (d) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> { <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span> }<span class="op">;</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)<span class="op">.</span><span class="fu">forEach</span>(k <span class="kw">=&gt;</span> {</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (k<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> k<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(d[k]<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])<span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k))<span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span><span class="op">,</span> <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span> <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 3. LOGICA REACTIVA ---</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>mutable selectedCompany <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>searchWidget <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">search</span>(data<span class="op">,</span> { <span class="dt">placeholder</span><span class="op">:</span> <span class="st">"🔍 Buscar Endesa, Iberdrola..."</span><span class="op">,</span> <span class="dt">columns</span><span class="op">:</span> [<span class="st">"Empresa"</span><span class="op">,</span> <span class="st">"NIF"</span>] })<span class="op">;</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>searchTerm <span class="op">=</span> Generators<span class="op">.</span><span class="fu">input</span>(searchWidget)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -374,24 +381,38 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 </div>
 </div>
 </div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
 </div>
-<div class="dashboard-container">
-<div class="tab-header">
-<pre><code>&lt;button class="tab-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="dashboard-wrapper">
+<div class="tab-nav">
+<pre><code>&lt;div class="tab-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;
   &lt;i class="fa-solid fa-chart-pie"&gt;&lt;/i&gt; Mercado Global
-&lt;/button&gt;
-&lt;button class="tab-btn ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'comparador'}&gt;
+&lt;/div&gt;
+&lt;div class="tab-btn ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'comparador'}&gt;
   &lt;i class="fa-solid fa-table-list"&gt;&lt;/i&gt; Comparador y Datos
-&lt;/button&gt;</code></pre>
+&lt;/div&gt;</code></pre>
 </div>
 <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
-<pre><code>&lt;div class="fnee-card"&gt;
-  &lt;div class="card-title"&gt;Evolución del Mercado&lt;/div&gt;
-  &lt;div class="card-desc"&gt;Volumen total agregado (GWh).&lt;/div&gt;
+<pre><code>&lt;div class="glass-panel"&gt;
+  &lt;div class="panel-title"&gt;Evolución del Mercado&lt;/div&gt;
+  &lt;div class="panel-desc"&gt;Volumen total agregado de las comercializadoras (GWh).&lt;/div&gt;
   
   ${Plot.plot({
     style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
-    height: 400, marginLeft: 60,
+    height: 450, marginLeft: 60,
     y: { grid: true, label: "Total GWh", tickFormat: "s" },
     x: { label: null, tickFormat: "d" },
     marks: [
@@ -405,19 +426,17 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 &lt;/div&gt;</code></pre>
 </div>
 <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
-<pre><code>&lt;div class="fnee-card"&gt;
-  &lt;div class="card-title"&gt;Directorio de Empresas&lt;/div&gt;
-  &lt;div class="card-desc"&gt;Localiza y analiza comercializadoras.&lt;/div&gt;
+<pre><code>&lt;div class="glass-panel"&gt;
+  &lt;div class="panel-title"&gt;Directorio de Empresas&lt;/div&gt;
+  &lt;div class="panel-desc"&gt;Analiza el histórico individual de cada compañía.&lt;/div&gt;
 
-  &lt;div style="margin-bottom: 20px;"&gt;
-    ${viewof searchTerm = Inputs.search(data, {
-      placeholder: "🔍 Buscar Endesa, Iberdrola, NIF...", columns: ["Empresa", "NIF"]
-    })}
+  &lt;div style="margin-bottom: 25px;"&gt;
+    ${searchWidget}
   &lt;/div&gt;
 
-  &lt;div class="table-responsive"&gt;
+  &lt;div class="table-container"&gt;
     ${htl.html`
-    &lt;table class="fnee-table"&gt;
+    &lt;table class="custom-table"&gt;
       &lt;thead&gt;
         &lt;tr&gt;
           &lt;th style="width:15%"&gt;NIF&lt;/th&gt;
@@ -435,7 +454,7 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
               ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             &lt;/td&gt;
             &lt;td style="text-align:center"&gt;
-              &lt;button class="btn-action" onclick=${() =&gt; mutable selectedCompany = row}&gt;
+              &lt;button class="btn-view" onclick=${() =&gt; mutable selectedCompany = row}&gt;
                 &lt;i class="fa-solid fa-eye"&gt;&lt;/i&gt; Ver
               &lt;/button&gt;
             &lt;/td&gt;
@@ -451,24 +470,26 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 </div>
 <span class="math inline">\({(() =&gt; {
   if (selectedCompany) {
-    const dialog = htl.html`&lt;dialog class="fnee-modal" open&gt;
-      &lt;div class="modal-header"&gt;
+    const dialog = htl.html`&lt;dialog class="chart-modal" open&gt;
+      &lt;div class="modal-head"&gt;
         &lt;div&gt;
-          &lt;h2 style="margin:0; color:#2dd4bf; font-size:1.3rem;"&gt;\)</span>{selectedCompany.Empresa}
+          &lt;h2 style="margin:0; color:#2dd4bf; font-size:1.4rem;"&gt;\)</span>{selectedCompany.Empresa}
 
-<pre><code>      &lt;span style="font-family:monospace; color:#94a3b8;"&gt;${selectedCompany.NIF}&lt;/span&gt;
+<pre><code>      &lt;span style="font-family:monospace; color:#94a3b8; font-size:1rem;"&gt;${selectedCompany.NIF}&lt;/span&gt;
     &lt;/div&gt;
-    &lt;button class="close-btn" onclick=${() =&gt; mutable selectedCompany = null}&gt;&amp;times;&lt;/button&gt;
+    &lt;button class="btn-close" onclick=${() =&gt; mutable selectedCompany = null}&gt;&amp;times;&lt;/button&gt;
   &lt;/div&gt;
   
   &lt;div class="modal-body"&gt;
     &lt;div id="chart-mount"&gt;&lt;/div&gt;
     
-    &lt;div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;"&gt;
+    &lt;div style="margin-top:30px; display:flex; gap:15px; flex-wrap:wrap; justify-content:center;"&gt;
       ${years.map(y =&gt; htl.html`
-        &lt;div style="background:rgba(30,41,59,0.5); padding:10px 15px; border-radius:8px; border:1px solid #334155; text-align:center;"&gt;
-          &lt;div style="color:#64748b; font-size:0.8rem;"&gt;${y}&lt;/div&gt;
-          &lt;div style="color:#fff; font-weight:bold;"&gt;${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}&lt;/div&gt;
+        &lt;div style="background:rgba(30,41,59,0.5); padding:15px 20px; border-radius:10px; border:1px solid #334155; text-align:center;"&gt;
+          &lt;div style="color:#64748b; font-size:0.85rem; margin-bottom:5px;"&gt;${y}&lt;/div&gt;
+          &lt;div style="color:#fff; font-weight:bold; font-size:1.1rem;"&gt;
+            ${(selectedCompany[y] || 0).toLocaleString("es-ES", {maximumFractionDigits: 0})}
+          &lt;/div&gt;
         &lt;/div&gt;
       `)}
     &lt;/div&gt;
@@ -482,15 +503,30 @@ const chart = Plot.plot({
   y: { label: "Ventas (GWh)" },
   marks: [
     Plot.lineY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {
-      x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 3, marker: "circle", tip: true
+      x: "Año", y: "Ventas", stroke: "#2dd4bf", strokeWidth: 4, marker: "circle", tip: true
     }),
     Plot.areaY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {
-      x: "Año", y: "Ventas", fill: "#2dd4bf", fillOpacity: 0.2
-    })
+      x: "Año", y: "Ventas", fill: "url(#gradientTeal)", fillOpacity: 0.4
+    }),
+    () =&gt; svg`&lt;defs&gt;
+      &lt;linearGradient id="gradientTeal" x1="0" x2="0" y1="0" y2="1"&gt;
+        &lt;stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.6"/&gt;
+        &lt;stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/&gt;
+      &lt;/linearGradient&gt;
+    &lt;/defs&gt;`
   ]
 });
 
 dialog.querySelector("#chart-mount").append(chart);
+
+// Cerrar al pulsar fuera
+dialog.addEventListener("click", e =&gt; {
+  const rect = dialog.getBoundingClientRect();
+  if (e.clientX &lt; rect.left || e.clientX &gt; rect.right || e.clientY &lt; rect.top || e.clientY &gt; rect.bottom) {
+    mutable selectedCompany = null;
+  }
+});
+
 return dialog;</code></pre>
 <p>} return htl.html``; })()}</p>
 
@@ -498,7 +534,7 @@ return dialog;</code></pre>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAxLiBEQVRPUyBSRUFMRVMgSU5DUlVTVEFET1MgKFNpbiBsZWVyIGFyY2hpdm9zIGV4dGVybm9zKVxyXG4vLyBFc3RvIGdhcmFudGl6YSBxdWUgbGEgY2FyZ2EgbnVuY2EgZmFsbGEuXHJcbmNzdkNvbnRlbnQgPSBgTklGO0VtcHJlc2E7VmVudGFzIDIwMjE7VmVudGFzIDIwMjI7VmVudGFzIDIwMjM7VmVudGFzIDIwMjRcclxuQTgxOTQ4MDc3O0VOREVTQSBFTkVSR0lBLCBTLkEuVS47Nzg1MDAsMDA7NzYyMDAsNTA7NzQxMDAsMjA7NzIwNTAsMDBcclxuQTk1NzU4Mzg5O0lCRVJEUk9MQSBDTElFTlRFUywgUy5BLlUuOzY1NDAwLDAwOzY2ODAwLDAwOzY4OTAwLDUwOzcwMTAwLDAwXHJcbkI4Mjg0NjgxNztOQVRVUkdZIElCRVJJQSwgUy5BLjs0NTIwMCwwMDs0NDEwMCwwMDs0MzUwMCwwMDs0MjgwMCwwMFxyXG5BMzMwMDUzOTY7VE9UQUxFTkVSR0lFUyBNRVJDQURPIEVTUEHDkUEgUy5BLjsyNTAwMCwwMDsyNjUwMCwwMDsyODAwMCwwMDsyOTUwMCwwMFxyXG5CMzE3Mzc0MjI7QUNDSU9OQSBHUkVFTiBFTkVSR1kgREVWRUxPUE1FTlRTIFNMOzYzNDksNjk7NzQ0MSwzNzs4MzM0LDMxOzc4MDYsNzNcclxuQjI2NTAwMjMxO0FERUxGQVMgRU5FUkdJQSBTTDsyMTcsNTQ7MTA4LDU2OzIzMiw4MDsxNDIsNTRcclxuQjI1Nzk0MjA3O0FERUlOTk9WQSBFTkVSR0lBIFNMOzgxLDU5OzgxLDQ3OzczLDEzOzk4LDY0XHJcbkE4NzYyMzk3MTtBQ1NPTCBFTkVSR0lBIEdMT0JBTCBTQTs0NSwyOTszNiwzMTszMSw4MzsyOCw2N1xyXG5CODcxNzc0MDg7QUJPVVRXSElURSBTTDs1Miw2NTszMSwyNTsyOCwwNTszMiwzMlxyXG5CMjIzNTA0NjY7QUIgRU5FUkdJQSAxOTAzIFMuTC47ODcsMzc7NjAsOTU7NTAsMDA7NjMsNzlgO1xyXG5cclxuLy8gMi4gUFJPQ0VTQU1JRU5UT1xyXG5kYXRhID0gZDMuZHN2Rm9ybWF0KFwiO1wiKS5wYXJzZShjc3ZDb250ZW50LCAoZCkgPT4ge1xyXG4gIGNvbnN0IHJvdyA9IHsgXCJOSUZcIjogZC5OSUYsIFwiRW1wcmVzYVwiOiBkLkVtcHJlc2EgfTtcclxuICBPYmplY3Qua2V5cyhkKS5mb3JFYWNoKGsgPT4ge1xyXG4gICAgaWYgKGsuaW5jbHVkZXMoXCJWZW50YXNcIikpIHtcclxuICAgICAgbGV0IHllYXIgPSBrLnJlcGxhY2UoXCJWZW50YXNcIiwgXCJcIikudHJpbSgpO1xyXG4gICAgICBsZXQgdmFsID0gcGFyc2VGbG9hdChkW2tdLnJlcGxhY2UoXCIsXCIsIFwiLlwiKSkgfHwgMDtcclxuICAgICAgcm93W3llYXJdID0gdmFsO1xyXG4gICAgfVxyXG4gIH0pO1xyXG4gIHJldHVybiByb3c7XHJcbn0pXHJcblxyXG55ZWFycyA9IE9iamVjdC5rZXlzKGRhdGFbMF0pLmZpbHRlcihrID0+ICFpc05hTihrKSkuc29ydCgpO1xyXG5cclxuZGF0YV9sb25nID0gZGF0YS5mbGF0TWFwKGQgPT4ge1xyXG4gIHJldHVybiB5ZWFycy5tYXAoeWVhciA9PiAoe1xyXG4gICAgXCJFbXByZXNhXCI6IGQuRW1wcmVzYSwgXCJOSUZcIjogZC5OSUYsIFwiQcOxb1wiOiBwYXJzZUludCh5ZWFyKSwgXCJWZW50YXNcIjogZFt5ZWFyXSB8fCAwXHJcbiAgfSkpO1xyXG59KVxyXG5cclxuLy8gVmFyaWFibGVzIFJlYWN0aXZhcyAoQ29udHJvbGFuIGxhIGludGVyZmF6KVxyXG5tdXRhYmxlIGN1cnJlbnRUYWIgPSBcImNvbXBhcmFkb3JcIjsgXHJcbm11dGFibGUgc2VsZWN0ZWRDb21wYW55ID0gbnVsbDtcclxuIn1dfQ==
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAtLS0gMS4gREFUT1MgSU5DUlVTVEFET1MgKEJsaW5kYWplIHRvdGFsOiBubyBmYWxsYXLDoSBsYSBjYXJnYSkgLS0tXHJcbmNzdkRhdGEgPSBgTklGO0VtcHJlc2E7VmVudGFzIDIwMjE7VmVudGFzIDIwMjI7VmVudGFzIDIwMjM7VmVudGFzIDIwMjRcclxuQTgxOTQ4MDc3O0VOREVTQSBFTkVSR0lBLCBTLkEuVS47Nzg1MDAsMDA7NzYyMDAsNTA7NzQxMDAsMjA7NzIwNTAsMDBcclxuQTk1NzU4Mzg5O0lCRVJEUk9MQSBDTElFTlRFUywgUy5BLlUuOzY1NDAwLDAwOzY2ODAwLDAwOzY4OTAwLDUwOzcwMTAwLDAwXHJcbkI4Mjg0NjgxNztOQVRVUkdZIElCRVJJQSwgUy5BLjs0NTIwMCwwMDs0NDEwMCwwMDs0MzUwMCwwMDs0MjgwMCwwMFxyXG5BMzMwMDUzOTY7VE9UQUxFTkVSR0lFUyBNRVJDQURPIEVTUEHDkUEgUy5BLjsyNTAwMCwwMDsyNjUwMCwwMDsyODAwMCwwMDsyOTUwMCwwMFxyXG5CMzE3Mzc0MjI7QUNDSU9OQSBHUkVFTiBFTkVSR1kgREVWRUxPUE1FTlRTIFNMOzYzNDksNjk7NzQ0MSwzNzs4MzM0LDMxOzc4MDYsNzNcclxuQjI2NTAwMjMxO0FERUxGQVMgRU5FUkdJQSBTTDsyMTcsNTQ7MTA4LDU2OzIzMiw4MDsxNDIsNTRcclxuQjI1Nzk0MjA3O0FERUlOTk9WQSBFTkVSR0lBIFNMOzgxLDU5OzgxLDQ3OzczLDEzOzk4LDY0XHJcbkE4NzYyMzk3MTtBQ1NPTCBFTkVSR0lBIEdMT0JBTCBTQTs0NSwyOTszNiwzMTszMSw4MzsyOCw2N1xyXG5CODcxNzc0MDg7QUJPVVRXSElURSBTTDs1Miw2NTszMSwyNTsyOCwwNTszMiwzMlxyXG5CMjIzNTA0NjY7QUIgRU5FUkdJQSAxOTAzIFMuTC47ODcsMzc7NjAsOTU7NTAsMDA7NjMsNzlgO1xyXG5cclxuLy8gLS0tIDIuIFBST0NFU0FNSUVOVE8gREUgREFUT1MgLS0tXHJcbmRhdGEgPSBkMy5kc3ZGb3JtYXQoXCI7XCIpLnBhcnNlKGNzdkRhdGEsIChkKSA9PiB7XHJcbiAgY29uc3Qgcm93ID0geyBcIk5JRlwiOiBkLk5JRiwgXCJFbXByZXNhXCI6IGQuRW1wcmVzYSB9O1xyXG4gIE9iamVjdC5rZXlzKGQpLmZvckVhY2goayA9PiB7XHJcbiAgICBpZiAoay5pbmNsdWRlcyhcIlZlbnRhc1wiKSkge1xyXG4gICAgICBsZXQgeWVhciA9IGsucmVwbGFjZShcIlZlbnRhc1wiLCBcIlwiKS50cmltKCk7XHJcbiAgICAgIGxldCB2YWwgPSBwYXJzZUZsb2F0KGRba10ucmVwbGFjZShcIixcIiwgXCIuXCIpKSB8fCAwO1xyXG4gICAgICByb3dbeWVhcl0gPSB2YWw7XHJcbiAgICB9XHJcbiAgfSk7XHJcbiAgcmV0dXJuIHJvdztcclxufSlcclxuXHJcbnllYXJzID0gT2JqZWN0LmtleXMoZGF0YVswXSkuZmlsdGVyKGsgPT4gIWlzTmFOKGspKS5zb3J0KCk7XHJcblxyXG5kYXRhX2xvbmcgPSBkYXRhLmZsYXRNYXAoZCA9PiB7XHJcbiAgcmV0dXJuIHllYXJzLm1hcCh5ZWFyID0+ICh7XHJcbiAgICBcIkVtcHJlc2FcIjogZC5FbXByZXNhLCBcIk5JRlwiOiBkLk5JRiwgXCJBw7FvXCI6IHBhcnNlSW50KHllYXIpLCBcIlZlbnRhc1wiOiBkW3llYXJdIHx8IDBcclxuICB9KSk7XHJcbn0pXHJcblxyXG4vLyAtLS0gMy4gTE9HSUNBIFJFQUNUSVZBIC0tLVxyXG5tdXRhYmxlIGN1cnJlbnRUYWIgPSBcImNvbXBhcmFkb3JcIjsgXHJcbm11dGFibGUgc2VsZWN0ZWRDb21wYW55ID0gbnVsbDtcclxuc2VhcmNoV2lkZ2V0ID0gSW5wdXRzLnNlYXJjaChkYXRhLCB7IHBsYWNlaG9sZGVyOiBcIvCflI0gQnVzY2FyIEVuZGVzYSwgSWJlcmRyb2xhLi4uXCIsIGNvbHVtbnM6IFtcIkVtcHJlc2FcIiwgXCJOSUZcIl0gfSk7XHJcbnNlYXJjaFRlcm0gPSBHZW5lcmF0b3JzLmlucHV0KHNlYXJjaFdpZGdldCk7XHJcbiJ9XX0=
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
