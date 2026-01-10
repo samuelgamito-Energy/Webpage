@@ -1,24 +1,17 @@
 [
   {
-    "objectID": "posts/2026-01-welcome/index.html",
-    "href": "posts/2026-01-welcome/index.html",
-    "title": "Informe Enero 2026",
+    "objectID": "sector.html",
+    "href": "sector.html",
+    "title": "SECTOR ANALYTICS",
     "section": "",
-    "text": "Sistema operativo."
+    "text": "csvRaw = `NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024\nA81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00\nA95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00\nB82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00\nA33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00\nB31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73\nB26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54\nB25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64\nA87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67\nB87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32\nB22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`;\n\n// PROCESAMIENTO\ndata = d3.dsvFormat(\";\").parse(csvRaw, (d) =&gt; {\n  const row = { \"NIF\": d.NIF, \"Empresa\": d.Empresa };\n  Object.keys(d).forEach(k =&gt; {\n    if (k.includes(\"Ventas\")) {\n      let year = k.replace(\"Ventas\", \"\").trim();\n      let val = parseFloat(d[k].replace(\",\", \".\")) || 0;\n      row[year] = val;\n    }\n  });\n  return row;\n})\n\nyears = Object.keys(data[0]).filter(k =&gt; !isNaN(k)).sort();\n\ndata_long = data.flatMap(d =&gt; {\n  return years.map(year =&gt; ({\n    \"Empresa\": d.Empresa, \"NIF\": d.NIF, \"Año\": parseInt(year), \"Ventas\": d[year] || 0\n  }));\n})\n\n// Variables Reactivas\nmutable currentTab = \"comparador\"; \nmutable selectedCompany = null;\nsearchWidget = Inputs.search(data, { placeholder: \"🔍 Buscar...\", columns: [\"Empresa\", \"NIF\"] });\nsearchTerm = Generators.input(searchWidget);\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n&lt;div class=\"nav-item ${currentTab === 'mercado' ? 'active-tab' : ''}\" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;\n  &lt;i class=\"fa-solid fa-chart-pie\"&gt;&lt;/i&gt; Mercado\n&lt;/div&gt;\n&lt;div class=\"nav-item ${currentTab === 'comparador' ? 'active-tab' : ''}\" onclick=${() =&gt; mutable currentTab = 'comparador'}&gt;\n  &lt;i class=\"fa-solid fa-table-list\"&gt;&lt;/i&gt; Comparador\n&lt;/div&gt;\n\n\n&lt;div class=\"dash-card\"&gt;\n  &lt;div class=\"d-title\"&gt;Mercado Global&lt;/div&gt;\n  &lt;div style=\"color:#94a3b8; margin-bottom:20px;\"&gt;Evolución total del volumen (GWh).&lt;/div&gt;\n  \n  ${Plot.plot({\n    style: { background: \"transparent\", color: \"#cbd5e1\", fontSize: \"14px\", fontFamily: \"sans-serif\" },\n    height: 400, marginLeft: 60,\n    y: { grid: true, label: \"Total GWh\", tickFormat: \"s\" },\n    x: { label: null, tickFormat: \"d\" },\n    marks: [\n      Plot.barY(data_long, Plot.groupX({y: \"sum\"}, {\n        x: \"Año\", y: \"Ventas\", fill: \"#2dd4bf\", fillOpacity: 0.8, tip: true,\n        title: d =&gt; `${d.Año}: ${d.Ventas.toLocaleString(\"es-ES\")}`\n      })),\n      Plot.ruleY([0], {stroke: \"#334155\"})\n    ]\n  })}\n&lt;/div&gt;\n\n\n&lt;div class=\"dash-card\"&gt;\n  &lt;div class=\"d-title\"&gt;Directorio&lt;/div&gt;\n  \n  &lt;div style=\"margin-bottom: 20px;\"&gt;\n    ${searchWidget}\n  &lt;/div&gt;\n\n  &lt;div class=\"t-container\"&gt;\n    ${htl.html`\n    &lt;table class=\"d-table\"&gt;\n      &lt;thead&gt;\n        &lt;tr&gt;\n          &lt;th style=\"width:20%\"&gt;NIF&lt;/th&gt;\n          &lt;th style=\"width:40%\"&gt;COMERCIALIZADORA&lt;/th&gt;\n          &lt;th style=\"width:25%; text-align:right\"&gt;2024 (GWh)&lt;/th&gt;\n          &lt;th style=\"width:15%; text-align:center\"&gt;VER&lt;/th&gt;\n        &lt;/tr&gt;\n      &lt;/thead&gt;\n      &lt;tbody&gt;\n        ${searchTerm.slice(0, 50).map(row =&gt; htl.html`\n          &lt;tr&gt;\n            &lt;td style=\"font-family:monospace; color:#94a3b8;\"&gt;${row.NIF}&lt;/td&gt;\n            &lt;td style=\"font-weight:600; color:#f1f5f9;\"&gt;${row.Empresa}&lt;/td&gt;\n            &lt;td style=\"text-align:right\"&gt;\n              ${(row[\"2024\"] || 0).toLocaleString(\"es-ES\", {minimumFractionDigits: 0, maximumFractionDigits: 0})}\n            &lt;/td&gt;\n            &lt;td style=\"text-align:center\"&gt;\n              &lt;button class=\"btn-eye\" onclick=${() =&gt; mutable selectedCompany = row}&gt;\n                &lt;i class=\"fa-solid fa-eye\"&gt;&lt;/i&gt;\n              &lt;/button&gt;\n            &lt;/td&gt;\n          &lt;/tr&gt;\n        `)}\n      &lt;/tbody&gt;\n    &lt;/table&gt;`}\n  &lt;/div&gt;\n&lt;/div&gt;\n\n\n\\({(() =&gt; {\n  if (selectedCompany) {\n    const dialog = htl.html`&lt;dialog class=\"popup\" open&gt;\n      &lt;div class=\"popup-head\"&gt;\n        &lt;h2 style=\"margin:0; color:#2dd4bf;\"&gt;\\){selectedCompany.Empresa}\n\n    &lt;button class=\"x-btn\" onclick=${() =&gt; mutable selectedCompany = null}&gt;&times;&lt;/button&gt;\n  &lt;/div&gt;\n  &lt;div class=\"popup-body\"&gt;\n    &lt;div id=\"chart-mount\"&gt;&lt;/div&gt;\n  &lt;/div&gt;\n&lt;/dialog&gt;`;\n\nconst chart = Plot.plot({\n  style: { background: \"transparent\", color: \"#cbd5e1\" },\n  height: 300, width: 800, grid: true, marginLeft: 60,\n  x: { label: \"Año\", tickFormat: \"d\", domain: years.map(Number) },\n  y: { label: \"Ventas (GWh)\" },\n  marks: [\n    Plot.lineY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {\n      x: \"Año\", y: \"Ventas\", stroke: \"#2dd4bf\", strokeWidth: 3, marker: \"circle\"\n    }),\n    Plot.areaY(data_long.filter(d =&gt; d.Empresa === selectedCompany.Empresa), {\n      x: \"Año\", y: \"Ventas\", fill: \"#2dd4bf\", fillOpacity: 0.2\n    })\n  ]\n});\n\ndialog.querySelector(\"#chart-mount\").append(chart);\nreturn dialog;\n} return htl.html``; })()}"
   },
   {
-    "objectID": "posts/2026-01-welcome/index.html#informe-mensual",
-    "href": "posts/2026-01-welcome/index.html#informe-mensual",
-    "title": "Informe Enero 2026",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "SAMUEL GAMITO",
     "section": "",
-    "text": "Sistema operativo."
-  },
-  {
-    "objectID": "dashboards.html",
-    "href": "dashboards.html",
-    "title": "MARKET INTELLIGENCE",
-    "section": "",
-    "text": "Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.\n\n\n\n\n\n🗺️ Expansión Territorial\n\n\nVisualización geoespacial de la cartera de clientes de Alumbra. Análisis de densidad de consumo y penetración regional.\n\n ABRIR MAPA INTERACTIVO  \n\n\n\n\n\n📊 Benchmarking FNEE\n\n\nDashboard estratégico basado en datos de la CNMC. Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.\n\n ACCEDER AL DASHBOARD"
+    "text": "SAMUEL GAMITO\n        ENERGY STRATEGY & MATHEMATICS\n        \n        \n            \"Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.\"\n        \n\n        \n            Soy Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.\n        \n        \n            Actualmente liderando la expansión de Greening Group como CEO para el Sur de Europa.\n        \n    \n\n    \n        \n            \n                \n            \n        \n        \n            LinkedIn\n            Email\n        \n    \n\n\n\n    Áreas de Expertise\n    \n    \n        \n            📈 Trading & Mercados\n            \n                Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power & Gas).\n            \n        \n\n        \n            🤖 Ingeniería de Datos\n            \n                Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.\n            \n        \n\n        \n            🌍 Estrategia Internacional\n            \n                Gestión de P&L en entornos regulatorios complejos y liderazgo de equipos transfronterizos (España-Italia).\n            \n        \n\n        \n            ⚡ Gestión de Activos\n            \n                Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B."
   },
   {
     "objectID": "blog.html",
@@ -35,10 +28,24 @@
     "text": "An�lisis mensual."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "SAMUEL GAMITO",
+    "objectID": "dashboards.html",
+    "href": "dashboards.html",
+    "title": "MARKET INTELLIGENCE",
     "section": "",
-    "text": "SAMUEL GAMITO\n        ENERGY STRATEGY & MATHEMATICS\n        \n        \n            \"Transformando la volatilidad del mercado en margen EBITDA mediante ingeniería de datos.\"\n        \n\n        \n            Soy Licenciado en C.C. Matemáticas con Máster en Ingeniería Matemática y Ejecutivo C-Level especializado en mercados energéticos internacionales. Mi enfoque combina la rigurosidad del análisis cuantitativo con la ejecución operativa de alto nivel.\n        \n        \n            Actualmente liderando la expansión de Greening Group como CEO para el Sur de Europa.\n        \n    \n\n    \n        \n            \n                \n            \n        \n        \n            LinkedIn\n            Email\n        \n    \n\n\n\n    Áreas de Expertise\n    \n    \n        \n            📈 Trading & Mercados\n            \n                Estructuración de PPAs, cobertura de riesgos financieros y optimización de carteras (Power & Gas).\n            \n        \n\n        \n            🤖 Ingeniería de Datos\n            \n                Extracción masiva de datos (CNMC/REE), modelado predictivo y automatización de procesos de decisión.\n            \n        \n\n        \n            🌍 Estrategia Internacional\n            \n                Gestión de P&L en entornos regulatorios complejos y liderazgo de equipos transfronterizos (España-Italia).\n            \n        \n\n        \n            ⚡ Gestión de Activos\n            \n                Optimización de RoI en activos de generación renovable y estrategias de comercialización B2B."
+    "text": "Herramientas propias de análisis regulatorio y visualización de datos en tiempo real.\n\n\n\n\n\n🗺️ Expansión Territorial\n\n\nVisualización geoespacial de la cartera de clientes de Alumbra. Análisis de densidad de consumo y penetración regional.\n\n ABRIR MAPA INTERACTIVO  \n\n\n\n\n\n📊 Benchmarking FNEE\n\n\nDashboard estratégico basado en datos de la CNMC. Seguimiento de cuotas de mercado, altas/bajas y evolución de competidores.\n\n ACCEDER AL DASHBOARD"
+  },
+  {
+    "objectID": "posts/2026-01-welcome/index.html",
+    "href": "posts/2026-01-welcome/index.html",
+    "title": "Informe Enero 2026",
+    "section": "",
+    "text": "Sistema operativo."
+  },
+  {
+    "objectID": "posts/2026-01-welcome/index.html#informe-mensual",
+    "href": "posts/2026-01-welcome/index.html#informe-mensual",
+    "title": "Informe Enero 2026",
+    "section": "",
+    "text": "Sistema operativo."
   }
 ]
