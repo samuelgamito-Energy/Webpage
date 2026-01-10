@@ -10,152 +10,71 @@ format:
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* Reset y Fuente */
-.dashboard-wrapper {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  color: #cbd5e1;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding-top: 20px;
-}
+/* Estilos Generales */
+.dashboard-wrapper { font-family: 'Segoe UI', sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
 
 /* Pestañas */
-.tab-container {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #334155;
-  padding-bottom: 15px;
-}
-.tab-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 25px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  color: #94a3b8;
-  border: 1px solid transparent;
-  background: rgba(30, 41, 59, 0.3);
-  transition: all 0.2s;
-}
+.tab-container { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+.tab-item { display: flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: 600; color: #94a3b8; background: rgba(30, 41, 59, 0.3); transition: all 0.2s; }
 .tab-item:hover { color: #fff; background: rgba(45, 212, 191, 0.1); }
-.tab-item.active {
-  background: #0f172a;
-  color: #2dd4bf;
-  border: 1px solid #2dd4bf;
-  box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
-}
+.tab-item.active { background: #0f172a; color: #2dd4bf; border: 1px solid #2dd4bf; box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15); }
 
 /* Tarjetas */
-.glass-card {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid #334155;
-  border-radius: 16px;
-  padding: 30px;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-  margin-bottom: 30px;
-  backdrop-filter: blur(5px);
-}
+.glass-card { background: rgba(15, 23, 42, 0.6); border: 1px solid #334155; border-radius: 16px; padding: 30px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); margin-bottom: 30px; backdrop-filter: blur(5px); }
 .card-title { color: #fff; font-size: 1.25rem; font-weight: 700; margin-bottom: 5px; }
-.card-subtitle { color: #64748b; font-size: 0.9rem; margin-bottom: 25px; }
 
 /* Tabla */
 .data-table { width: 100%; border-collapse: separate; border-spacing: 0; }
-.data-table th {
-  text-align: left; padding: 15px; color: #2dd4bf;
-  font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px;
-  border-bottom: 2px solid #2dd4bf;
-}
+.data-table th { text-align: left; padding: 15px; color: #2dd4bf; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 2px solid #2dd4bf; }
 .data-table td { padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
 .data-table tr:hover td { background: rgba(45, 212, 191, 0.05); }
 
-/* Botón Ojo */
-.btn-eye {
-  background: rgba(15, 23, 42, 1);
-  border: 1px solid #475569;
-  color: #2dd4bf;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
+/* Botones */
+.btn-eye { background: rgba(15, 23, 42, 1); border: 1px solid #475569; color: #2dd4bf; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; }
 .btn-eye:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
 /* Modal */
-dialog.custom-modal {
-  background: #0f172a; color: #fff;
-  border: 1px solid #2dd4bf; border-radius: 20px;
-  padding: 0; width: 90%; max-width: 950px;
-  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
-}
+dialog.custom-modal { background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 20px; padding: 0; width: 90%; max-width: 950px; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9); }
 dialog.custom-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
 .modal-top { padding: 25px; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; align-items: center; background: rgba(30,41,59,0.3); }
 .modal-content { padding: 30px; }
 
 /* Inputs */
-input[type="search"] {
-  width: 100%; padding: 15px; background: #1e293b; border: 1px solid #475569;
-  color: #fff; border-radius: 10px; font-size: 1rem; outline: none;
-}
+input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 1px solid #475569; color: #fff; border-radius: 10px; font-size: 1rem; outline: none; }
 </style>
 
 ```{ojs}
 //| echo: false
 
-// --- 1. LECTURA Y LIMPIEZA QUIRÚRGICA DEL CSV ---
-raw = await FileAttachment("ventas_boe.csv").text()
+// 1. CARGA DIRECTA DEL CSV DE PRUEBA
+// Usamos el separador ";" porque así lo has guardado
+data = await FileAttachment("ventas_boe.csv").csv({delimiter: ";", typed: false})
 
-// Esta función limpia el CSV línea por línea antes de que D3 intente leerlo
-clean_csv = raw.split(/\r?\n/).map(line => {
-  let l = line.trim();
-  if (!l) return null; // Ignorar líneas vacías
+// 2. PROCESAMIENTO
+// Convertimos los textos "1.000,50" a números reales
+processed_data = data.map(d => {
+  const row = { "NIF": d.NIF, "Empresa": d.Empresa };
   
-  // 1. Si la línea entera tiene comillas al principio y final, las quitamos
-  // Ejemplo: "dato;dato;" -> dato;dato;
-  if (l.startsWith('"') && l.endsWith('"')) {
-    l = l.slice(1, -1);
-  }
-  
-  // 2. Si hay un punto y coma al final (muy común en Excel), lo quitamos
-  if (l.endsWith(';')) {
-    l = l.slice(0, -1);
-  }
-  
-  return l;
-}).filter(l => l !== null).join("\n")
-
-// --- 2. PARSEO DE DATOS ---
-data = d3.dsvFormat(";").parse(clean_csv, (d, i, columns) => {
-  // Forzamos columnas por posición para evitar errores de nombres
-  const row = {
-    "NIF": d[columns[0]],       // Columna 0 es NIF
-    "Empresa": d[columns[1]]    // Columna 1 es Nombre
-  };
-
-  // Buscamos columnas de ventas
-  columns.forEach(col => {
-    if (col.includes("Ventas")) {
-      // Limpiamos el número europeo: 1.234,56 -> 1234.56
-      let valStr = d[col] ? d[col].toString() : "0";
-      let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
-      
-      // Sacamos el año del nombre (ej: "Ventas 2024" -> "2024")
-      let year = col.replace("Ventas", "").trim();
-      row[year] = val; 
+  // Detectamos columnas de años dinámicamente
+  Object.keys(d).forEach(key => {
+    if (key.includes("Ventas")) {
+      let year = key.replace("Ventas", "").trim(); // "Ventas 2023" -> "2023"
+      let valStr = d[key] || "0";
+      // Convertir formato español (1.000,00) a JS (1000.00)
+      let val = parseFloat(valStr.replace(/\./g, "").replace(",", "."));
+      row[year] = val || 0;
     }
   });
   return row;
 })
 
-// --- 3. FILTRO DE AÑOS (Borramos 2025) ---
-years = Object.keys(data[0])
-  .filter(k => !isNaN(k) && k.length === 4 && k !== "2025") // <--- AQUÍ BORRAMOS EL 2025
+// Lista de años encontrados en tu archivo de prueba
+years = Object.keys(processed_data[0])
+  .filter(k => !isNaN(k) && k.length === 4)
   .sort();
 
-// Preparar datos para gráficos
-data_long = data.flatMap(d => {
+// Datos en formato largo para las gráficas
+data_long = processed_data.flatMap(d => {
   return years.map(year => ({
     "Empresa": d["Empresa"],
     "NIF": d["NIF"],
@@ -164,7 +83,7 @@ data_long = data.flatMap(d => {
   }));
 })
 
-// --- 4. VARIABLES INTERACTIVAS ---
+// Variables interactivas
 mutable currentTab = "comparador"; 
 mutable selectedRow = null;
 ```
@@ -183,7 +102,7 @@ mutable selectedRow = null;
   <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
     <div class="glass-card">
       <div class="card-title"><i class="fa-solid fa-globe"></i> Evolución del Mercado</div>
-      <div class="card-subtitle">Volumen total gestionado (GWh).</div>
+      <div style="color:#94a3b8; margin-bottom:20px;">Volumen total (GWh).</div>
       
       ${Plot.plot({
         style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
@@ -205,10 +124,9 @@ mutable selectedRow = null;
   <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
     <div class="glass-card">
       <div class="card-title"><i class="fa-solid fa-building-user"></i> Directorio de Empresas</div>
-      <div class="card-subtitle">Busca por NIF o Razón Social.</div>
-
+      
       <div style="margin-bottom: 25px;">
-        ${viewof searchTerm = Inputs.search(data, {
+        ${viewof searchTerm = Inputs.search(processed_data, {
           placeholder: "🔍 Buscar...",
           columns: ["Empresa", "NIF"]
         })}
@@ -221,7 +139,7 @@ mutable selectedRow = null;
             <tr>
               <th style="width:15%">NIF</th>
               <th style="width:45%">COMERCIALIZADORA</th>
-              <th style="width:25%; text-align:right">VENTAS 2024 (GWh)</th>
+              <th style="width:25%; text-align:right">VENTAS ${years[years.length-1]} (GWh)</th>
               <th style="width:15%; text-align:center">ACCIÓN</th>
             </tr>
           </thead>
@@ -231,7 +149,7 @@ mutable selectedRow = null;
                 <td style="font-family:monospace; color:#94a3b8;">${row.NIF}</td>
                 <td style="font-weight:600; color:#f1f5f9;">${row.Empresa}</td>
                 <td style="text-align:right; font-feature-settings: 'tnum';">
-                  ${(row["2024"] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+                  ${(row[years[years.length-1]] || 0).toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                 </td>
                 <td style="text-align:center">
                   <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
