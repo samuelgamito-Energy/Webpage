@@ -1,17 +1,17 @@
 {
-  "index.qmd": {
-    "index.html": "b1df78e7"
+  "blog.qmd": {
+    "blog.html": "9515e025"
   },
   "dashboards.qmd": {
-    "dashboards.html": "161efd58"
+    "dashboards.html": "9f070f4f"
   },
-  "blog.qmd": {
-    "blog.html": "867f6837"
+  "index.qmd": {
+    "index.html": "2c10c954"
   },
   "posts/2026-01-welcome/index.qmd": {
-    "index.html": "560bf59e"
+    "index.html": "b1b0f16a"
   },
   "sector.qmd": {
-    "sector.html": "924d4e31"
+    "sector.html": "4424f32f"
   }
 }

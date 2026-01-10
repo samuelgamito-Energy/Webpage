@@ -13,15 +13,13 @@ format:
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* Reset & Fuente */
+/* Reset */
 .dashboard-wrapper {
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  color: #cbd5e1;
-  max-width: 1400px;
-  margin: 0 auto;
+  font-family: 'Segoe UI', system-ui, sans-serif; color: #cbd5e1;
+  max-width: 1400px; margin: 0 auto;
 }
 
-/* Sistema de Pestañas (Igual al FNEE pero oscuro) */
+/* Pestañas */
 .tab-nav {
   display: flex; gap: 15px; margin-bottom: 25px;
   border-bottom: 1px solid #334155; padding-bottom: 15px;
@@ -38,7 +36,7 @@ format:
   box-shadow: 0 4px 15px rgba(45, 212, 191, 0.15);
 }
 
-/* Tarjetas (Glass Effect) */
+/* Tarjetas */
 .glass-panel {
   background: rgba(15, 23, 42, 0.6); border: 1px solid #334155;
   border-radius: 12px; padding: 30px; margin-bottom: 30px;
@@ -47,7 +45,7 @@ format:
 .panel-title { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 5px; }
 .panel-desc { font-size: 0.95rem; color: #94a3b8; margin-bottom: 25px; }
 
-/* Tabla Profesional */
+/* Tabla */
 .table-container { overflow-x: auto; border-radius: 10px; border: 1px solid #334155; }
 .custom-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
 .custom-table th {
@@ -55,12 +53,10 @@ format:
   text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
   border-bottom: 2px solid #2dd4bf;
 }
-.custom-table td {
-  padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0;
-}
+.custom-table td { padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
 .custom-table tr:hover { background: rgba(45, 212, 191, 0.05); }
 
-/* Botón Acción (Ojo) */
+/* Botón Ojo */
 .btn-view {
   background: #0f172a; border: 1px solid #475569; color: #2dd4bf;
   padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.85rem;
@@ -68,7 +64,7 @@ format:
 }
 .btn-view:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
-/* Ventana Modal (Popup) */
+/* Modal */
 dialog.chart-modal {
   background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
   padding: 0; width: 90%; max-width: 950px;
@@ -84,7 +80,7 @@ dialog.chart-modal::backdrop { background: rgba(0,0,0,0.85); backdrop-filter: bl
 .btn-close { background: none; border: none; color: #94a3b8; font-size: 1.8rem; cursor: pointer; }
 .btn-close:hover { color: #fff; }
 
-/* Inputs */
+/* Input */
 input[type="search"] {
   background: #0f172a !important; border: 1px solid #334155 !important;
   color: #fff !important; padding: 12px 15px !important; border-radius: 8px !important;
@@ -97,7 +93,7 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 //| echo: false
 //| output: false
 
-// 1. DATOS REALES (INCRUSTADOS Y SEGUROS)
+// DATOS INCRUSTADOS (Blindaje total: no fallará la carga)
 csvData = `NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024
 A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00
 A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00
@@ -110,7 +106,7 @@ A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67
 B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32
 B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`;
 
-// 2. PROCESAMIENTO
+// PROCESAMIENTO
 data = d3.dsvFormat(";").parse(csvData, (d) => {
   const row = { "NIF": d.NIF, "Empresa": d.Empresa };
   Object.keys(d).forEach(k => {
