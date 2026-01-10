@@ -19,20 +19,26 @@ body {
   background-color: #0f172a; color: #cbd5e1;
   font-family: 'Inter', sans-serif; margin: 0; padding: 0;
 }
-.main-wrapper { max-width: 1800px; margin: 0 auto; padding: 25px; }
+
+/* 1. SANGRÍAS MÁS GRANDES (Contenedor más contenido) */
+.main-wrapper {
+  max-width: 1350px; /* Reducido para que no ocupe tanto */
+  margin: 0 auto;
+  padding: 40px 50px; /* Más aire a los lados */
+}
 
 /* CABECERA */
 .header-box {
   display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 15px;
+  margin-bottom: 35px; border-bottom: 1px solid #334155; padding-bottom: 20px;
 }
-.page-h1 { font-size: 1.6rem; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.5px; }
-.page-sub { color: #64748b; font-size: 0.9rem; }
+.page-h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.5px; }
+.page-sub { color: #64748b; font-size: 0.95rem; margin-top: 5px; }
 
-/* PESTAÑAS (Solo 2 ahora) */
+/* PESTAÑAS */
 .nav-tabs { display: flex; gap: 8px; background: #1e293b; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
 .nav-item {
-  padding: 8px 20px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 600;
+  padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
   color: #94a3b8; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
 }
 .nav-item:hover { color: #fff; }
@@ -40,26 +46,29 @@ body {
   background-color: #0f172a; color: #2dd4bf; border: 1px solid #334155; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* --- KPIS (4 Cuadrados) --- */
+/* --- 3. KPIS (TEXTO AJUSTADO) --- */
 .kpi-row {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px;
 }
 .kpi-card {
-  background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 20px;
-  display: flex; flex-direction: column; justify-content: space-between; height: 110px;
+  background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 18px;
+  display: flex; flex-direction: column; justify-content: space-between; height: 100px;
+  overflow: hidden; /* Evita que el texto se salga */
 }
-.kpi-top { display: flex; justify-content: space-between; align-items: flex-start; }
-.kpi-title { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; }
-.kpi-icon { color: #2dd4bf; background: rgba(45, 212, 191, 0.1); padding: 5px; border-radius: 4px; }
-.kpi-val { font-size: 1.8rem; font-weight: 700; color: #fff; }
-.kpi-sub { font-size: 0.75rem; color: #64748b; margin-top: 5px; }
+.kpi-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px; }
+.kpi-title { 
+  font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 600; 
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; /* Puntos suspensivos si es muy largo */
+}
+.kpi-icon { color: #2dd4bf; background: rgba(45, 212, 191, 0.1); padding: 4px; border-radius: 4px; font-size: 0.9rem; }
+.kpi-val { font-size: 1.6rem; font-weight: 700; color: #fff; line-height: 1; }
+.kpi-sub { font-size: 0.75rem; color: #64748b; margin-top: auto; }
 
-/* --- GRID PRINCIPAL (70% Tabla / 30% Gráfica) --- */
+/* --- GRID PRINCIPAL (70/30) --- */
 .dashboard-split {
-  display: grid; 
-  grid-template-columns: 70% 30%; /* <--- AQUÍ ESTÁ EL CAMBIO CLAVE (70/30) */
-  gap: 25px; 
-  height: 600px; /* Más alto para ver mejor la lista */
+  display: grid; grid-template-columns: 70% 28%; /* Un poco de margen en medio */
+  justify-content: space-between;
+  height: 550px;
 }
 .panel {
   background: #1e293b; border: 1px solid #334155; border-radius: 12px;
@@ -67,23 +76,26 @@ body {
 }
 .panel-header {
   padding: 15px 20px; border-bottom: 1px solid #334155; background: rgba(15, 23, 42, 0.4);
-  display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: #fff;
+  display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: #fff; font-size: 0.95rem;
 }
 
-/* TABLA SCROLLABLE (Izquierda - Ancha) */
+/* 4. TABLA ALINEADA */
 .table-scroll-area { overflow-y: auto; flex: 1; padding: 0; }
-.mini-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.mini-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; table-layout: fixed; /* Anchos fijos */ }
 .mini-table th {
   position: sticky; top: 0; background: #0f172a; color: #94a3b8; z-index: 10;
-  text-align: left; padding: 12px 20px; font-size: 0.8rem; text-transform: uppercase; border-bottom: 1px solid #334155;
+  text-align: left; padding: 12px 15px; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid #334155;
 }
-.mini-table td { padding: 12px 20px; border-bottom: 1px solid #334155; color: #cbd5e1; }
+.mini-table td { 
+  padding: 10px 15px; border-bottom: 1px solid #334155; color: #cbd5e1; 
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
 .mini-table tr:hover { background: rgba(45, 212, 191, 0.05); }
 
 /* BOTÓN OJO */
 .btn-eye {
-  border: 1px solid #334155; background: #0f172a; color: #94a3b8; width: 30px; height: 30px;
-  border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  border: 1px solid #334155; background: #0f172a; color: #94a3b8; width: 28px; height: 28px;
+  border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; margin: 0 auto;
 }
 .btn-eye:hover { color: #2dd4bf; border-color: #2dd4bf; background: rgba(45, 212, 191, 0.1); }
 
@@ -99,42 +111,46 @@ dialog.chart-modal {
 dialog.chart-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(2px); }
 
 /* UTILIDADES */
-.trend-up { color: #2dd4bf; font-size: 0.85rem; }
-.trend-down { color: #f43f5e; font-size: 0.85rem; }
-input[type="search"] { background: #0f172a !important; border: 1px solid #334155 !important; color: #fff !important; font-size: 0.9rem; padding: 8px !important; width: 250px; }
+.trend-up { color: #2dd4bf; font-size: 0.8rem; }
+.trend-down { color: #f43f5e; font-size: 0.8rem; }
+input[type="search"] { 
+  background: #0f172a !important; border: 1px solid #334155 !important; 
+  color: #fff !important; font-size: 0.85rem; padding: 6px 12px !important; 
+  width: 200px; border-radius: 6px !important;
+}
 </style>
 
 ```{ojs}
 //| echo: false
 //| output: false
 
-// --- 1. DATOS ESTÁTICOS (Simulando carga CSV) ---
+// --- 2. DATOS AMPLIADOS (2021-2024) ---
 rawData = [
-  {NIF: "A81948077", Empresa: "ENDESA ENERGIA, S.A.U.", V2023: 74100, V2024: 72050},
-  {NIF: "A95758389", Empresa: "IBERDROLA CLIENTES, S.A.U.", V2023: 68900, V2024: 70100},
-  {NIF: "B82846817", Empresa: "NATURGY IBERIA, S.A.", V2023: 43500, V2024: 42800},
-  {NIF: "A33005396", Empresa: "TOTALENERGIES MERCADO ESPAÑA", V2023: 28000, V2024: 29500},
-  {NIF: "B31737422", Empresa: "ACCIONA GREEN ENERGY", V2023: 8334, V2024: 7806},
-  {NIF: "B26500231", Empresa: "ADELFAS ENERGIA SL", V2023: 232, V2024: 142},
-  {NIF: "B25794207", Empresa: "ADEINNOVA ENERGIA SL", V2023: 73, V2024: 98},
-  {NIF: "A87623971", Empresa: "ACSOL ENERGIA GLOBAL SA", V2023: 31, V2024: 28},
-  {NIF: "B87177408", Empresa: "ABOUTWHITE SL", V2023: 28, V2024: 32},
-  {NIF: "B22350466", Empresa: "AB ENERGIA 1903 S.L.", V2023: 50, V2024: 63},
-  {NIF: "A00000001", Empresa: "FACTOR ENERGIA S.A.", V2023: 12000, V2024: 12500},
-  {NIF: "A00000002", Empresa: "NEXUS ENERGIA S.A.", V2023: 9000, V2024: 9200},
-  {NIF: "A00000003", Empresa: "AUDAX RENOVABLES S.A.", V2023: 8500, V2024: 8700},
-  {NIF: "A00000004", Empresa: "FIESTA ENERGY", V2023: 400, V2024: 450},
-  {NIF: "A00000005", Empresa: "SOLAR MARKET", V2023: 300, V2024: 280}
+  {NIF: "A81948077", Empresa: "ENDESA ENERGIA, S.A.U.", V2021: 78500, V2022: 76200, V2023: 74100, V2024: 72050},
+  {NIF: "A95758389", Empresa: "IBERDROLA CLIENTES, S.A.U.", V2021: 65400, V2022: 66800, V2023: 68900, V2024: 70100},
+  {NIF: "B82846817", Empresa: "NATURGY IBERIA, S.A.", V2021: 45200, V2022: 44100, V2023: 43500, V2024: 42800},
+  {NIF: "A33005396", Empresa: "TOTALENERGIES MERCADO", V2021: 25000, V2022: 26500, V2023: 28000, V2024: 29500},
+  {NIF: "B31737422", Empresa: "ACCIONA GREEN ENERGY", V2021: 6349, V2022: 7441, V2023: 8334, V2024: 7806},
+  {NIF: "B26500231", Empresa: "ADELFAS ENERGIA SL", V2021: 217, V2022: 108, V2023: 232, V2024: 142},
+  {NIF: "B25794207", Empresa: "ADEINNOVA ENERGIA SL", V2021: 81, V2022: 81, V2023: 73, V2024: 98},
+  {NIF: "A87623971", Empresa: "ACSOL ENERGIA GLOBAL", V2021: 45, V2022: 36, V2023: 31, V2024: 28},
+  {NIF: "B87177408", Empresa: "ABOUTWHITE SL", V2021: 52, V2022: 31, V2023: 28, V2024: 32},
+  {NIF: "B22350466", Empresa: "AB ENERGIA 1903 S.L.", V2021: 87, V2022: 60, V2023: 50, V2024: 63},
+  {NIF: "A00000001", Empresa: "FACTOR ENERGIA S.A.", V2021: 11000, V2022: 11500, V2023: 12000, V2024: 12500},
+  {NIF: "A00000002", Empresa: "NEXUS ENERGIA S.A.", V2021: 8500, V2022: 8800, V2023: 9000, V2024: 9200},
+  {NIF: "A00000003", Empresa: "AUDAX RENOVABLES S.A.", V2021: 8000, V2022: 8200, V2023: 8500, V2024: 8700},
+  {NIF: "A00000004", Empresa: "FIESTA ENERGY", V2021: 350, V2022: 380, V2023: 400, V2024: 450},
+  {NIF: "A00000005", Empresa: "SOLAR MARKET", V2021: 250, V2022: 280, V2023: 300, V2024: 280}
 ];
 
 // Cálculo de Totales para Gráficas
-years = [2023, 2024];
+years = [2021, 2022, 2023, 2024];
 total2023 = rawData.reduce((a, b) => a + b.V2023, 0);
 total2024 = rawData.reduce((a, b) => a + b.V2024, 0);
-marketData = [
-  {Year: "2023", Vol: total2023},
-  {Year: "2024", Vol: total2024}
-];
+
+marketData = years.map(y => {
+  return {Year: y.toString(), Vol: rawData.reduce((a,b) => a + b[`V${y}`], 0)};
+});
 
 // Formato largo
 dataLong = rawData.flatMap(d => years.map(y => ({
@@ -145,7 +161,7 @@ dataLong = rawData.flatMap(d => years.map(y => ({
 mutable currentTab = "mercado";
 mutable selectedRow = null;
 
-// Buscador (Generado por OJS)
+// Buscador
 searchWidget = Inputs.search(rawData, {placeholder: "Buscar NIF o Empresa...", columns: ["Empresa", "NIF"]});
 searchTerm = Generators.input(searchWidget);
 
@@ -160,7 +176,7 @@ viewof selectedComp = Inputs.select(rawData.map(d => d.Empresa), {
 ```{ojs}
 //| echo: false
 
-// --- 2. INTERFAZ VISUAL ---
+// --- 3. INTERFAZ VISUAL (Renderizado) ---
 htl.html`
 <div class="main-wrapper">
 
@@ -215,10 +231,10 @@ htl.html`
           <table class="mini-table">
             <thead>
               <tr>
-                <th style="width:50%">Empresa / Razón Social</th>
-                <th style="width:15%; text-align:right">2024 (GWh)</th>
+                <th style="width:55%">Empresa / Razón Social</th>
+                <th style="width:20%; text-align:right">2024 (GWh)</th>
                 <th style="width:10%; text-align:center">Trend</th>
-                <th style="width:10%; text-align:center">Acción</th>
+                <th style="width:15%; text-align:center">Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -226,17 +242,17 @@ htl.html`
                 const trend = row.V2024 >= row.V2023;
                 return htl.html`
                 <tr>
-                  <td style="font-weight:600; color:#fff;">
+                  <td style="font-weight:600; color:#fff;" title="${row.Empresa}">
                     ${row.Empresa}
                     <div style="font-size:0.75rem; color:#64748b; font-weight:normal;">${row.NIF}</div>
                   </td>
-                  <td style="text-align:right; font-family:'Segoe UI Mono', monospace;">
+                  <td style="text-align:right; font-family:'Segoe UI Mono', monospace; font-weight:bold;">
                     ${row.V2024.toLocaleString("es-ES")}
                   </td>
                   <td style="text-align:center;">
                     <i class="fa-solid ${trend ? 'fa-caret-up trend-up' : 'fa-caret-down trend-down'}"></i>
                   </td>
-                  <td style="text-align:center; display:flex; justify-content:center;">
+                  <td style="text-align:center;">
                     <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
                       <i class="fa-solid fa-eye"></i>
                     </button>
@@ -249,16 +265,16 @@ htl.html`
       </div>
 
       <div class="panel">
-        <div class="panel-header">Mercado Total</div>
+        <div class="panel-header">Evolución (2021-24)</div>
         <div style="padding:20px; flex:1; display:flex; align-items:center; justify-content:center;">
           ${Plot.plot({
-            style: {background: "transparent", color: "#cbd5e1", fontSize: "13px", width: "100%"},
-            height: 400,
-            marginLeft: 50,
+            style: {background: "transparent", color: "#cbd5e1", fontSize: "12px", width: "100%"},
+            height: 350,
+            marginLeft: 40,
             y: {grid: true, label: null, tickFormat: "s"},
-            x: {padding: 0.4},
+            x: {padding: 0.3},
             marks: [
-              Plot.barY(marketData, {x: "Year", y: "Vol", fill: "#2dd4bf", fillOpacity: 0.8, tip: true, rx: 6}),
+              Plot.barY(marketData, {x: "Year", y: "Vol", fill: "#2dd4bf", fillOpacity: 0.8, tip: true, rx: 4}),
               Plot.ruleY([0], {stroke: "#334155"})
             ]
           })}
@@ -297,7 +313,7 @@ htl.html`
 
 ```{ojs}
 //| echo: false
-// 3. POPUP MODAL
+// 4. POPUP MODAL
 {
   if (selectedRow) {
     const dialog = htl.html`<dialog class="chart-modal" open>
