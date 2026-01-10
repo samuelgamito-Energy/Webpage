@@ -10,8 +10,13 @@ format:
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* Estilos Generales */
+/* Reset */
 .dashboard-wrapper { font-family: 'Segoe UI', sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
+
+/* Status Bar */
+.status-bar { padding: 10px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center; }
+.status-ok { background: rgba(45, 212, 191, 0.1); color: #2dd4bf; border: 1px solid #2dd4bf; }
+.status-err { background: rgba(244, 63, 94, 0.1); color: #f43f5e; border: 1px solid #f43f5e; }
 
 /* Pestañas */
 .tab-container { display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
@@ -29,7 +34,7 @@ format:
 .data-table td { padding: 15px; border-bottom: 1px solid #334155; color: #e2e8f0; }
 .data-table tr:hover td { background: rgba(45, 212, 191, 0.05); }
 
-/* Botones */
+/* Botón Ojo */
 .btn-eye { background: rgba(15, 23, 42, 1); border: 1px solid #475569; color: #2dd4bf; padding: 8px 16px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; }
 .btn-eye:hover { background: #2dd4bf; color: #0f172a; border-color: #2dd4bf; }
 
@@ -46,35 +51,55 @@ input[type="search"] { width: 100%; padding: 15px; background: #1e293b; border: 
 ```{ojs}
 //| echo: false
 
-// 1. CARGA DIRECTA DEL CSV DE PRUEBA
-// Usamos el separador ";" porque así lo has guardado
-data = await FileAttachment("ventas_boe.csv").csv({delimiter: ";", typed: false})
+// --- 1. DATOS DE RESPALDO (Por si falla el archivo) ---
+fallbackData = `NIF;Empresa;Ventas 2023;Ventas 2024
+A00000001;Energía Demo S.L.;1000,50;1200,00
+B00000002;Solar Test System;500,00;600,50
+C00000003;Eólica Ejemplo;800,20;850,00
+D00000004;Gasificadora Beta;2000,00;2100,00
+E00000005;Comercializadora Z;150,00;100,00`;
 
-// 2. PROCESAMIENTO
-// Convertimos los textos "1.000,50" a números reales
-processed_data = data.map(d => {
-  const row = { "NIF": d.NIF, "Empresa": d.Empresa };
+// --- 2. CARGA INTELIGENTE ---
+// Intentamos cargar el archivo. Si falla, usamos el backup.
+raw = await FileAttachment("ventas_boe.csv").text().catch(e => {
+  return "ERROR_LOAD";
+});
+
+// Detectamos si estamos usando el archivo real o el backup
+isFileLoaded = (raw !== "ERROR_LOAD");
+csvContent = isFileLoaded ? raw : fallbackData;
+
+// --- 3. LIMPIEZA Y PARSEO (TODO EN JS) ---
+clean_csv = csvContent.split(/\r?\n/).map(line => {
+  let l = line.trim();
+  if (!l) return null; 
+  if (l.startsWith('"') && l.endsWith('"')) l = l.slice(1, -1); // Quitar comillas
+  if (l.endsWith(';')) l = l.slice(0, -1); // Quitar ; final
+  return l;
+}).filter(l => l !== null).join("\n")
+
+// Parseamos usando ; como separador
+parsed = d3.dsvFormat(";").parse(clean_csv, (d) => {
+  const row = { "NIF": d[Object.keys(d)[0]], "Empresa": d[Object.keys(d)[1]] }; // Cogemos col 0 y 1 por posición
   
-  // Detectamos columnas de años dinámicamente
   Object.keys(d).forEach(key => {
-    if (key.includes("Ventas")) {
-      let year = key.replace("Ventas", "").trim(); // "Ventas 2023" -> "2023"
-      let valStr = d[key] || "0";
-      // Convertir formato español (1.000,00) a JS (1000.00)
-      let val = parseFloat(valStr.replace(/\./g, "").replace(",", "."));
-      row[year] = val || 0;
+    if (key.includes("Ventas") || key.match(/^\d{4}$/)) { // Detectar columnas de año
+      let year = key.replace(/\D/g, ""); // Extraer solo números
+      if (year.length === 4 && year !== "2025") {
+        let valStr = d[key] ? d[key].toString() : "0";
+        let val = parseFloat(valStr.replace(/\./g, "").replace(",", ".")) || 0;
+        row[year] = val;
+      }
     }
   });
   return row;
 })
 
-// Lista de años encontrados en tu archivo de prueba
-years = Object.keys(processed_data[0])
-  .filter(k => !isNaN(k) && k.length === 4)
-  .sort();
+// Lista de años
+years = Object.keys(parsed[0]).filter(k => !isNaN(k) && k.length === 4).sort();
 
-// Datos en formato largo para las gráficas
-data_long = processed_data.flatMap(d => {
+// Datos Largos
+data_long = parsed.flatMap(d => {
   return years.map(year => ({
     "Empresa": d["Empresa"],
     "NIF": d["NIF"],
@@ -83,12 +108,18 @@ data_long = processed_data.flatMap(d => {
   }));
 })
 
-// Variables interactivas
+// Variables
 mutable currentTab = "comparador"; 
 mutable selectedRow = null;
 ```
 
 <div class="dashboard-wrapper">
+
+  <div class="${isFileLoaded ? 'status-bar status-ok' : 'status-bar status-err'}">
+    ${isFileLoaded 
+      ? `✅ Archivo 'ventas_boe.csv' cargado correctamente. (${parsed.length} registros)` 
+      : `⚠️ Error cargando 'ventas_boe.csv'. Mostrando datos de ejemplo. Revisa que el archivo esté en la carpeta raíz.`}
+  </div>
 
   <div class="tab-container">
     <div class="tab-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
@@ -126,7 +157,7 @@ mutable selectedRow = null;
       <div class="card-title"><i class="fa-solid fa-building-user"></i> Directorio de Empresas</div>
       
       <div style="margin-bottom: 25px;">
-        ${viewof searchTerm = Inputs.search(processed_data, {
+        ${viewof searchTerm = Inputs.search(parsed, {
           placeholder: "🔍 Buscar...",
           columns: ["Empresa", "NIF"]
         })}
