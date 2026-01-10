@@ -10,14 +10,22 @@ format:
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
-/* Reset */
-.dashboard-wrapper { font-family: 'Segoe UI', system-ui, sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
+/* Contenedor */
+.dashboard-container {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #cbd5e1;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
 /* Pestañas Superiores */
-.tab-header { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.tab-header {
+  display: flex; gap: 10px; border-bottom: 1px solid #334155;
+  margin-bottom: 25px; padding-bottom: 10px;
+}
 .tab-btn {
   padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
-  border: 1px solid transparent; background: transparent; color: #94a3b8;
+  background: transparent; color: #94a3b8; border: 1px solid transparent;
   display: flex; align-items: center; gap: 8px; transition: all 0.2s;
 }
 .tab-btn:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
@@ -26,20 +34,20 @@ format:
   box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
 }
 
-/* Tarjetas (Cards) */
+/* Tarjetas */
 .fnee-card {
   background-color: rgba(30, 41, 59, 0.4); border: 1px solid #334155;
-  border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; backdrop-filter: blur(5px);
+  border-radius: 12px; padding: 25px; margin-bottom: 20px;
+  backdrop-filter: blur(5px);
 }
 .card-title { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
 .card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
 
 /* Tabla Profesional */
-.table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
+.table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
 .fnee-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
 .fnee-table th {
-  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.8);
+  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.9);
   color: #2dd4bf; border-bottom: 2px solid #2dd4bf; text-transform: uppercase;
   font-size: 0.8rem; letter-spacing: 1px;
 }
@@ -57,15 +65,18 @@ format:
 /* Modal (Popup) */
 dialog.fnee-modal {
   background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
-  padding: 0; width: 90%; max-width: 900px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+  padding: 0; width: 90%; max-width: 900px;
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
 .modal-header {
   padding: 20px; border-bottom: 1px solid #334155; display: flex;
-  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.3);
+  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.5);
 }
 .modal-body { padding: 30px; }
 .close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
+.close-btn:hover { color: #fff; }
 
 /* Buscador */
 input[type="search"] {
@@ -78,8 +89,8 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 ```{ojs}
 //| echo: false
 
-// --- 1. DATOS INCRUSTADOS (Directamente aquí, sin CSV externo) ---
-// Estos son tus datos reales limpios. Se cargarán SIEMPRE.
+// 1. DATOS REALES INCRUSTADOS (Sin leer archivos externos)
+// Esto garantiza que la carga nunca falla.
 csvContent = `NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024
 A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00
 A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00
@@ -92,7 +103,7 @@ A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67
 B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32
 B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`;
 
-// --- 2. PROCESAMIENTO ---
+// 2. PROCESAMIENTO
 data = d3.dsvFormat(";").parse(csvContent, (d) => {
   const row = { "NIF": d.NIF, "Empresa": d.Empresa };
   Object.keys(d).forEach(k => {
@@ -105,22 +116,20 @@ data = d3.dsvFormat(";").parse(csvContent, (d) => {
   return row;
 })
 
-// Detectar años
 years = Object.keys(data[0]).filter(k => !isNaN(k)).sort();
 
-// Formato largo para gráficas
 data_long = data.flatMap(d => {
   return years.map(year => ({
     "Empresa": d.Empresa, "NIF": d.NIF, "Año": parseInt(year), "Ventas": d[year] || 0
   }));
 })
 
-// Variables Reactivas
+// Variables Reactivas (Controlan la interfaz)
 mutable currentTab = "comparador"; 
 mutable selectedCompany = null;
 ```
 
-<div class="dashboard-wrapper">
+<div class="dashboard-container">
 
   <div class="tab-header">
     <button class="tab-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
@@ -134,7 +143,7 @@ mutable selectedCompany = null;
   <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
     <div class="fnee-card">
       <div class="card-title">Evolución del Mercado</div>
-      <div class="card-desc">Volumen total agregado de las comercializadoras listadas (GWh).</div>
+      <div class="card-desc">Volumen total agregado (GWh).</div>
       
       ${Plot.plot({
         style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
@@ -155,15 +164,15 @@ mutable selectedCompany = null;
   <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
     <div class="fnee-card">
       <div class="card-title">Directorio de Empresas</div>
-      <div class="card-desc">Busca y analiza el histórico individual.</div>
+      <div class="card-desc">Localiza y analiza comercializadoras.</div>
 
       <div style="margin-bottom: 20px;">
         ${viewof searchTerm = Inputs.search(data, {
-          placeholder: "🔍 Buscar por NIF o Empresa...", columns: ["Empresa", "NIF"]
+          placeholder: "🔍 Buscar Endesa, Iberdrola, NIF...", columns: ["Empresa", "NIF"]
         })}
       </div>
 
-      <div class="table-container">
+      <div class="table-responsive">
         ${htl.html`
         <table class="fnee-table">
           <thead>
@@ -191,7 +200,7 @@ mutable selectedCompany = null;
             `)}
           </tbody>
         </table>
-        ${searchTerm.length === 0 ? htl.html`<div style="padding:40px; text-align:center; color:#64748b;">No hay resultados</div>` : ''}
+        ${searchTerm.length === 0 ? htl.html`<div style="padding:40px; text-align:center; color:#64748b;">No se encontraron resultados</div>` : ''}
         `}
       </div>
     </div>
@@ -212,6 +221,7 @@ ${(() => {
       
       <div class="modal-body">
         <div id="chart-mount"></div>
+        
         <div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
           ${years.map(y => htl.html`
             <div style="background:rgba(30,41,59,0.5); padding:10px 15px; border-radius:8px; border:1px solid #334155; text-align:center;">
@@ -239,11 +249,6 @@ ${(() => {
     });
 
     dialog.querySelector("#chart-mount").append(chart);
-    dialog.addEventListener("click", e => {
-      const rect = dialog.getBoundingClientRect();
-      if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) mutable selectedCompany = null;
-    });
-
     return dialog;
   }
   return htl.html``;

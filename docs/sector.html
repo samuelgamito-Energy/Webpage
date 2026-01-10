@@ -220,14 +220,22 @@ window.Quarto = {
 
 <p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></p>
 <style>
-/* Reset */
-.dashboard-wrapper { font-family: 'Segoe UI', system-ui, sans-serif; color: #cbd5e1; max-width: 1400px; margin: 0 auto; padding-top: 20px; }
+/* Contenedor */
+.dashboard-container {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: #cbd5e1;
+  max-width: 1400px;
+  margin: 0 auto;
+}
 
 /* Pestañas Superiores */
-.tab-header { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+.tab-header {
+  display: flex; gap: 10px; border-bottom: 1px solid #334155;
+  margin-bottom: 25px; padding-bottom: 10px;
+}
 .tab-btn {
   padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer;
-  border: 1px solid transparent; background: transparent; color: #94a3b8;
+  background: transparent; color: #94a3b8; border: 1px solid transparent;
   display: flex; align-items: center; gap: 8px; transition: all 0.2s;
 }
 .tab-btn:hover { background: rgba(30, 41, 59, 0.5); color: #fff; }
@@ -236,20 +244,20 @@ window.Quarto = {
   box-shadow: 0 4px 12px rgba(45, 212, 191, 0.15);
 }
 
-/* Tarjetas (Cards) */
+/* Tarjetas */
 .fnee-card {
   background-color: rgba(30, 41, 59, 0.4); border: 1px solid #334155;
-  border-radius: 12px; padding: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px; backdrop-filter: blur(5px);
+  border-radius: 12px; padding: 25px; margin-bottom: 20px;
+  backdrop-filter: blur(5px);
 }
 .card-title { color: #fff; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
 .card-desc { color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px; }
 
 /* Tabla Profesional */
-.table-container { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
+.table-responsive { overflow-x: auto; border-radius: 8px; border: 1px solid #334155; }
 .fnee-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
 .fnee-table th {
-  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.8);
+  text-align: left; padding: 15px; background: rgba(15, 23, 42, 0.9);
   color: #2dd4bf; border-bottom: 2px solid #2dd4bf; text-transform: uppercase;
   font-size: 0.8rem; letter-spacing: 1px;
 }
@@ -267,15 +275,18 @@ window.Quarto = {
 /* Modal (Popup) */
 dialog.fnee-modal {
   background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 16px;
-  padding: 0; width: 90%; max-width: 900px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.9);
+  padding: 0; width: 90%; max-width: 900px;
+  box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
 }
 dialog.fnee-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
 .modal-header {
   padding: 20px; border-bottom: 1px solid #334155; display: flex;
-  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.3);
+  justify-content: space-between; align-items: center; background: rgba(30, 41, 59, 0.5);
 }
 .modal-body { padding: 30px; }
 .close-btn { background: none; border: none; color: #94a3b8; font-size: 1.5rem; cursor: pointer; }
+.close-btn:hover { color: #fff; }
 
 /* Buscador */
 input[type="search"] {
@@ -285,44 +296,42 @@ input[type="search"] {
 input[type="search"]:focus { border-color: #2dd4bf !important; }
 </style>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="83" data-source-offset="-133"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 82;"><span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>csvContent <span class="op">=</span> <span class="vs">`NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="vs">A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00</span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="vs">A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00</span></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="vs">B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00</span></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="vs">A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="vs">B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="vs">B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="vs">B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64</span></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="vs">A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67</span></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a><span class="vs">B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32</span></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="vs">B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`</span><span class="op">;</span></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 2. PROCESAMIENTO ---</span></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(csvContent<span class="op">,</span> (d) <span class="kw">=&gt;</span> {</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> { <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span> }<span class="op">;</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)<span class="op">.</span><span class="fu">forEach</span>(k <span class="kw">=&gt;</span> {</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (k<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> k<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(d[k]<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="co">// Detectar años</span></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])<span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k))<span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a><span class="co">// Formato largo para gráficas</span></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span><span class="op">,</span> <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span> <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a><span class="co">// Variables Reactivas</span></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>mutable selectedCompany <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="94" data-source-offset="-108"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 93;"><span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>csvContent <span class="op">=</span> <span class="vs">`NIF;Empresa;Ventas 2021;Ventas 2022;Ventas 2023;Ventas 2024</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="vs">A81948077;ENDESA ENERGIA, S.A.U.;78500,00;76200,50;74100,20;72050,00</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a><span class="vs">A95758389;IBERDROLA CLIENTES, S.A.U.;65400,00;66800,00;68900,50;70100,00</span></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="vs">B82846817;NATURGY IBERIA, S.A.;45200,00;44100,00;43500,00;42800,00</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="vs">A33005396;TOTALENERGIES MERCADO ESPAÑA S.A.;25000,00;26500,00;28000,00;29500,00</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="vs">B31737422;ACCIONA GREEN ENERGY DEVELOPMENTS SL;6349,69;7441,37;8334,31;7806,73</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="vs">B26500231;ADELFAS ENERGIA SL;217,54;108,56;232,80;142,54</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="vs">B25794207;ADEINNOVA ENERGIA SL;81,59;81,47;73,13;98,64</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="vs">A87623971;ACSOL ENERGIA GLOBAL SA;45,29;36,31;31,83;28,67</span></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="vs">B87177408;ABOUTWHITE SL;52,65;31,25;28,05;32,32</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="vs">B22350466;AB ENERGIA 1903 S.L.;87,37;60,95;50,00;63,79`</span><span class="op">;</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="co">// 2. PROCESAMIENTO</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> d3<span class="op">.</span><span class="fu">dsvFormat</span>(<span class="st">";"</span>)<span class="op">.</span><span class="fu">parse</span>(csvContent<span class="op">,</span> (d) <span class="kw">=&gt;</span> {</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> row <span class="op">=</span> { <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span> }<span class="op">;</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>  <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(d)<span class="op">.</span><span class="fu">forEach</span>(k <span class="kw">=&gt;</span> {</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (k<span class="op">.</span><span class="fu">includes</span>(<span class="st">"Ventas"</span>)) {</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> year <span class="op">=</span> k<span class="op">.</span><span class="fu">replace</span>(<span class="st">"Ventas"</span><span class="op">,</span> <span class="st">""</span>)<span class="op">.</span><span class="fu">trim</span>()<span class="op">;</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> val <span class="op">=</span> <span class="pp">parseFloat</span>(d[k]<span class="op">.</span><span class="fu">replace</span>(<span class="st">","</span><span class="op">,</span> <span class="st">"."</span>)) <span class="op">||</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>      row[year] <span class="op">=</span> val<span class="op">;</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> row<span class="op">;</span></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">Object</span><span class="op">.</span><span class="fu">keys</span>(data[<span class="dv">0</span>])<span class="op">.</span><span class="fu">filter</span>(k <span class="kw">=&gt;</span> <span class="op">!</span><span class="pp">isNaN</span>(k))<span class="op">.</span><span class="fu">sort</span>()<span class="op">;</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>data_long <span class="op">=</span> data<span class="op">.</span><span class="fu">flatMap</span>(d <span class="kw">=&gt;</span> {</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> years<span class="op">.</span><span class="fu">map</span>(year <span class="kw">=&gt;</span> ({</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Empresa"</span><span class="op">:</span> d<span class="op">.</span><span class="at">Empresa</span><span class="op">,</span> <span class="st">"NIF"</span><span class="op">:</span> d<span class="op">.</span><span class="at">NIF</span><span class="op">,</span> <span class="st">"Año"</span><span class="op">:</span> <span class="pp">parseInt</span>(year)<span class="op">,</span> <span class="st">"Ventas"</span><span class="op">:</span> d[year] <span class="op">||</span> <span class="dv">0</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>  }))<span class="op">;</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a><span class="co">// Variables Reactivas (Controlan la interfaz)</span></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>mutable currentTab <span class="op">=</span> <span class="st">"comparador"</span><span class="op">;</span> </span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>mutable selectedCompany <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -366,7 +375,7 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 </div>
 </div>
 </div>
-<div class="dashboard-wrapper">
+<div class="dashboard-container">
 <div class="tab-header">
 <pre><code>&lt;button class="tab-btn ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() =&gt; mutable currentTab = 'mercado'}&gt;
   &lt;i class="fa-solid fa-chart-pie"&gt;&lt;/i&gt; Mercado Global
@@ -378,7 +387,7 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 <div style="display: ${currentTab === 'mercado' ? 'block' : 'none'}">
 <pre><code>&lt;div class="fnee-card"&gt;
   &lt;div class="card-title"&gt;Evolución del Mercado&lt;/div&gt;
-  &lt;div class="card-desc"&gt;Volumen total agregado de las comercializadoras listadas (GWh).&lt;/div&gt;
+  &lt;div class="card-desc"&gt;Volumen total agregado (GWh).&lt;/div&gt;
   
   ${Plot.plot({
     style: { background: "transparent", color: "#cbd5e1", fontSize: "14px", fontFamily: "sans-serif" },
@@ -398,15 +407,15 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
 <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}">
 <pre><code>&lt;div class="fnee-card"&gt;
   &lt;div class="card-title"&gt;Directorio de Empresas&lt;/div&gt;
-  &lt;div class="card-desc"&gt;Busca y analiza el histórico individual.&lt;/div&gt;
+  &lt;div class="card-desc"&gt;Localiza y analiza comercializadoras.&lt;/div&gt;
 
   &lt;div style="margin-bottom: 20px;"&gt;
     ${viewof searchTerm = Inputs.search(data, {
-      placeholder: "🔍 Buscar por NIF o Empresa...", columns: ["Empresa", "NIF"]
+      placeholder: "🔍 Buscar Endesa, Iberdrola, NIF...", columns: ["Empresa", "NIF"]
     })}
   &lt;/div&gt;
 
-  &lt;div class="table-container"&gt;
+  &lt;div class="table-responsive"&gt;
     ${htl.html`
     &lt;table class="fnee-table"&gt;
       &lt;thead&gt;
@@ -434,7 +443,7 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
         `)}
       &lt;/tbody&gt;
     &lt;/table&gt;
-    ${searchTerm.length === 0 ? htl.html`&lt;div style="padding:40px; text-align:center; color:#64748b;"&gt;No hay resultados&lt;/div&gt;` : ''}
+    ${searchTerm.length === 0 ? htl.html`&lt;div style="padding:40px; text-align:center; color:#64748b;"&gt;No se encontraron resultados&lt;/div&gt;` : ''}
     `}
   &lt;/div&gt;
 &lt;/div&gt;</code></pre>
@@ -454,6 +463,7 @@ input[type="search"]:focus { border-color: #2dd4bf !important; }
   
   &lt;div class="modal-body"&gt;
     &lt;div id="chart-mount"&gt;&lt;/div&gt;
+    
     &lt;div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;"&gt;
       ${years.map(y =&gt; htl.html`
         &lt;div style="background:rgba(30,41,59,0.5); padding:10px 15px; border-radius:8px; border:1px solid #334155; text-align:center;"&gt;
@@ -481,11 +491,6 @@ const chart = Plot.plot({
 });
 
 dialog.querySelector("#chart-mount").append(chart);
-dialog.addEventListener("click", e =&gt; {
-  const rect = dialog.getBoundingClientRect();
-  if (e.clientX &lt; rect.left || e.clientX &gt; rect.right || e.clientY &lt; rect.top || e.clientY &gt; rect.bottom) mutable selectedCompany = null;
-});
-
 return dialog;</code></pre>
 <p>} return htl.html``; })()}</p>
 
@@ -493,7 +498,7 @@ return dialog;</code></pre>
 
 </main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAtLS0gMS4gREFUT1MgSU5DUlVTVEFET1MgKERpcmVjdGFtZW50ZSBhcXXDrSwgc2luIENTViBleHRlcm5vKSAtLS1cclxuLy8gRXN0b3Mgc29uIHR1cyBkYXRvcyByZWFsZXMgbGltcGlvcy4gU2UgY2FyZ2Fyw6FuIFNJRU1QUkUuXHJcbmNzdkNvbnRlbnQgPSBgTklGO0VtcHJlc2E7VmVudGFzIDIwMjE7VmVudGFzIDIwMjI7VmVudGFzIDIwMjM7VmVudGFzIDIwMjRcclxuQTgxOTQ4MDc3O0VOREVTQSBFTkVSR0lBLCBTLkEuVS47Nzg1MDAsMDA7NzYyMDAsNTA7NzQxMDAsMjA7NzIwNTAsMDBcclxuQTk1NzU4Mzg5O0lCRVJEUk9MQSBDTElFTlRFUywgUy5BLlUuOzY1NDAwLDAwOzY2ODAwLDAwOzY4OTAwLDUwOzcwMTAwLDAwXHJcbkI4Mjg0NjgxNztOQVRVUkdZIElCRVJJQSwgUy5BLjs0NTIwMCwwMDs0NDEwMCwwMDs0MzUwMCwwMDs0MjgwMCwwMFxyXG5BMzMwMDUzOTY7VE9UQUxFTkVSR0lFUyBNRVJDQURPIEVTUEHDkUEgUy5BLjsyNTAwMCwwMDsyNjUwMCwwMDsyODAwMCwwMDsyOTUwMCwwMFxyXG5CMzE3Mzc0MjI7QUNDSU9OQSBHUkVFTiBFTkVSR1kgREVWRUxPUE1FTlRTIFNMOzYzNDksNjk7NzQ0MSwzNzs4MzM0LDMxOzc4MDYsNzNcclxuQjI2NTAwMjMxO0FERUxGQVMgRU5FUkdJQSBTTDsyMTcsNTQ7MTA4LDU2OzIzMiw4MDsxNDIsNTRcclxuQjI1Nzk0MjA3O0FERUlOTk9WQSBFTkVSR0lBIFNMOzgxLDU5OzgxLDQ3OzczLDEzOzk4LDY0XHJcbkE4NzYyMzk3MTtBQ1NPTCBFTkVSR0lBIEdMT0JBTCBTQTs0NSwyOTszNiwzMTszMSw4MzsyOCw2N1xyXG5CODcxNzc0MDg7QUJPVVRXSElURSBTTDs1Miw2NTszMSwyNTsyOCwwNTszMiwzMlxyXG5CMjIzNTA0NjY7QUIgRU5FUkdJQSAxOTAzIFMuTC47ODcsMzc7NjAsOTU7NTAsMDA7NjMsNzlgO1xyXG5cclxuLy8gLS0tIDIuIFBST0NFU0FNSUVOVE8gLS0tXHJcbmRhdGEgPSBkMy5kc3ZGb3JtYXQoXCI7XCIpLnBhcnNlKGNzdkNvbnRlbnQsIChkKSA9PiB7XHJcbiAgY29uc3Qgcm93ID0geyBcIk5JRlwiOiBkLk5JRiwgXCJFbXByZXNhXCI6IGQuRW1wcmVzYSB9O1xyXG4gIE9iamVjdC5rZXlzKGQpLmZvckVhY2goayA9PiB7XHJcbiAgICBpZiAoay5pbmNsdWRlcyhcIlZlbnRhc1wiKSkge1xyXG4gICAgICBsZXQgeWVhciA9IGsucmVwbGFjZShcIlZlbnRhc1wiLCBcIlwiKS50cmltKCk7XHJcbiAgICAgIGxldCB2YWwgPSBwYXJzZUZsb2F0KGRba10ucmVwbGFjZShcIixcIiwgXCIuXCIpKSB8fCAwO1xyXG4gICAgICByb3dbeWVhcl0gPSB2YWw7XHJcbiAgICB9XHJcbiAgfSk7XHJcbiAgcmV0dXJuIHJvdztcclxufSlcclxuXHJcbi8vIERldGVjdGFyIGHDsW9zXHJcbnllYXJzID0gT2JqZWN0LmtleXMoZGF0YVswXSkuZmlsdGVyKGsgPT4gIWlzTmFOKGspKS5zb3J0KCk7XHJcblxyXG4vLyBGb3JtYXRvIGxhcmdvIHBhcmEgZ3LDoWZpY2FzXHJcbmRhdGFfbG9uZyA9IGRhdGEuZmxhdE1hcChkID0+IHtcclxuICByZXR1cm4geWVhcnMubWFwKHllYXIgPT4gKHtcclxuICAgIFwiRW1wcmVzYVwiOiBkLkVtcHJlc2EsIFwiTklGXCI6IGQuTklGLCBcIkHDsW9cIjogcGFyc2VJbnQoeWVhciksIFwiVmVudGFzXCI6IGRbeWVhcl0gfHwgMFxyXG4gIH0pKTtcclxufSlcclxuXHJcbi8vIFZhcmlhYmxlcyBSZWFjdGl2YXNcclxubXV0YWJsZSBjdXJyZW50VGFiID0gXCJjb21wYXJhZG9yXCI7IFxyXG5tdXRhYmxlIHNlbGVjdGVkQ29tcGFueSA9IG51bGw7XHJcbiJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IlxyXG4vLyAxLiBEQVRPUyBSRUFMRVMgSU5DUlVTVEFET1MgKFNpbiBsZWVyIGFyY2hpdm9zIGV4dGVybm9zKVxyXG4vLyBFc3RvIGdhcmFudGl6YSBxdWUgbGEgY2FyZ2EgbnVuY2EgZmFsbGEuXHJcbmNzdkNvbnRlbnQgPSBgTklGO0VtcHJlc2E7VmVudGFzIDIwMjE7VmVudGFzIDIwMjI7VmVudGFzIDIwMjM7VmVudGFzIDIwMjRcclxuQTgxOTQ4MDc3O0VOREVTQSBFTkVSR0lBLCBTLkEuVS47Nzg1MDAsMDA7NzYyMDAsNTA7NzQxMDAsMjA7NzIwNTAsMDBcclxuQTk1NzU4Mzg5O0lCRVJEUk9MQSBDTElFTlRFUywgUy5BLlUuOzY1NDAwLDAwOzY2ODAwLDAwOzY4OTAwLDUwOzcwMTAwLDAwXHJcbkI4Mjg0NjgxNztOQVRVUkdZIElCRVJJQSwgUy5BLjs0NTIwMCwwMDs0NDEwMCwwMDs0MzUwMCwwMDs0MjgwMCwwMFxyXG5BMzMwMDUzOTY7VE9UQUxFTkVSR0lFUyBNRVJDQURPIEVTUEHDkUEgUy5BLjsyNTAwMCwwMDsyNjUwMCwwMDsyODAwMCwwMDsyOTUwMCwwMFxyXG5CMzE3Mzc0MjI7QUNDSU9OQSBHUkVFTiBFTkVSR1kgREVWRUxPUE1FTlRTIFNMOzYzNDksNjk7NzQ0MSwzNzs4MzM0LDMxOzc4MDYsNzNcclxuQjI2NTAwMjMxO0FERUxGQVMgRU5FUkdJQSBTTDsyMTcsNTQ7MTA4LDU2OzIzMiw4MDsxNDIsNTRcclxuQjI1Nzk0MjA3O0FERUlOTk9WQSBFTkVSR0lBIFNMOzgxLDU5OzgxLDQ3OzczLDEzOzk4LDY0XHJcbkE4NzYyMzk3MTtBQ1NPTCBFTkVSR0lBIEdMT0JBTCBTQTs0NSwyOTszNiwzMTszMSw4MzsyOCw2N1xyXG5CODcxNzc0MDg7QUJPVVRXSElURSBTTDs1Miw2NTszMSwyNTsyOCwwNTszMiwzMlxyXG5CMjIzNTA0NjY7QUIgRU5FUkdJQSAxOTAzIFMuTC47ODcsMzc7NjAsOTU7NTAsMDA7NjMsNzlgO1xyXG5cclxuLy8gMi4gUFJPQ0VTQU1JRU5UT1xyXG5kYXRhID0gZDMuZHN2Rm9ybWF0KFwiO1wiKS5wYXJzZShjc3ZDb250ZW50LCAoZCkgPT4ge1xyXG4gIGNvbnN0IHJvdyA9IHsgXCJOSUZcIjogZC5OSUYsIFwiRW1wcmVzYVwiOiBkLkVtcHJlc2EgfTtcclxuICBPYmplY3Qua2V5cyhkKS5mb3JFYWNoKGsgPT4ge1xyXG4gICAgaWYgKGsuaW5jbHVkZXMoXCJWZW50YXNcIikpIHtcclxuICAgICAgbGV0IHllYXIgPSBrLnJlcGxhY2UoXCJWZW50YXNcIiwgXCJcIikudHJpbSgpO1xyXG4gICAgICBsZXQgdmFsID0gcGFyc2VGbG9hdChkW2tdLnJlcGxhY2UoXCIsXCIsIFwiLlwiKSkgfHwgMDtcclxuICAgICAgcm93W3llYXJdID0gdmFsO1xyXG4gICAgfVxyXG4gIH0pO1xyXG4gIHJldHVybiByb3c7XHJcbn0pXHJcblxyXG55ZWFycyA9IE9iamVjdC5rZXlzKGRhdGFbMF0pLmZpbHRlcihrID0+ICFpc05hTihrKSkuc29ydCgpO1xyXG5cclxuZGF0YV9sb25nID0gZGF0YS5mbGF0TWFwKGQgPT4ge1xyXG4gIHJldHVybiB5ZWFycy5tYXAoeWVhciA9PiAoe1xyXG4gICAgXCJFbXByZXNhXCI6IGQuRW1wcmVzYSwgXCJOSUZcIjogZC5OSUYsIFwiQcOxb1wiOiBwYXJzZUludCh5ZWFyKSwgXCJWZW50YXNcIjogZFt5ZWFyXSB8fCAwXHJcbiAgfSkpO1xyXG59KVxyXG5cclxuLy8gVmFyaWFibGVzIFJlYWN0aXZhcyAoQ29udHJvbGFuIGxhIGludGVyZmF6KVxyXG5tdXRhYmxlIGN1cnJlbnRUYWIgPSBcImNvbXBhcmFkb3JcIjsgXHJcbm11dGFibGUgc2VsZWN0ZWRDb21wYW55ID0gbnVsbDtcclxuIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
