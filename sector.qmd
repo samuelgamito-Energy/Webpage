@@ -7,44 +7,44 @@ format:
     css: styles.css
 ---
 
+```{=html}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+    <link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)" rel="stylesheet">
     <style>
-        /* AJUSTES DARK MODE GLOBALES */
+        /* AJUSTES DARK MODE */
         body { background-color: #0f172a; font-family: 'Segoe UI', system-ui, sans-serif; color: #cbd5e1; }
         
-        /* PESTAÑAS */
-        .tab-active { background-color: #0f172a; color: #2dd4bf; border: 1px solid #2dd4bf; box-shadow: 0 0 10px rgba(45, 212, 191, 0.2); }
+        /* Pestañas Dark */
+        .tab-active { background-color: #0f172a; color: #2dd4bf; border: 1px solid #2dd4bf; box-shadow: 0 0 15px rgba(45, 212, 191, 0.1); }
         .tab-inactive { background-color: #1e293b; color: #94a3b8; border: 1px solid #334155; }
         .tab-inactive:hover { background-color: #334155; color: #fff; }
 
-        /* TARJETAS */
-        .card { background-color: #1e293b; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); border: 1px solid #334155; }
+        /* Tarjetas Dark */
+        .card { background: #1e293b; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3); border: 1px solid #334155; }
         
-        /* INPUTS Y TABLAS */
-        input { background-color: #0f172a !important; border-color: #334155 !important; color: #fff !important; }
-        table thead { background-color: #0f172a !important; color: #94a3b8 !important; }
-        table tbody tr:hover { background-color: rgba(45, 212, 191, 0.05) !important; }
-        td { border-bottom: 1px solid #334155 !important; color: #cbd5e1; }
+        /* Ajustes específicos para inputs y tablas en oscuro */
+        input::placeholder { color: #64748b; }
+        td { border-color: #334155 !important; }
+        tr:hover td { background-color: rgba(45, 212, 191, 0.05); }
 
         /* Animaciones suaves */
         .fade-in { animation: fadeIn 0.3s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="pb-10 bg-slate-900 text-slate-300">
+<body class="pb-10 bg-slate-900">
 
-    <nav class="bg-slate-950 text-white sticky top-0 z-50 border-b border-slate-800">
+    <nav class="bg-slate-950 text-white sticky top-0 z-50 shadow-lg border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-16">
                 <div class="flex items-center gap-3">
-                    <div class="bg-emerald-500/20 p-2 rounded text-emerald-400 border border-emerald-500/50"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 p-2 rounded"><i class="fa-solid fa-bolt"></i></div>
                     <div>
                         <h1 class="font-bold text-lg leading-tight text-white">FNEE Intelligence</h1>
                         <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold">Strategic Dashboard</p>
@@ -54,10 +54,10 @@ format:
                     <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
                         <i class="fa-solid fa-chart-column"></i> Mercado
                     </button>
-                    <button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
+                    <button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 hover:text-white">
                         <i class="fa-solid fa-chart-line"></i> Comparador
                     </button>
-                    <button onclick="switchTab('data')" id="btn-data" class="tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
+                    <button onclick="switchTab('data')" id="btn-data" class="tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 hover:text-white">
                         <i class="fa-solid fa-database"></i> Datos
                     </button>
                 </div>
@@ -69,9 +69,9 @@ format:
         
         <div id="view-dashboard" class="fade-in">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div class="card p-6 bg-gradient-to-br from-slate-800 to-slate-900 border border-emerald-500/30">
+                <div class="card p-6 bg-gradient-to-br from-slate-800 to-slate-900 border border-emerald-500/30 text-white">
                     <p class="text-emerald-400 text-xs font-bold uppercase mb-1">Empresas Monitorizadas</p>
-                    <h3 class="text-4xl font-bold text-white" id="kpi-total-companies">0</h3>
+                    <h3 class="text-4xl font-bold" id="kpi-total-companies">0</h3>
                     <div class="mt-4 flex items-center text-emerald-400 text-xs font-bold">
                         <i class="fa-solid fa-check-circle mr-2"></i> Base de datos activa
                     </div>
@@ -94,14 +94,13 @@ format:
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-                
                 <div class="card lg:col-span-2 overflow-hidden flex flex-col h-[600px]">
-                    <div class="p-4 border-b border-slate-700 bg-slate-800 flex justify-between items-center">
+                    <div class="p-4 border-b border-slate-700 bg-slate-950/50 flex justify-between items-center">
                         <h3 class="font-bold text-white"><i class="fa-solid fa-list mr-2"></i> Directorio de Empresas</h3>
                         <div class="relative">
-                            <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-xs"></i>
+                            <i class="fa-solid fa-search absolute left-3 top-3 text-slate-500 text-xs"></i>
                             <input type="text" id="search-input" placeholder="Buscar CIF o Nombre..." 
-                                class="pl-8 pr-4 py-2 border border-slate-600 bg-slate-900 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-64 text-white placeholder-slate-500"
+                                class="pl-8 pr-4 py-2 border border-slate-700 bg-slate-900 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 outline-none w-64 text-white"
                                 onkeyup="filterTable()">
                         </div>
                     </div>
@@ -116,16 +115,16 @@ format:
                                     <th class="px-6 py-3 text-center">Acción</th>
                                 </tr>
                             </thead>
-                            <tbody id="companies-table-body" class="divide-y divide-slate-800">
+                            <tbody id="companies-table-body" class="divide-y divide-slate-800 text-slate-300">
                                 </tbody>
                         </table>
                     </div>
-                    <div class="p-2 bg-slate-800 border-t border-slate-700 text-center text-xs text-slate-500">
+                    <div class="p-2 bg-slate-950 border-t border-slate-700 text-center text-xs text-slate-500">
                         Mostrando las primeras 200 coincidencias por rendimiento
                     </div>
                 </div>
 
-                <div class="card p-4 flex flex-col bg-slate-800 border-slate-700">
+                <div class="card p-4 flex flex-col">
                     <h3 class="font-bold text-white mb-4 text-sm">Volumen Total Mercado (GWh)</h3>
                     <div class="flex-1 relative">
                         <canvas id="marketChart"></canvas>
@@ -144,9 +143,9 @@ format:
                         <h3 class="font-bold text-white mb-4 text-sm uppercase">1. Añadir Competidores</h3>
                         <div class="relative mb-2">
                             <input type="text" id="comp-search" placeholder="Escribe para buscar..." 
-                                class="w-full px-4 py-2 border border-slate-600 bg-slate-900 rounded-lg text-sm outline-none focus:border-emerald-500 text-white"
+                                class="w-full px-4 py-2 border border-slate-700 bg-slate-900 rounded-lg text-sm outline-none focus:border-emerald-500 text-white"
                                 onkeyup="searchCompetitor()">
-                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-48 overflow-y-auto"></div>
+                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded-lg shadow-xl max-h-48 overflow-y-auto text-slate-300"></div>
                         </div>
                         <div id="selected-comps" class="space-y-2 mt-4 min-h-[100px]">
                             <p class="text-xs text-slate-500 italic text-center mt-4">Máximo 5 empresas</p>
@@ -170,7 +169,7 @@ format:
                         <canvas id="comparatorChart"></canvas>
                     </div>
                     <div class="mt-4 overflow-x-auto">
-                        <table class="w-full text-sm text-left border border-slate-700 rounded">
+                        <table class="w-full text-sm text-left border border-slate-700 rounded text-slate-300">
                             <thead class="bg-slate-900 text-slate-400 uppercase text-xs">
                                 <tr>
                                     <th class="px-4 py-2">Empresa</th>
@@ -260,8 +259,12 @@ format:
             { cif: "B82846825", name: "ENERGIA XXI (ENDESA REF)", sales: { 2019: 13261, 2020: 12968, 2021: 12673, 2022: 12673, 2023: 12400, 2024: 12300 } },
             { cif: "A95000295", name: "TOTALENERGIES CLIENTES, S.A.U.", sales: { 2019: 13310, 2020: 14518, 2021: 23543, 2022: 23543, 2023: 25000, 2024: 26500 } },
             { cif: "A62338827", name: "AUDAX RENOVABLES, S.A.", sales: { 2019: 1677, 2020: 1675, 2021: 1725, 2022: 1800, 2023: 1950, 2024: 2100 } },
+            { cif: "B85228138", name: "FORTIA ENERGIA S.L.", sales: { 2019: 7629, 2020: 5763, 2021: 4722, 2022: 5100, 2023: 5300, 2024: 5500 } },
             { cif: "B31737422", name: "ACCIONA GREEN ENERGY", sales: { 2019: 5654, 2020: 4992, 2021: 6349, 2022: 6500, 2023: 6700, 2024: 6900 } },
-            { cif: "B83160994", name: "AXPO IBERIA S.L.", sales: { 2019: 7404, 2020: 14727, 2021: 12969, 2022: 14727, 2023: 10500, 2024: 10000 } }
+            { cif: "B83160994", name: "AXPO IBERIA S.L.", sales: { 2019: 7404, 2020: 14727, 2021: 12969, 2022: 14727, 2023: 10500, 2024: 10000 } },
+            { cif: "A85908036", name: "FENIE ENERGIA, S.A.", sales: { 2019: 3949, 2020: 2476, 2021: 2127, 2022: 2127, 2023: 2000, 2024: 1950 } },
+            { cif: "B88181441", name: "ELECTRICIDAD ELEIA S.L.", sales: { 2019: 2.9, 2020: 204, 2021: 204, 2022: 473, 2023: 500, 2024: 550 } },
+            { cif: "B98670003", name: "ENERGÍA COLECTIVA, S.L.", sales: { 2019: 97, 2020: 180, 2021: 264, 2022: 264, 2023: 350, 2024: 380 } }
         ];
 
         const YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
@@ -610,3 +613,4 @@ format:
     </script>
 </body>
 </html>
+```
