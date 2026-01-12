@@ -8,31 +8,29 @@ format:
 ---
 
 ```{=html}
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+<script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+<link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)" rel="stylesheet">
 
 <style>
-    /* Forzamos el fondo oscuro en toda la página */
+    /* AJUSTES DARK MODE */
     body { background-color: #0f172a !important; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
     
-    /* Ajustes para las pestañas en oscuro */
+    /* Pestañas */
     .tab-active { background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf; }
     .tab-inactive { background-color: #0f172a; color: #94a3b8; border: 1px solid #334155; }
     .tab-inactive:hover { background-color: #1e293b; color: #fff; }
     
-    /* Ajustes para tarjetas en oscuro */
+    /* Tarjetas */
     .card-dark { background-color: #1e293b; border: 1px solid #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); border-radius: 0.75rem; }
     
-    /* Inputs oscuros */
+    /* Inputs y Tablas */
     input { background-color: #0f172a !important; border-color: #334155 !important; color: #fff !important; }
-    
-    /* Tablas oscuras */
     thead { background-color: #0f172a !important; color: #94a3b8; }
     tr:hover { background-color: rgba(45, 212, 191, 0.05) !important; }
     td { border-color: #334155 !important; color: #cbd5e1; }
     
-    /* Scrollbar oscura */
+    /* Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -72,19 +70,19 @@ format:
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                 <div class="card-dark p-6 bg-gradient-to-br from-slate-800 to-slate-900 border border-emerald-500/20">
                     <p class="text-emerald-400 text-xs font-bold uppercase mb-1">Empresas Monitorizadas</p>
-                    <h3 class="text-4xl font-bold text-white" id="kpi-total-companies">0</h3>
+                    <h3 class="text-4xl font-bold text-white" id="kpi-total-companies">-</h3>
                     <div class="mt-4 flex items-center text-emerald-400 text-xs font-bold">
                         <i class="fa-solid fa-check-circle mr-2"></i> Base de datos activa
                     </div>
                 </div>
                 <div class="card-dark p-6">
                     <p class="text-slate-400 text-xs font-bold uppercase mb-1">Volumen Total 2024</p>
-                    <h3 class="text-2xl font-bold text-white" id="kpi-total-sales">0 GWh</h3>
+                    <h3 class="text-2xl font-bold text-white" id="kpi-total-sales">- GWh</h3>
                     <p class="text-xs text-slate-500 mt-2">Suma agregada de mercado</p>
                 </div>
                 <div class="card-dark p-6">
                     <p class="text-slate-400 text-xs font-bold uppercase mb-1">Coste FNEE Est. (2024)</p>
-                    <h3 class="text-2xl font-bold text-blue-400" id="kpi-total-cost">0 M€</h3>
+                    <h3 class="text-2xl font-bold text-blue-400" id="kpi-total-cost">- M€</h3>
                     <p class="text-xs text-slate-500 mt-2">Estimado @ ~239k€/GWh</p>
                 </div>
                 <div class="card-dark p-6">
@@ -227,27 +225,15 @@ format:
 </div>
 
 <script>
-    // Configuración Gráfica Dark Mode
+    // Configuración Gráfica
     Chart.defaults.color = '#94a3b8';
     Chart.defaults.borderColor = '#334155';
 
-    let DB = [
-        { cif: "A81948077", name: "ENDESA ENERGÍA S.A.U.", sales: { 2019: 96136, 2020: 85210, 2021: 75390, 2022: 78328, 2023: 75390, 2024: 68500 } },
-        { cif: "A80298896", name: "CEPSA COMERCIAL PETROLEO, S.A.U.", sales: { 2019: 87767, 2020: 71631, 2021: 71796, 2022: 75500, 2023: 74000, 2024: 73200 } },
-        { cif: "A95758389", name: "IBERDROLA CLIENTES, S.A.U.", sales: { 2019: 56083, 2020: 51557, 2021: 51557, 2022: 42000, 2023: 39293, 2024: 46500 } },
-        { cif: "A61797536", name: "NATURGY IBERIA S.A.", sales: { 2019: 42699, 2020: 30751, 2021: 23978, 2022: 22388, 2023: 21500, 2024: 20100 } },
-        { cif: "A28559573", name: "GALP ENERGÍA ESPAÑA, S.A.U.", sales: { 2019: 36467, 2020: 23744, 2021: 22253, 2022: 24500, 2023: 25100, 2024: 26000 } },
-        { cif: "A80298839", name: "REPSOL PRODUCTOS PETROLIFEROS", sales: { 2019: 11748, 2020: 119846, 2021: 194426, 2022: 185000, 2023: 175000, 2024: 170000 } },
-        { cif: "A28135846", name: "BP OIL ESPAÑA, S.A.U.", sales: { 2019: 41080, 2020: 34795, 2021: 39293, 2022: 38000, 2023: 37500, 2024: 36000 } },
-        { cif: "B82846825", name: "ENERGIA XXI (ENDESA REF)", sales: { 2019: 13261, 2020: 12968, 2021: 12673, 2022: 12673, 2023: 12400, 2024: 12300 } },
-        { cif: "A95000295", name: "TOTALENERGIES CLIENTES, S.A.U.", sales: { 2019: 13310, 2020: 14518, 2021: 23543, 2022: 23543, 2023: 25000, 2024: 26500 } },
-        { cif: "A62338827", name: "AUDAX RENOVABLES, S.A.", sales: { 2019: 1677, 2020: 1675, 2021: 1725, 2022: 1800, 2023: 1950, 2024: 2100 } },
-        { cif: "B85228138", name: "FORTIA ENERGIA S.L.", sales: { 2019: 7629, 2020: 5763, 2021: 4722, 2022: 5100, 2023: 5300, 2024: 5500 } },
-        { cif: "B31737422", name: "ACCIONA GREEN ENERGY", sales: { 2019: 5654, 2020: 4992, 2021: 6349, 2022: 6500, 2023: 6700, 2024: 6900 } },
-        { cif: "B83160994", name: "AXPO IBERIA S.L.", sales: { 2019: 7404, 2020: 14727, 2021: 12969, 2022: 14727, 2023: 10500, 2024: 10000 } }
-    ];
-
-    const YEARS = [2019, 2020, 2021, 2022, 2023, 2024];
+    // Variable global de datos (empezamos vacíos y cargamos CSV)
+    let DB = [];
+    // Años por defecto (se actualizarán al leer el CSV)
+    let YEARS = [2020, 2021, 2022, 2023, 2024]; 
+    
     let marketChartInstance = null;
     let comparatorChartInstance = null;
     let modalChartInstance = null;
@@ -258,8 +244,73 @@ format:
     const fmtEur = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
     const calcCAGR = (start, end, periods) => (start > 0 && periods > 0) ? ((Math.pow(end / start, 1 / periods) - 1) * 100).toFixed(2) : 0;
 
+    // --- CARGA AUTOMÁTICA DE CSV ---
+    async function loadData() {
+        try {
+            const response = await fetch('ventas_boe.csv');
+            if (!response.ok) throw new Error("No se encontró ventas_boe.csv");
+            const text = await response.text();
+            
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+            if(lines.length < 2) return;
+
+            // Detectar cabeceras para encontrar años
+            const headers = lines[0].split(';').map(h => h.replace(/["\r]/g, '').trim());
+            
+            // Buscar columnas que parezcan años (ej: "2020", "Ventas 2021")
+            const yearMapping = [];
+            headers.forEach((h, i) => {
+                const match = h.match(/20\d{2}/);
+                if (match) {
+                    yearMapping.push({ index: i, year: parseInt(match[0]) });
+                }
+            });
+
+            // Actualizar lista global de años si hemos encontrado
+            if(yearMapping.length > 0) {
+                YEARS = [...new Set(yearMapping.map(y => y.year))].sort();
+            }
+
+            const newDB = [];
+            for (let i = 1; i < lines.length; i++) {
+                const cols = lines[i].split(';');
+                if (cols.length < 2) continue;
+                
+                // Asumimos col 0 = CIF, col 1 = Empresa
+                const cif = cols[0].replace(/["\r]/g, '').trim().toUpperCase();
+                const name = cols[1].replace(/["\r]/g, '').trim();
+                const sales = {};
+                
+                yearMapping.forEach(ym => {
+                    if (cols[ym.index]) {
+                        // Limpiar formato español: quitar puntos miles, coma a punto decimal
+                        let valStr = cols[ym.index].replace(/["\r]/g, '').trim();
+                        if(valStr) {
+                            valStr = valStr.replace(/\./g, '').replace(',', '.');
+                            sales[ym.year] = parseFloat(valStr) || 0;
+                        }
+                    }
+                });
+
+                if (cif && name) {
+                    newDB.push({ cif, name, sales });
+                }
+            }
+            
+            DB = newDB;
+            console.log("Datos cargados:", DB.length, "empresas.");
+            renderDashboard();
+
+        } catch (err) {
+            console.error("Error cargando CSV:", err);
+            // Si falla, dejamos DB vacía o mostramos aviso discreto
+            // renderDashboard(); // Renderiza vacío
+        }
+    }
+
+    // --- FUNCIONES DE INTERFAZ ---
     function switchTab(tabId) {
-        ['dashboard', 'comparator', 'data'].forEach(t => {
+        ['dashboard', 'comparator'].forEach(t => {
             const el = document.getElementById('view-' + t);
             const btn = document.getElementById('btn-' + t);
             if(el) el.classList.add('hidden');
@@ -275,20 +326,27 @@ format:
     }
 
     function renderDashboard() {
-        let totalSales2024 = 0;
+        if(DB.length === 0) return; // Esperar datos
+
+        // Definir años clave dinámicamente (último y penúltimo)
+        const lastYear = YEARS[YEARS.length - 1];
+        const prevYear = YEARS[YEARS.length - 2];
+
+        let totalSalesLast = 0;
         let topGrower = { name: '-', growth: -Infinity };
 
         DB.forEach(c => {
-            const s24 = c.sales[2024] || 0;
-            const s23 = c.sales[2023] || 0;
-            totalSales2024 += s24;
-            const growth = s24 - s23;
+            const sLast = c.sales[lastYear] || 0;
+            const sPrev = c.sales[prevYear] || 0;
+            totalSalesLast += sLast;
+            
+            const growth = sLast - sPrev;
             if (growth > topGrower.growth) topGrower = { name: c.name, growth: growth };
         });
 
         document.getElementById('kpi-total-companies').innerText = DB.length;
-        document.getElementById('kpi-total-sales').innerText = fmtNum(totalSales2024) + ' GWh';
-        document.getElementById('kpi-total-cost').innerText = fmtEur(totalSales2024 * 239000).slice(0,-2) + ' M€';
+        document.getElementById('kpi-total-sales').innerText = fmtNum(totalSalesLast) + ' GWh';
+        document.getElementById('kpi-total-cost').innerText = fmtEur(totalSalesLast * 239000).slice(0,-2) + ' M€';
         document.getElementById('kpi-top-grower-name').innerText = topGrower.name;
         document.getElementById('kpi-top-grower-val').innerText = '+' + fmtNum(topGrower.growth) + ' GWh';
 
@@ -297,21 +355,24 @@ format:
     }
 
     function renderTable(data) {
+        const lastYear = YEARS[YEARS.length - 1];
+        const prevYear = YEARS[YEARS.length - 2];
         const tbody = document.getElementById('companies-table-body');
         tbody.innerHTML = '';
-        const sorted = [...data].sort((a,b) => (b.sales[2024]||0) - (a.sales[2024]||0)).slice(0, 200);
+        
+        const sorted = [...data].sort((a,b) => (b.sales[lastYear]||0) - (a.sales[lastYear]||0)).slice(0, 200);
 
         sorted.forEach(c => {
-            const s24 = c.sales[2024] || 0;
-            const s23 = c.sales[2023] || 0;
-            const trend = s23 > 0 ? ((s24 - s23)/s23 * 100).toFixed(1) : 0;
+            const sLast = c.sales[lastYear] || 0;
+            const sPrev = c.sales[prevYear] || 0;
+            const trend = sPrev > 0 ? ((sLast - sPrev)/sPrev * 100).toFixed(1) : 0;
             const trendColor = trend >= 0 ? 'text-emerald-400' : 'text-rose-400';
             
             const row = `
                 <tr class="hover:bg-slate-800 transition-colors border-b border-slate-800">
                     <td class="px-6 py-3 font-mono text-xs text-slate-500">${c.cif}</td>
                     <td class="px-6 py-3 font-medium text-white truncate max-w-xs" title="${c.name}">${c.name}</td>
-                    <td class="px-6 py-3 text-right font-bold text-slate-300">${fmtNum(s24)}</td>
+                    <td class="px-6 py-3 text-right font-bold text-slate-300">${fmtNum(sLast)}</td>
                     <td class="px-6 py-3 text-right font-bold text-xs ${trendColor}">${trend > 0 ? '+' : ''}${trend}%</td>
                     <td class="px-6 py-3 text-center">
                         <button onclick="openModal('${c.cif}')" class="text-blue-400 hover:bg-slate-700 p-2 rounded transition">
@@ -356,6 +417,7 @@ format:
         renderTable(filtered);
     }
 
+    // --- COMPARADOR ---
     function searchCompetitor() {
         const term = document.getElementById('comp-search').value.toLowerCase();
         const resultsDiv = document.getElementById('comp-results');
@@ -458,20 +520,25 @@ format:
             }
         });
 
+        // Actualizar tabla comparativa
         const tbody = document.getElementById('comp-table-body');
         tbody.innerHTML = '';
+        
+        const lastYear = YEARS[YEARS.length - 1];
+        const firstYear = YEARS[0];
+
         selectedCompetitors.forEach(cif => {
             const comp = DB.find(c => c.cif === cif);
-            const s20 = comp.sales[2020] || 0;
-            const s24 = comp.sales[2024] || 0;
-            const growth = s20 > 0 ? ((s24 - s20)/s20 * 100).toFixed(1) : 0;
-            const cagr = calcCAGR(s20, s24, 4);
+            const sStart = comp.sales[firstYear] || 0;
+            const sEnd = comp.sales[lastYear] || 0;
+            const growth = sStart > 0 ? ((sEnd - sStart)/sStart * 100).toFixed(1) : 0;
+            const cagr = calcCAGR(sStart, sEnd, YEARS.length - 1);
             
             const row = `
                 <tr class="border-b border-slate-700">
                     <td class="px-4 py-2 font-bold text-white truncate max-w-xs">${comp.name}</td>
-                    <td class="px-4 py-2 text-right text-slate-500">${fmtNum(s20)}</td>
-                    <td class="px-4 py-2 text-right font-bold text-slate-300">${fmtNum(s24)}</td>
+                    <td class="px-4 py-2 text-right text-slate-500">${fmtNum(sStart)}</td>
+                    <td class="px-4 py-2 text-right font-bold text-slate-300">${fmtNum(sEnd)}</td>
                     <td class="px-4 py-2 text-right text-blue-400 font-bold">${cagr}%</td>
                     <td class="px-4 py-2 text-right ${growth >= 0 ? 'text-emerald-400' : 'text-rose-400'} font-bold">${growth}%</td>
                 </tr>
@@ -480,23 +547,27 @@ format:
         });
     }
 
+    // --- MODAL ---
     function openModal(cif) {
         const comp = DB.find(c => c.cif === cif);
         if(!comp) return;
+
+        const lastYear = YEARS[YEARS.length - 1];
+        const firstYear = YEARS[0];
 
         document.getElementById('modal').classList.remove('hidden');
         document.getElementById('modal-cif').innerText = comp.cif;
         document.getElementById('modal-name').innerText = comp.name;
         
-        const s20 = comp.sales[2020] || 0;
-        const s24 = comp.sales[2024] || 0;
-        const growth = s20 > 0 ? ((s24 - s20)/s20 * 100).toFixed(1) + '%' : '-';
-        const cagr = calcCAGR(s20, s24, 4) + '%';
+        const sStart = comp.sales[firstYear] || 0;
+        const sEnd = comp.sales[lastYear] || 0;
+        const growth = sStart > 0 ? ((sEnd - sStart)/sStart * 100).toFixed(1) + '%' : '-';
+        const cagr = calcCAGR(sStart, sEnd, YEARS.length - 1) + '%';
         
-        document.getElementById('modal-sales-24').innerText = fmtNum(s24);
+        document.getElementById('modal-sales-24').innerText = fmtNum(sEnd);
         document.getElementById('modal-growth').innerText = growth;
         document.getElementById('modal-cagr').innerText = cagr;
-        document.getElementById('modal-cost').innerText = fmtEur(s24 * 239000);
+        document.getElementById('modal-cost').innerText = fmtEur(sEnd * 239000);
 
         const ctx = document.getElementById('modalChart').getContext('2d');
         if(modalChartInstance) modalChartInstance.destroy();
@@ -527,6 +598,7 @@ format:
         document.getElementById('modal').classList.add('hidden');
     }
 
-    renderDashboard();
+    // Init
+    loadData();
 </script>
 ```
