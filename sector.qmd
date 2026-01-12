@@ -10,60 +10,65 @@ format:
 ```{=html}
 <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
 <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
-<link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css)" rel="stylesheet">
+<link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)" rel="stylesheet">
 
 <style>
-    /* AJUSTES DARK MODE */
-    body { background-color: #0f172a !important; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+    /* RESET Y ESTRUCTURA (Para eliminar scroll global) */
+    body { 
+        background-color: #0f172a; 
+        color: #cbd5e1; 
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        overflow: hidden; /* <--- CLAVE: Bloquea scroll de la ventana */
+        height: 100vh;
+        margin: 0;
+    }
     
-    /* Contenedor Principal (Pantalla completa) */
-    .main-wrapper { height: 100vh; display: flex; flex-direction: column; padding: 20px 40px; box-sizing: border-box; max-width: 1600px; margin: 0 auto; }
+    /* Contenedor Principal Flex */
+    #app-root {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        max-width: 100%;
+    }
 
     /* Pestañas */
     .tab-active { background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf; }
     .tab-inactive { background-color: #0f172a; color: #94a3b8; border: 1px solid #334155; }
     .tab-inactive:hover { background-color: #1e293b; color: #fff; }
-    
+
     /* Tarjetas */
-    .card-dark { background-color: #1e293b; border: 1px solid #334155; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); border-radius: 0.75rem; }
+    .card-dark { 
+        background-color: #1e293b; 
+        border: 1px solid #334155; 
+        border-radius: 0.75rem; 
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); 
+    }
+
+    /* Tabla */
+    .fixed-header-table thead th { 
+        position: sticky; top: 0; z-index: 10; 
+        background-color: #0f172a; color: #94a3b8;
+        border-bottom: 1px solid #2dd4bf;
+    }
+    .table-row:hover { background-color: rgba(45, 212, 191, 0.05); }
     
-    /* Inputs y Tablas */
-    input { background-color: #0f172a !important; border-color: #334155 !important; color: #fff !important; }
-    thead { background-color: #0f172a !important; color: #94a3b8; }
-    tr:hover { background-color: rgba(45, 212, 191, 0.05) !important; }
-    td { border-color: #334155 !important; color: #cbd5e1; }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
+    /* Scrollbar Fina */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
+    /* Animaciones */
     .fade-in { animation: fadeIn 0.3s ease-in; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Layout Específico */
-    .dashboard-split { flex: 1; display: grid; grid-template-columns: 70% 28%; justify-content: space-between; gap: 20px; min-height: 0; }
-    .panel { background: #1e293b; border: 1px solid #334155; border-radius: 12px; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-    .table-scroll-area { flex: 1; overflow-y: auto; padding: 0; }
-    
-    /* Tabla Alineada */
-    .mini-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed; }
-    .mini-table th { position: sticky; top: 0; background: #0f172a; color: #94a3b8; z-index: 10; text-align: left; padding: 10px 15px; border-bottom: 1px solid #334155; }
-    .mini-table td { padding: 10px 15px; border-bottom: 1px solid #334155; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; vertical-align: middle; }
-    
-    .col-empresa { width: 50%; }
-    .col-dato { width: 20%; text-align: right; font-weight: 700; font-family: 'Segoe UI Mono', monospace; }
-    .col-trend { width: 15%; text-align: center; }
-    .col-action { width: 15%; text-align: center; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-<div class="main-wrapper">
+<div id="app-root">
 
-    <nav class="flex-none bg-slate-950 text-white border-b border-slate-800 shadow-xl mb-6 rounded-xl">
-        <div class="px-6 h-16 flex items-center justify-between">
+    <nav class="flex-none bg-slate-950 text-white border-b border-slate-800 shadow-md z-50">
+        <div class="max-w-[1800px] mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="bg-emerald-500/20 p-2 rounded text-emerald-400 border border-emerald-500/30"><i class="fa-solid fa-bolt"></i></div>
+                <div class="bg-emerald-500/10 p-2 rounded text-emerald-400 border border-emerald-500/20"><i class="fa-solid fa-bolt"></i></div>
                 <div>
                     <h1 class="font-bold text-lg leading-tight text-white">FNEE Intelligence</h1>
                     <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold">Strategic Dashboard</p>
@@ -80,129 +85,119 @@ format:
         </div>
     </nav>
 
-    <div class="flex-1 overflow-hidden flex flex-col relative">
+    <main class="flex-1 overflow-hidden p-6 max-w-[1800px] w-full mx-auto flex flex-col">
         
-        <div id="view-dashboard" class="fade-in flex flex-col h-full">
-            <div class="flex-none grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div class="card-dark p-5 flex flex-col justify-center h-24 relative overflow-hidden">
-                    <div class="absolute right-0 top-0 p-4 opacity-10"><i class="fa-solid fa-database text-6xl"></i></div>
-                    <p class="text-emerald-400 text-xs font-bold uppercase mb-1">Empresas</p>
-                    <h3 class="text-3xl font-bold text-white z-10" id="kpi-total-companies">-</h3>
-                    <div class="text-[10px] text-emerald-500 font-bold mt-1 z-10"><i class="fa-solid fa-circle text-[6px] mr-1 align-middle"></i> Activas</div>
+        <div id="view-dashboard" class="fade-in flex flex-col h-full gap-6">
+            
+            <div class="flex-none grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="card-dark p-5 flex flex-col justify-center h-24 relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 border-l-4 border-l-emerald-500">
+                    <p class="text-emerald-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Monitorizadas</p>
+                    <h3 class="text-3xl font-bold text-white" id="kpi-companies">0</h3>
+                    <div class="absolute right-4 top-6 text-emerald-500/20 text-4xl"><i class="fa-solid fa-database"></i></div>
                 </div>
-                <div class="card-dark p-5 flex flex-col justify-center h-24">
-                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Volumen 2024</p>
-                    <h3 class="text-2xl font-bold text-white" id="kpi-total-sales">- GWh</h3>
-                    <p class="text-[10px] text-slate-500 mt-1">Suma total mercado</p>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-blue-500">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Volumen 2024</p>
+                    <h3 class="text-2xl font-bold text-white" id="kpi-sales">- <span class="text-sm text-slate-500">GWh</span></h3>
                 </div>
-                <div class="card-dark p-5 flex flex-col justify-center h-24">
-                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Coste FNEE</p>
-                    <h3 class="text-2xl font-bold text-blue-400" id="kpi-total-cost">- M€</h3>
-                    <p class="text-[10px] text-slate-500 mt-1">Estimado (2024)</p>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-purple-500">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Tendencia</p>
+                    <h3 class="text-lg font-bold text-emerald-400" id="kpi-trend">Positiva</h3>
                 </div>
-                <div class="card-dark p-5 flex flex-col justify-center h-24">
-                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Líder</p>
-                    <h3 class="text-lg font-bold text-white truncate" id="kpi-top-grower-name">-</h3>
-                    <p class="text-emerald-400 font-bold text-xs mt-1" id="kpi-top-grower-val">-</p>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-amber-500">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Líder Mercado</p>
+                    <h3 class="text-lg font-bold text-white truncate" id="kpi-leader">-</h3>
                 </div>
             </div>
 
-            <div class="dashboard-split">
-                <div class="panel">
+            <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-0">
+                
+                <div class="lg:col-span-8 card-dark flex flex-col overflow-hidden">
                     <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center">
-                        <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-list mr-2 text-emerald-500"></i> Directorio</h3>
+                        <h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-list text-emerald-500"></i> Directorio de Empresas</h3>
                         <div class="relative">
                             <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
                             <input type="text" id="search-input" placeholder="Buscar..." 
-                                class="pl-8 pr-3 py-1.5 border border-slate-600 bg-slate-950 rounded text-xs focus:border-emerald-500 outline-none w-48 text-white placeholder-slate-500"
+                                class="pl-8 pr-3 py-1.5 border border-slate-600 bg-slate-950 rounded text-xs focus:border-emerald-500 outline-none w-56 text-white placeholder-slate-600 transition-colors focus:bg-slate-900"
                                 onkeyup="filterTable()">
                         </div>
                     </div>
-                    <div class="table-scroll-area bg-slate-900">
-                        <table class="mini-table">
-                            <thead class="text-xs text-slate-400 uppercase bg-slate-950">
+                    
+                    <div class="flex-1 overflow-y-auto bg-slate-900">
+                        <table class="w-full text-sm text-left fixed-header-table border-collapse">
+                            <thead>
                                 <tr>
-                                    <th class="col-empresa cursor-pointer hover:text-white" onclick="sortTable('name')">Empresa / Razón Social</th>
-                                    <th class="col-dato cursor-pointer hover:text-white" onclick="sortTable('sales2024')">2024 (GWh)</th>
-                                    <th class="col-trend">Trend</th>
-                                    <th class="col-action">Acción</th>
+                                    <th class="py-3 px-4 w-1/2">Empresa / Razón Social</th>
+                                    <th class="py-3 px-4 w-1/5 text-right">Ventas 2024</th>
+                                    <th class="py-3 px-4 w-1/6 text-center">Trend</th>
+                                    <th class="py-3 px-4 w-1/6 text-center">Ficha</th>
                                 </tr>
                             </thead>
-                            <tbody id="companies-table-body" class="divide-y divide-slate-800 text-slate-300"></tbody>
+                            <tbody id="companies-table-body" class="text-slate-300 divide-y divide-slate-800">
+                                </tbody>
                         </table>
                     </div>
-                    <div class="flex-none p-2 bg-slate-950 border-t border-slate-700 text-center text-[10px] text-slate-500">
+                    <div class="flex-none p-2 bg-slate-950 border-t border-slate-800 text-center text-[10px] text-slate-500">
                         <span id="rows-count">0</span> empresas cargadas
                     </div>
                 </div>
 
-                <div class="panel">
+                <div class="lg:col-span-4 card-dark flex flex-col overflow-hidden">
                     <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50">
-                        <h3 class="font-bold text-white text-sm">Evolución del Mercado</h3>
+                        <h3 class="font-bold text-white text-sm">Evolución Total (GWh)</h3>
                     </div>
-                    <div class="flex-1 relative p-4 flex items-center justify-center">
+                    <div class="flex-1 p-4 flex items-center justify-center relative">
                         <canvas id="marketChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="view-comparator" class="hidden fade-in h-full">
+        <div id="view-comparator" class="hidden fade-in flex flex-col h-full">
             <div class="flex h-full gap-6">
                 <div class="w-1/4 flex flex-col gap-4">
-                    <div class="card-dark p-5">
-                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider">1. Añadir Competidores</h3>
+                    <div class="card-dark p-5 flex-none">
+                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400">1. Selección</h3>
                         <div class="relative mb-3">
-                            <input type="text" id="comp-search" placeholder="Escribe para buscar..." 
-                                class="w-full px-3 py-2 border border-slate-700 bg-slate-900 rounded text-sm outline-none focus:border-emerald-500 text-white placeholder-slate-500"
+                            <input type="text" id="comp-search" placeholder="Añadir competidor..." 
+                                class="w-full px-3 py-2 border border-slate-700 bg-slate-950 rounded text-sm outline-none focus:border-emerald-500 text-white"
                                 onkeyup="searchCompetitor()">
-                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded shadow-xl max-h-40 overflow-y-auto text-slate-300 text-sm"></div>
+                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded shadow-xl max-h-40 overflow-y-auto text-slate-300 text-xs"></div>
                         </div>
-                        <div id="selected-comps" class="space-y-2 min-h-[100px]">
-                            <p class="text-xs text-slate-500 italic text-center mt-4">Selecciona hasta 5</p>
-                        </div>
+                        <div id="selected-comps" class="space-y-2 max-h-60 overflow-y-auto">
+                            </div>
+                        <p class="text-[10px] text-slate-500 italic text-center mt-3">Máximo 5 empresas</p>
                     </div>
-                    <div class="card-dark p-5">
-                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider">2. Modo Gráfico</h3>
-                        <button onclick="setChartMode('absolute')" class="w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium transition-colors bg-emerald-500/10 text-emerald-400 border border-emerald-500/50" id="mode-abs">
-                            <i class="fa-solid fa-chart-bar mr-2"></i> Volumen Real (GWh)
+                    
+                    <div class="card-dark p-5 flex-none">
+                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400">2. Métrica</h3>
+                        <button onclick="setChartMode('absolute')" class="w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 transition-all" id="mode-abs">
+                            <i class="fa-solid fa-chart-bar mr-2"></i> Volumen Real
                         </button>
-                        <button onclick="setChartMode('indexed')" class="w-full text-left px-3 py-2 rounded text-xs font-medium transition-colors bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-700" id="mode-idx">
-                            <i class="fa-solid fa-arrow-trend-up mr-2"></i> Base 100 (Crecimiento)
+                        <button onclick="setChartMode('indexed')" class="w-full text-left px-3 py-2 rounded text-xs font-medium bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-800 transition-all" id="mode-idx">
+                            <i class="fa-solid fa-arrow-trend-up mr-2"></i> Crecimiento (%)
                         </button>
                     </div>
                 </div>
 
                 <div class="w-3/4 card-dark p-6 flex flex-col">
-                    <h3 class="font-bold text-white mb-4 text-sm">Comparativa Estratégica</h3>
-                    <div class="flex-1 relative">
+                    <h3 class="font-bold text-white mb-4 text-sm flex justify-between">
+                        <span>Comparativa Estratégica</span>
+                        <span class="text-xs text-slate-500 font-normal">2020 - 2024</span>
+                    </h3>
+                    <div class="flex-1 relative w-full h-full">
                         <canvas id="comparatorChart"></canvas>
-                    </div>
-                    <div class="mt-4 h-32 overflow-y-auto border-t border-slate-700 pt-2">
-                        <table class="w-full text-xs text-left text-slate-300">
-                            <thead class="text-slate-500 uppercase">
-                                <tr>
-                                    <th class="pb-2">Empresa</th>
-                                    <th class="pb-2 text-right">Inicio</th>
-                                    <th class="pb-2 text-right">Fin</th>
-                                    <th class="pb-2 text-right">CAGR</th>
-                                    <th class="pb-2 text-right">Crecimiento</th>
-                                </tr>
-                            </thead>
-                            <tbody id="comp-table-body"></tbody>
-                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div>
+    </main>
 
     <div id="modal" class="fixed inset-0 bg-slate-950/90 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl border border-slate-700 animate-in fade-in zoom-in duration-200">
             <div class="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-700">
                 <div class="flex items-center gap-3">
-                    <span class="bg-slate-700 text-[10px] px-2 py-0.5 rounded font-mono text-emerald-400" id="modal-cif">CIF</span>
+                    <span class="bg-slate-700 text-[10px] px-2 py-0.5 rounded font-mono text-emerald-400 border border-slate-600" id="modal-cif">CIF</span>
                     <h2 class="text-lg font-bold text-white" id="modal-name">Empresa</h2>
                 </div>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times text-lg"></i></button>
@@ -210,23 +205,23 @@ format:
             <div class="p-6">
                 <div class="grid grid-cols-4 gap-4 mb-6">
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase">Ventas 2024</p>
-                        <p class="text-lg font-bold text-white" id="modal-sales-24">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Ventas 2024</p>
+                        <p class="text-lg font-bold text-white mt-1" id="modal-sales-24">-</p>
                     </div>
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase">Crecimiento</p>
-                        <p class="text-lg font-bold text-white" id="modal-growth">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Crecimiento Total</p>
+                        <p class="text-lg font-bold text-white mt-1" id="modal-growth">-</p>
                     </div>
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase">CAGR</p>
-                        <p class="text-lg font-bold text-emerald-400" id="modal-cagr">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">CAGR (4y)</p>
+                        <p class="text-lg font-bold text-emerald-400 mt-1" id="modal-cagr">-</p>
                     </div>
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase">Coste FNEE</p>
-                        <p class="text-lg font-bold text-blue-400" id="modal-cost">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Coste FNEE</p>
+                        <p class="text-lg font-bold text-blue-400 mt-1" id="modal-cost">-</p>
                     </div>
                 </div>
-                <div class="h-64">
+                <div class="h-64 relative">
                     <canvas id="modalChart"></canvas>
                 </div>
             </div>
@@ -236,31 +231,32 @@ format:
 </div>
 
 <script>
+    // Configuración Global ChartJS Dark
     Chart.defaults.color = '#64748b';
     Chart.defaults.borderColor = '#334155';
     Chart.defaults.font.family = "'Segoe UI', sans-serif";
 
+    // Variables Globales
     let DB = [];
-    let YEARS = [2023, 2024]; // Default min
-    
+    let YEARS = []; 
     let marketChartInstance = null;
     let comparatorChartInstance = null;
     let modalChartInstance = null;
     let selectedCompetitors = [];
     let comparatorMode = 'absolute';
 
+    // Utiles
     const fmtNum = (n) => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n);
     const fmtEur = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
     const calcCAGR = (start, end, periods) => (start > 0 && periods > 0) ? ((Math.pow(end / start, 1 / periods) - 1) * 100).toFixed(2) : 0;
 
-    // --- CARGA DE DATOS SIMPLE (Tu CSV corregido) ---
+    // --- CARGA DE CSV (Detecta formato limpio) ---
     async function loadData() {
         try {
             const response = await fetch('ventas_boe.csv');
             if (!response.ok) throw new Error("CSV no encontrado");
             const text = await response.text();
             
-            // Separar líneas (sin hacks raros, solo CSV normal)
             const lines = text.split('\n').map(l => l.trim()).filter(l => l);
             if(lines.length < 2) return;
 
@@ -269,14 +265,15 @@ format:
             const yearMapping = [];
             
             headers.forEach((h, i) => {
-                // Buscamos cualquier cosa que parezca un año (20XX)
                 const match = h.match(/20\d{2}/);
                 if (match) yearMapping.push({ index: i, year: parseInt(match[0]) });
             });
 
             if(yearMapping.length > 0) {
-                // Ordenar años detectados (2020, 2021...)
                 YEARS = [...new Set(yearMapping.map(y => y.year))].sort((a,b) => a - b);
+            } else {
+                console.error("No se detectaron años en el CSV");
+                return;
             }
 
             const newDB = [];
@@ -290,20 +287,17 @@ format:
                 
                 yearMapping.forEach(ym => {
                     if (cols[ym.index]) {
-                        // El CSV ya está limpio, pero por si acaso aseguramos formato numérico
-                        // (Si viene 1.000,00 -> quita punto, cambia coma por punto)
+                        // Limpieza numérica robusta
                         let valStr = cols[ym.index].trim();
-                        // Solo procesamos si no es vacío
-                        if(valStr) {
-                            if(valStr.includes(',') && valStr.includes('.')) { 
-                                valStr = valStr.replace(/\./g, '').replace(',', '.'); 
-                            } else if(valStr.includes(',')) {
-                                valStr = valStr.replace(',', '.');
-                            }
-                            sales[ym.year] = parseFloat(valStr) || 0;
-                        } else {
-                            sales[ym.year] = 0;
+                        // 1.000,00 -> 1000.00
+                        if(valStr.indexOf(',') > -1 && valStr.indexOf('.') > -1) {
+                             valStr = valStr.replace(/\./g, '').replace(',', '.');
+                        } else if(valStr.indexOf(',') > -1) {
+                             valStr = valStr.replace(',', '.');
                         }
+                        sales[ym.year] = parseFloat(valStr) || 0;
+                    } else {
+                        sales[ym.year] = 0;
                     }
                 });
 
@@ -312,21 +306,29 @@ format:
             
             DB = newDB;
             document.getElementById('rows-count').innerText = DB.length;
+            
+            // Auto-seleccionar Top 2 para comparador
+            const top2 = [...DB].sort((a,b) => (b.sales[YEARS[YEARS.length-1]]||0) - (a.sales[YEARS[YEARS.length-1]]||0)).slice(0,2);
+            selectedCompetitors = top2.map(c => c.cif);
+            
             renderDashboard();
+            renderSelectedChips(); // Pre-cargar chips en comparador
 
         } catch (err) {
-            console.error("Error loading CSV:", err);
+            console.error("Error CSV:", err);
         }
     }
 
-    // --- RENDERIZADO ---
+    // --- INTERFAZ ---
     function switchTab(tabId) {
         ['dashboard', 'comparator'].forEach(t => {
             document.getElementById('view-' + t).classList.add('hidden');
-            document.getElementById('btn-' + t).className = 'tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer';
+            const btn = document.getElementById('btn-' + t);
+            btn.className = 'tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer';
         });
         document.getElementById('view-' + tabId).classList.remove('hidden');
         document.getElementById('btn-' + tabId).className = 'tab-active px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-default';
+        
         if(tabId === 'comparator') updateComparatorChart();
     }
 
@@ -343,18 +345,17 @@ format:
             const sLast = c.sales[lastYear] || 0;
             const sPrev = c.sales[prevYear] || 0;
             totalSalesLast += sLast;
-            
             const growth = sLast - sPrev;
             if (growth > topGrower.growth) topGrower = { name: c.name, growth: growth };
         });
 
-        document.getElementById('kpi-total-companies').innerText = DB.length;
-        document.getElementById('kpi-total-sales').innerText = fmtNum(totalSalesLast) + ' GWh';
-        document.getElementById('kpi-total-cost').innerText = fmtEur(totalSalesLast * 239000).slice(0,-2) + ' M€';
-        document.getElementById('kpi-top-grower-name').innerText = topGrower.name;
-        document.getElementById('kpi-top-grower-val').innerText = '+' + fmtNum(topGrower.growth) + ' GWh';
-
+        document.getElementById('kpi-companies').innerText = DB.length;
+        document.getElementById('kpi-sales').innerHTML = fmtNum(totalSalesLast) + ' <span class="text-sm text-slate-500">GWh</span>';
+        document.getElementById('kpi-leader').innerText = topGrower.name;
+        
+        // Tabla
         renderTable(DB);
+        // Gráfica
         renderMarketChart();
     }
 
@@ -370,20 +371,23 @@ format:
             const sLast = c.sales[lastYear] || 0;
             const sPrev = c.sales[prevYear] || 0;
             const trend = sPrev > 0 ? ((sLast - sPrev)/sPrev * 100).toFixed(1) : 0;
-            const trendClass = trend >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400';
+            const trendColor = trend >= 0 ? 'text-emerald-400' : 'text-rose-400';
+            const trendIcon = trend >= 0 ? 'fa-caret-up' : 'fa-caret-down';
             
             const row = `
-                <tr class="border-b border-slate-800 hover:bg-slate-800 transition-colors">
-                    <td class="px-4 py-3">
-                        <div class="font-bold text-white truncate max-w-[250px]" title="${c.name}">${c.name}</div>
+                <tr class="table-row border-b border-slate-800 transition-colors">
+                    <td class="py-3 px-4">
+                        <div class="font-bold text-white truncate max-w-[280px]" title="${c.name}">${c.name}</div>
                         <div class="text-[10px] text-slate-500 font-mono">${c.cif}</div>
                     </td>
-                    <td class="px-4 py-3 text-right font-mono text-slate-300 font-bold">${fmtNum(sLast)}</td>
-                    <td class="px-4 py-3 text-center">
-                        <span class="text-[10px] px-2 py-1 rounded-full font-bold ${trendClass}">${trend > 0 ? '+' : ''}${trend}%</span>
+                    <td class="py-3 px-4 text-right font-mono text-slate-300 font-bold">${fmtNum(sLast)}</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="text-xs font-bold ${trendColor} bg-slate-950 px-2 py-1 rounded">
+                           <i class="fa-solid ${trendIcon} mr-1"></i>${Math.abs(trend)}%
+                        </span>
                     </td>
-                    <td class="px-4 py-3 text-center">
-                        <button onclick="openModal('${c.cif}')" class="text-slate-400 hover:text-blue-400 transition">
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="openModal('${c.cif}')" class="text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 p-2 rounded transition">
                             <i class="fa-solid fa-eye"></i>
                         </button>
                     </td>
@@ -407,16 +411,19 @@ format:
                     label: 'Volumen (GWh)',
                     data: totals,
                     backgroundColor: '#2dd4bf',
+                    hoverBackgroundColor: '#14b8a6',
                     borderRadius: 4,
-                    barThickness: 'flex',
-                    maxBarThickness: 40
+                    barThickness: 40
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false } } }
+                scales: { 
+                    y: { beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, 
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } } 
+                }
             }
         });
     }
@@ -441,8 +448,8 @@ format:
             resultsDiv.classList.remove('hidden');
             matches.forEach(c => {
                 const div = document.createElement('div');
-                div.className = 'p-2 hover:bg-slate-700 cursor-pointer text-xs border-b border-slate-700 text-slate-300';
-                div.innerHTML = `<strong>${c.name}</strong> <span class="text-slate-500">(${c.cif})</span>`;
+                div.className = 'p-2 hover:bg-slate-700 cursor-pointer border-b border-slate-700 text-slate-300';
+                div.innerHTML = `<div class="font-bold text-white">${c.name}</div><div class="text-[10px] text-slate-500">${c.cif}</div>`;
                 div.onclick = () => addCompetitor(c.cif);
                 resultsDiv.appendChild(div);
             });
@@ -472,7 +479,7 @@ format:
         selectedCompetitors.forEach((cif, idx) => {
             const comp = DB.find(c => c.cif === cif);
             const div = document.createElement('div');
-            div.className = 'flex items-center justify-between p-2 bg-slate-900 rounded border border-slate-700 text-xs text-white';
+            div.className = 'flex items-center justify-between p-2 bg-slate-950 rounded border border-slate-700 text-xs text-white';
             div.innerHTML = `<div class="flex items-center gap-2 overflow-hidden"><div class="w-2 h-2 rounded-full flex-shrink-0" style="background:${colors[idx]}"></div><span class="truncate">${comp.name}</span></div><button onclick="removeCompetitor('${cif}')" class="text-slate-500 hover:text-rose-500"><i class="fa-solid fa-times"></i></button>`;
             container.appendChild(div);
         });
@@ -482,13 +489,11 @@ format:
         comparatorMode = mode;
         const btnAbs = document.getElementById('mode-abs');
         const btnIdx = document.getElementById('mode-idx');
-        if(mode === 'absolute') {
-            btnAbs.className = "w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50";
-            btnIdx.className = "w-full text-left px-3 py-2 rounded text-xs font-medium bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-700";
-        } else {
-            btnAbs.className = "w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-700";
-            btnIdx.className = "w-full text-left px-3 py-2 rounded text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50";
-        }
+        const activeClass = "w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 transition-all";
+        const inactiveClass = "w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-800 transition-all";
+        
+        if(mode === 'absolute') { btnAbs.className = activeClass; btnIdx.className = inactiveClass; }
+        else { btnAbs.className = inactiveClass; btnIdx.className = activeClass; }
         updateComparatorChart();
     }
 
@@ -515,24 +520,9 @@ format:
                 responsive: true,
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
-                scales: { y: { beginAtZero: false, grid: { color: '#1e293b' } }, x: { grid: { display: false } } },
+                scales: { y: { beginAtZero: false, grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } },
                 plugins: { legend: { display: false } }
             }
-        });
-
-        // Tabla
-        const tbody = document.getElementById('comp-table-body');
-        tbody.innerHTML = '';
-        const startY = YEARS[0], endY = YEARS[YEARS.length-1];
-        
-        selectedCompetitors.forEach(cif => {
-            const comp = DB.find(c => c.cif === cif);
-            const sStart = comp.sales[startY] || 0;
-            const sEnd = comp.sales[endY] || 0;
-            const growth = sStart > 0 ? ((sEnd - sStart)/sStart * 100).toFixed(1) : 0;
-            const cagr = calcCAGR(sStart, sEnd, YEARS.length - 1);
-            
-            tbody.innerHTML += `<tr class="border-b border-slate-700"><td class="py-2 truncate max-w-[120px]" title="${comp.name}">${comp.name}</td><td class="text-right text-slate-500">${fmtNum(sStart)}</td><td class="text-right font-bold text-white">${fmtNum(sEnd)}</td><td class="text-right text-blue-400">${cagr}%</td><td class="text-right ${growth>=0?'text-emerald-400':'text-rose-400'}">${growth}%</td></tr>`;
         });
     }
 
@@ -542,13 +532,18 @@ format:
         if(!comp) return;
         const lastY = YEARS[YEARS.length-1];
         const sLast = comp.sales[lastY] || 0;
+        const sPrev = comp.sales[YEARS[0]] || 0;
+        const growth = sPrev > 0 ? ((sLast - sPrev)/sPrev * 100).toFixed(1) + '%' : '-';
+        const cagr = calcCAGR(sPrev, sLast, YEARS.length-1) + '%';
         
         document.getElementById('modal').classList.remove('hidden');
         document.getElementById('modal-cif').innerText = comp.cif;
         document.getElementById('modal-name').innerText = comp.name;
         document.getElementById('modal-sales-24').innerText = fmtNum(sLast);
-        
-        // Chart Modal
+        document.getElementById('modal-growth').innerText = growth;
+        document.getElementById('modal-cagr').innerText = cagr;
+        document.getElementById('modal-cost').innerText = fmtEur(sLast * 239000); // Dummy cost calc
+
         const ctx = document.getElementById('modalChart').getContext('2d');
         if(modalChartInstance) modalChartInstance.destroy();
         modalChartInstance = new Chart(ctx, {
@@ -563,7 +558,7 @@ format:
     
     function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-    // ARRANCAR
+    // Init
     loadData();
 </script>
 ```
