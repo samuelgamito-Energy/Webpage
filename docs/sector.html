@@ -157,29 +157,29 @@ ul.task-list li input[type="checkbox"] {
 <link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)" rel="stylesheet">
 
 <style>
-    /* RESET Y ESTRUCTURA (Para eliminar scroll global) */
+    /* --- ESTILOS DARK MODE (FNEE STYLE) --- */
     body { 
-        background-color: #0f172a; 
-        color: #cbd5e1; 
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        overflow: hidden; /* <--- CLAVE: Bloquea scroll de la ventana */
-        height: 100vh;
-        margin: 0;
+        background-color: #0f172a !important; 
+        color: #e2e8f0; 
+        font-family: 'Segoe UI', system-ui, sans-serif; 
+        overflow: hidden; /* Sin scroll global */
+        height: 100vh; 
+        margin: 0; 
     }
     
-    /* Contenedor Principal Flex */
-    #app-root {
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        max-width: 100%;
+    /* Layout Principal */
+    .app-container {
+        display: flex; flex-direction: column;
+        height: 100vh; width: 100%;
+        max-width: 1800px; margin: 0 auto;
+        padding: 0 20px;
     }
 
     /* Pestañas */
     .tab-active { background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf; }
     .tab-inactive { background-color: #0f172a; color: #94a3b8; border: 1px solid #334155; }
     .tab-inactive:hover { background-color: #1e293b; color: #fff; }
-
+    
     /* Tarjetas */
     .card-dark { 
         background-color: #1e293b; 
@@ -187,30 +187,35 @@ ul.task-list li input[type="checkbox"] {
         border-radius: 0.75rem; 
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); 
     }
-
-    /* Tabla */
-    .fixed-header-table thead th { 
-        position: sticky; top: 0; z-index: 10; 
-        background-color: #0f172a; color: #94a3b8;
-        border-bottom: 1px solid #2dd4bf;
-    }
-    .table-row:hover { background-color: rgba(45, 212, 191, 0.05); }
     
-    /* Scrollbar Fina */
+    /* Tabla */
+    thead th { 
+        background-color: #0f172a; color: #94a3b8; 
+        position: sticky; top: 0; z-index: 10;
+        border-bottom: 1px solid #2dd4bf;
+        padding: 12px; text-align: left;
+    }
+    tbody tr:hover { background-color: rgba(45, 212, 191, 0.05); }
+    td { border-bottom: 1px solid #334155; color: #cbd5e1; padding: 10px 12px; }
+    
+    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
-    /* Animaciones */
+    /* Inputs */
+    input { background-color: #0f172a !important; border-color: #334155 !important; color: #fff !important; }
+    input:focus { border-color: #2dd4bf !important; outline: none; }
+
     .fade-in { animation: fadeIn 0.3s ease-in; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-<div id="app-root">
+<div class="app-container">
 
-    <nav class="flex-none bg-slate-950 text-white border-b border-slate-800 shadow-md z-50">
-        <div class="max-w-[1800px] mx-auto px-6 h-16 flex items-center justify-between">
+    <nav class="flex-none bg-slate-950 text-white border-b border-slate-800 shadow-md z-50 mt-4 mb-6 rounded-xl">
+        <div class="px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="bg-emerald-500/10 p-2 rounded text-emerald-400 border border-emerald-500/20"><i class="fa-solid fa-bolt"></i></div>
                 <div>
@@ -229,27 +234,28 @@ ul.task-list li input[type="checkbox"] {
         </div>
     </nav>
 
-    <main class="flex-1 overflow-hidden p-6 max-w-[1800px] w-full mx-auto flex flex-col">
+    <div class="flex-1 overflow-hidden flex flex-col relative pb-6">
         
-        <div id="view-dashboard" class="fade-in flex flex-col h-full gap-6">
+        <div id="view-dashboard" class="fade-in flex flex-col h-full gap-5">
             
             <div class="flex-none grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="card-dark p-5 flex flex-col justify-center h-24 relative overflow-hidden bg-gradient-to-br from-slate-800 to-slate-900 border-l-4 border-l-emerald-500">
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-emerald-500 relative overflow-hidden">
                     <p class="text-emerald-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Monitorizadas</p>
-                    <h3 class="text-3xl font-bold text-white anchored" id="kpi-companies">0</h3>
-                    <div class="absolute right-4 top-6 text-emerald-500/20 text-4xl"><i class="fa-solid fa-database"></i></div>
+                    <h3 class="text-3xl font-bold text-white z-10" id="kpi-companies">-</h3>
+                    <div class="text-[10px] text-slate-500 mt-1 z-10">Empresas activas</div>
+                    <i class="fa-solid fa-server absolute right-2 top-2 text-emerald-500/10 text-6xl"></i>
                 </div>
                 <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-blue-500">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Volumen 2024</p>
-                    <h3 class="text-2xl font-bold text-white anchored" id="kpi-sales">- <span class="text-sm text-slate-500">GWh</span></h3>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Volumen Total</p>
+                    <h3 class="text-2xl font-bold text-white" id="kpi-sales">- <span class="text-sm text-slate-500">GWh</span></h3>
                 </div>
                 <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-purple-500">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Tendencia</p>
-                    <h3 class="text-lg font-bold text-emerald-400 anchored" id="kpi-trend">Positiva</h3>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Estimación FNEE</p>
+                    <h3 class="text-2xl font-bold text-blue-400" id="kpi-cost">- M€</h3>
                 </div>
                 <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-amber-500">
                     <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Líder Mercado</p>
-                    <h3 class="text-lg font-bold text-white truncate anchored" id="kpi-leader">-</h3>
+                    <h3 class="text-lg font-bold text-white truncate" id="kpi-leader">-</h3>
                 </div>
             </div>
 
@@ -257,22 +263,22 @@ ul.task-list li input[type="checkbox"] {
                 
                 <div class="lg:col-span-8 card-dark flex flex-col overflow-hidden">
                     <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center">
-                        <h3 class="font-bold text-white text-sm flex items-center gap-2 anchored"><i class="fa-solid fa-list text-emerald-500"></i> Directorio de Empresas</h3>
+                        <h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-list text-emerald-500"></i> Directorio de Empresas</h3>
                         <div class="relative">
                             <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="text" id="search-input" placeholder="Buscar..." class="pl-8 pr-3 py-1.5 border border-slate-600 bg-slate-950 rounded text-xs focus:border-emerald-500 outline-none w-56 text-white placeholder-slate-600 transition-colors focus:bg-slate-900" onkeyup="filterTable()">
+                            <input type="text" id="search-input" placeholder="Buscar..." class="pl-8 pr-3 py-1.5 border border-slate-600 bg-slate-950 rounded text-xs w-64 text-white placeholder-slate-600 focus:border-emerald-500" onkeyup="filterTable()">
                         </div>
                     </div>
                     
                     <div class="flex-1 overflow-y-auto bg-slate-900">
                         
-<table class="w-full text-sm text-left fixed-header-table border-collapse" data-quarto-postprocess="true">
+<table class="w-full text-sm text-left border-collapse table-fixed" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th class="py-3 px-4 w-1/2" data-quarto-table-cell-role="th">Empresa / Razón Social</th>
-<th class="py-3 px-4 w-1/5 text-right" data-quarto-table-cell-role="th">Ventas 2024</th>
-<th class="py-3 px-4 w-1/6 text-center" data-quarto-table-cell-role="th">Trend</th>
-<th class="py-3 px-4 w-1/6 text-center" data-quarto-table-cell-role="th">Ficha</th>
+<th data-quarto-table-cell-role="th" style="width: 50%">Empresa / Razón Social</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; width: 20%;">Último (GWh)</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; width: 15%;">Trend</th>
+<th data-quarto-table-cell-role="th" style="text-align: center; width: 15%;">Ficha</th>
 </tr>
 </thead>
 <tbody id="companies-table-body" class="text-slate-300 divide-y divide-slate-800">
@@ -281,13 +287,13 @@ ul.task-list li input[type="checkbox"] {
 
                     </div>
                     <div class="flex-none p-2 bg-slate-950 border-t border-slate-800 text-center text-[10px] text-slate-500">
-                        <span id="rows-count">0</span> empresas cargadas
+                        <span id="rows-count">0</span> empresas cargadas desde CSV
                     </div>
                 </div>
 
                 <div class="lg:col-span-4 card-dark flex flex-col overflow-hidden">
                     <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50">
-                        <h3 class="font-bold text-white text-sm anchored">Evolución Total (GWh)</h3>
+                        <h3 class="font-bold text-white text-sm">Evolución Total (GWh)</h3>
                     </div>
                     <div class="flex-1 p-4 flex items-center justify-center relative">
                         <canvas id="marketChart"></canvas>
@@ -300,18 +306,17 @@ ul.task-list li input[type="checkbox"] {
             <div class="flex h-full gap-6">
                 <div class="w-1/4 flex flex-col gap-4">
                     <div class="card-dark p-5 flex-none">
-                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400 anchored">1. Selección</h3>
+                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400">1. Selección</h3>
                         <div class="relative mb-3">
-                            <input type="text" id="comp-search" placeholder="Añadir competidor..." class="w-full px-3 py-2 border border-slate-700 bg-slate-950 rounded text-sm outline-none focus:border-emerald-500 text-white" onkeyup="searchCompetitor()">
+                            <input type="text" id="comp-search" placeholder="Añadir competidor..." class="w-full px-3 py-2 border border-slate-700 bg-slate-950 rounded text-sm outline-none text-white focus:border-emerald-500" onkeyup="searchCompetitor()">
                             <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded shadow-xl max-h-40 overflow-y-auto text-slate-300 text-xs"></div>
                         </div>
-                        <div id="selected-comps" class="space-y-2 max-h-60 overflow-y-auto">
-                            </div>
+                        <div id="selected-comps" class="space-y-2 max-h-60 overflow-y-auto"></div>
                         <p class="text-[10px] text-slate-500 italic text-center mt-3">Máximo 5 empresas</p>
                     </div>
                     
                     <div class="card-dark p-5 flex-none">
-                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400 anchored">2. Métrica</h3>
+                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400">2. Métrica</h3>
                         <button onclick="setChartMode('absolute')" class="w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 transition-all" id="mode-abs">
                             <i class="fa-solid fa-chart-bar mr-2"></i> Volumen Real
                         </button>
@@ -322,9 +327,8 @@ ul.task-list li input[type="checkbox"] {
                 </div>
 
                 <div class="w-3/4 card-dark p-6 flex flex-col">
-                    <h3 class="font-bold text-white mb-4 text-sm flex justify-between anchored">
+                    <h3 class="font-bold text-white mb-4 text-sm flex justify-between">
                         <span>Comparativa Estratégica</span>
-                        <span class="text-xs text-slate-500 font-normal">2020 - 2024</span>
                     </h3>
                     <div class="flex-1 relative w-full h-full">
                         <canvas id="comparatorChart"></canvas>
@@ -333,7 +337,7 @@ ul.task-list li input[type="checkbox"] {
             </div>
         </div>
 
-    </main>
+    </div>
 
     <div id="modal" class="fixed inset-0 bg-slate-950/90 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl border border-slate-700 animate-in fade-in zoom-in duration-200">
@@ -347,19 +351,19 @@ ul.task-list li input[type="checkbox"] {
             <div class="p-6">
                 <div class="grid grid-cols-4 gap-4 mb-6">
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">Ventas 2024</p>
-                        <p class="text-lg font-bold text-white mt-1" id="modal-sales-24">-</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Último Año</p>
+                        <p class="text-lg font-bold text-white mt-1" id="modal-sales-last">-</p>
                     </div>
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">Crecimiento Total</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Crecimiento (1y)</p>
                         <p class="text-lg font-bold text-white mt-1" id="modal-growth">-</p>
                     </div>
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">CAGR (4y)</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">CAGR Total</p>
                         <p class="text-lg font-bold text-emerald-400 mt-1" id="modal-cagr">-</p>
                     </div>
                     <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">Coste FNEE</p>
+                        <p class="text-[10px] text-slate-500 uppercase font-bold">Coste Est. FNEE</p>
                         <p class="text-lg font-bold text-blue-400 mt-1" id="modal-cost">-</p>
                     </div>
                 </div>
@@ -373,7 +377,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 
 <script>
-    // Configuración Global ChartJS Dark
+    // Config ChartJS
     Chart.defaults.color = '#64748b';
     Chart.defaults.borderColor = '#334155';
     Chart.defaults.font.family = "'Segoe UI', sans-serif";
@@ -387,25 +391,23 @@ ul.task-list li input[type="checkbox"] {
     let selectedCompetitors = [];
     let comparatorMode = 'absolute';
 
-    // Utiles
     const fmtNum = (n) => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n);
     const fmtEur = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
     const calcCAGR = (start, end, periods) => (start > 0 && periods > 0) ? ((Math.pow(end / start, 1 / periods) - 1) * 100).toFixed(2) : 0;
 
-    // --- CARGA DE CSV (Detecta formato limpio) ---
+    // --- CARGA CSV ---
     async function loadData() {
         try {
             const response = await fetch('ventas_boe.csv');
-            if (!response.ok) throw new Error("CSV no encontrado");
+            if (!response.ok) throw new Error("No se encontró ventas_boe.csv");
             const text = await response.text();
             
             const lines = text.split('\n').map(l => l.trim()).filter(l => l);
             if(lines.length < 2) return;
 
-            // Headers: NIF;Empresa;Ventas 2020...
+            // Detectar cabecera y años
             const headers = lines[0].split(';');
             const yearMapping = [];
-            
             headers.forEach((h, i) => {
                 const match = h.match(/20\d{2}/);
                 if (match) yearMapping.push({ index: i, year: parseInt(match[0]) });
@@ -414,7 +416,7 @@ ul.task-list li input[type="checkbox"] {
             if(yearMapping.length > 0) {
                 YEARS = [...new Set(yearMapping.map(y => y.year))].sort((a,b) => a - b);
             } else {
-                console.error("No se detectaron años en el CSV");
+                console.error("No se encontraron columnas de años (20xx)");
                 return;
             }
 
@@ -429,9 +431,9 @@ ul.task-list li input[type="checkbox"] {
                 
                 yearMapping.forEach(ym => {
                     if (cols[ym.index]) {
-                        // Limpieza numérica robusta
+                        // Limpieza numérica robusta (1.000,00 o 1000.00)
                         let valStr = cols[ym.index].trim();
-                        // 1.000,00 -> 1000.00
+                        // Si tiene punto y coma, punto es mil, coma es decimal
                         if(valStr.indexOf(',') > -1 && valStr.indexOf('.') > -1) {
                              valStr = valStr.replace(/\./g, '').replace(',', '.');
                         } else if(valStr.indexOf(',') > -1) {
@@ -449,15 +451,16 @@ ul.task-list li input[type="checkbox"] {
             DB = newDB;
             document.getElementById('rows-count').innerText = DB.length;
             
-            // Auto-seleccionar Top 2 para comparador
-            const top2 = [...DB].sort((a,b) => (b.sales[YEARS[YEARS.length-1]]||0) - (a.sales[YEARS[YEARS.length-1]]||0)).slice(0,2);
+            // Auto-select Top 2 para comparador
+            const lastY = YEARS[YEARS.length-1];
+            const top2 = [...DB].sort((a,b) => (b.sales[lastY]||0) - (a.sales[lastY]||0)).slice(0,2);
             selectedCompetitors = top2.map(c => c.cif);
             
             renderDashboard();
-            renderSelectedChips(); // Pre-cargar chips en comparador
+            renderSelectedChips();
 
         } catch (err) {
-            console.error("Error CSV:", err);
+            console.error("Error cargando CSV:", err);
         }
     }
 
@@ -465,12 +468,10 @@ ul.task-list li input[type="checkbox"] {
     function switchTab(tabId) {
         ['dashboard', 'comparator'].forEach(t => {
             document.getElementById('view-' + t).classList.add('hidden');
-            const btn = document.getElementById('btn-' + t);
-            btn.className = 'tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer';
+            document.getElementById('btn-' + t).className = 'tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer';
         });
         document.getElementById('view-' + tabId).classList.remove('hidden');
         document.getElementById('btn-' + tabId).className = 'tab-active px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-default';
-        
         if(tabId === 'comparator') updateComparatorChart();
     }
 
@@ -493,11 +494,10 @@ ul.task-list li input[type="checkbox"] {
 
         document.getElementById('kpi-companies').innerText = DB.length;
         document.getElementById('kpi-sales').innerHTML = fmtNum(totalSalesLast) + ' <span class="text-sm text-slate-500">GWh</span>';
+        document.getElementById('kpi-cost').innerText = fmtEur(totalSalesLast * 239000).slice(0,-2) + ' M€';
         document.getElementById('kpi-leader').innerText = topGrower.name;
         
-        // Tabla
         renderTable(DB);
-        // Gráfica
         renderMarketChart();
     }
 
@@ -513,22 +513,22 @@ ul.task-list li input[type="checkbox"] {
             const sLast = c.sales[lastYear] || 0;
             const sPrev = c.sales[prevYear] || 0;
             const trend = sPrev > 0 ? ((sLast - sPrev)/sPrev * 100).toFixed(1) : 0;
-            const trendColor = trend >= 0 ? 'text-emerald-400' : 'text-rose-400';
-            const trendIcon = trend >= 0 ? 'fa-caret-up' : 'fa-caret-down';
+            const trendClass = trend >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400';
+            const icon = trend >= 0 ? 'fa-caret-up' : 'fa-caret-down';
             
             const row = `
-                <tr class="table-row border-b border-slate-800 transition-colors">
-                    <td class="py-3 px-4">
-                        <div class="font-bold text-white truncate max-w-[280px]" title="${c.name}">${c.name}</div>
+                <tr class="border-b border-slate-800 transition-colors">
+                    <td class="truncate" title="${c.name}">
+                        <div class="font-bold text-white truncate">${c.name}</div>
                         <div class="text-[10px] text-slate-500 font-mono">${c.cif}</div>
                     </td>
-                    <td class="py-3 px-4 text-right font-mono text-slate-300 font-bold">${fmtNum(sLast)}</td>
-                    <td class="py-3 px-4 text-center">
-                        <span class="text-xs font-bold ${trendColor} bg-slate-950 px-2 py-1 rounded">
-                           <i class="fa-solid ${trendIcon} mr-1"></i>${Math.abs(trend)}%
+                    <td class="text-right font-mono text-slate-300 font-bold">${fmtNum(sLast)}</td>
+                    <td class="text-center">
+                        <span class="text-xs font-bold ${trendClass} px-2 py-1 rounded">
+                           <i class="fa-solid ${icon} mr-1"></i>${Math.abs(trend)}%
                         </span>
                     </td>
-                    <td class="py-3 px-4 text-center">
+                    <td class="text-center">
                         <button onclick="openModal('${c.cif}')" class="text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 p-2 rounded transition">
                             <i class="fa-solid fa-eye"></i>
                         </button>
@@ -553,7 +553,6 @@ ul.task-list li input[type="checkbox"] {
                     label: 'Volumen (GWh)',
                     data: totals,
                     backgroundColor: '#2dd4bf',
-                    hoverBackgroundColor: '#14b8a6',
                     borderRadius: 4,
                     barThickness: 40
                 }]
@@ -562,10 +561,7 @@ ul.task-list li input[type="checkbox"] {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: { legend: { display: false } },
-                scales: { 
-                    y: { beginAtZero: true, grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, 
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } } 
-                }
+                scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false } } }
             }
         });
     }
@@ -581,11 +577,9 @@ ul.task-list li input[type="checkbox"] {
         const term = document.getElementById('comp-search').value.toLowerCase();
         const resultsDiv = document.getElementById('comp-results');
         resultsDiv.innerHTML = '';
-        
         if(term.length < 2) { resultsDiv.classList.add('hidden'); return; }
 
         const matches = DB.filter(c => c.name.toLowerCase().includes(term) && !selectedCompetitors.includes(c.cif)).slice(0, 10);
-        
         if(matches.length > 0) {
             resultsDiv.classList.remove('hidden');
             matches.forEach(c => {
@@ -681,10 +675,10 @@ ul.task-list li input[type="checkbox"] {
         document.getElementById('modal').classList.remove('hidden');
         document.getElementById('modal-cif').innerText = comp.cif;
         document.getElementById('modal-name').innerText = comp.name;
-        document.getElementById('modal-sales-24').innerText = fmtNum(sLast);
+        document.getElementById('modal-sales-last').innerText = fmtNum(sLast);
         document.getElementById('modal-growth').innerText = growth;
         document.getElementById('modal-cagr').innerText = cagr;
-        document.getElementById('modal-cost').innerText = fmtEur(sLast * 239000); // Dummy cost calc
+        document.getElementById('modal-cost').innerText = fmtEur(sLast * 239000); 
 
         const ctx = document.getElementById('modalChart').getContext('2d');
         if(modalChartInstance) modalChartInstance.destroy();
