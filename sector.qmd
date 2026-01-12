@@ -13,62 +13,45 @@ format:
 <link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)" rel="stylesheet">
 
 <style>
-    /* --- ESTILOS DARK MODE (FNEE STYLE) --- */
+    /* Estructura Base - Sin Scroll Global */
     body { 
         background-color: #0f172a !important; 
         color: #e2e8f0; 
         font-family: 'Segoe UI', system-ui, sans-serif; 
-        overflow: hidden; /* Sin scroll global */
-        height: 100vh; 
-        margin: 0; 
+        overflow: hidden; 
+        height: 100vh; margin: 0; 
     }
-    
-    /* Layout Principal */
-    .app-container {
+    .app-wrapper {
         display: flex; flex-direction: column;
-        height: 100vh; width: 100%;
-        max-width: 1800px; margin: 0 auto;
-        padding: 0 20px;
+        height: 100vh; width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 25px;
     }
 
-    /* Pestañas */
+    /* Componentes */
+    .card-dark { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
+    .tab-btn { padding: 8px 16px; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
     .tab-active { background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf; }
     .tab-inactive { background-color: #0f172a; color: #94a3b8; border: 1px solid #334155; }
     .tab-inactive:hover { background-color: #1e293b; color: #fff; }
-    
-    /* Tarjetas */
-    .card-dark { 
-        background-color: #1e293b; 
-        border: 1px solid #334155; 
-        border-radius: 0.75rem; 
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); 
+
+    /* Tablas */
+    .table-fixed-head thead th { 
+        background-color: #0f172a; color: #94a3b8; position: sticky; top: 0; z-index: 10;
+        border-bottom: 1px solid #2dd4bf; padding: 12px; text-align: left; text-transform: uppercase; font-size: 0.75rem;
     }
-    
-    /* Tabla */
-    thead th { 
-        background-color: #0f172a; color: #94a3b8; 
-        position: sticky; top: 0; z-index: 10;
-        border-bottom: 1px solid #2dd4bf;
-        padding: 12px; text-align: left;
-    }
-    tbody tr:hover { background-color: rgba(45, 212, 191, 0.05); }
-    td { border-bottom: 1px solid #334155; color: #cbd5e1; padding: 10px 12px; }
-    
-    /* Scrollbar */
+    .table-fixed-head tbody td { border-bottom: 1px solid #334155; padding: 10px 12px; color: #cbd5e1; font-size: 0.9rem; }
+    .table-fixed-head tbody tr:hover { background-color: rgba(45, 212, 191, 0.05); }
+
+    /* Scrollbars finas */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: #475569; }
-
+    
     /* Inputs */
-    input { background-color: #0f172a !important; border-color: #334155 !important; color: #fff !important; }
+    input { background-color: #0f172a !important; border: 1px solid #334155 !important; color: #fff !important; }
     input:focus { border-color: #2dd4bf !important; outline: none; }
-
-    .fade-in { animation: fadeIn 0.3s ease-in; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-<div class="app-container">
+<div class="app-wrapper">
 
     <nav class="flex-none bg-slate-950 text-white border-b border-slate-800 shadow-md z-50 mt-4 mb-6 rounded-xl">
         <div class="px-6 h-16 flex items-center justify-between">
@@ -80,117 +63,90 @@ format:
                 </div>
             </div>
             <div class="flex space-x-2">
-                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-active px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-chart-column"></i> Mercado
-                </button>
-                <button onclick="switchTab('comparator')" id="btn-comparator" class="tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-chart-line"></i> Comparador
-                </button>
+                <button onclick="ui.switchTab('mercado')" id="btn-mercado" class="tab-btn tab-active"><i class="fa-solid fa-chart-column"></i> Mercado</button>
+                <button onclick="ui.switchTab('comparador')" id="btn-comparador" class="tab-btn tab-inactive"><i class="fa-solid fa-chart-line"></i> Comparador</button>
             </div>
         </div>
     </nav>
 
-    <div class="flex-1 overflow-hidden flex flex-col relative pb-6">
+    <div class="flex-1 overflow-hidden relative pb-6">
         
-        <div id="view-dashboard" class="fade-in flex flex-col h-full gap-5">
-            
+        <div id="view-mercado" class="flex flex-col h-full gap-5 transition-opacity duration-300">
             <div class="flex-none grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-emerald-500 relative overflow-hidden">
-                    <p class="text-emerald-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Monitorizadas</p>
-                    <h3 class="text-3xl font-bold text-white z-10" id="kpi-companies">-</h3>
-                    <div class="text-[10px] text-slate-500 mt-1 z-10">Empresas activas</div>
-                    <i class="fa-solid fa-server absolute right-2 top-2 text-emerald-500/10 text-6xl"></i>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-emerald-500">
+                    <p class="text-emerald-400 text-[10px] font-bold uppercase mb-1">Empresas</p>
+                    <h3 class="text-3xl font-bold text-white" id="kpi-count">-</h3>
+                    <div class="text-[10px] text-slate-500">Base activa</div>
                 </div>
                 <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-blue-500">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Volumen Total</p>
-                    <h3 class="text-2xl font-bold text-white" id="kpi-sales">- <span class="text-sm text-slate-500">GWh</span></h3>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Volumen Total</p>
+                    <h3 class="text-2xl font-bold text-white" id="kpi-volume">- <span class="text-sm text-slate-500">GWh</span></h3>
                 </div>
                 <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-purple-500">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Estimación FNEE</p>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Coste Estimado</p>
                     <h3 class="text-2xl font-bold text-blue-400" id="kpi-cost">- M€</h3>
                 </div>
                 <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-amber-500">
-                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1 tracking-wider">Líder Mercado</p>
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Líder</p>
                     <h3 class="text-lg font-bold text-white truncate" id="kpi-leader">-</h3>
                 </div>
             </div>
 
-            <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-0">
-                
-                <div class="lg:col-span-8 card-dark flex flex-col overflow-hidden">
+            <div class="flex-1 grid grid-cols-12 gap-6 min-h-0">
+                <div class="col-span-8 card-dark flex flex-col overflow-hidden">
                     <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center">
-                        <h3 class="font-bold text-white text-sm flex items-center gap-2"><i class="fa-solid fa-list text-emerald-500"></i> Directorio de Empresas</h3>
-                        <div class="relative">
-                            <i class="fa-solid fa-search absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="text" id="search-input" placeholder="Buscar..." 
-                                class="pl-8 pr-3 py-1.5 border border-slate-600 bg-slate-950 rounded text-xs w-64 text-white placeholder-slate-600 focus:border-emerald-500"
-                                onkeyup="filterTable()">
-                        </div>
+                        <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-list text-emerald-500 mr-2"></i> Directorio</h3>
+                        <input type="text" id="search-input" placeholder="Buscar..." class="px-3 py-1.5 rounded text-xs w-56" onkeyup="logic.filterTable()">
                     </div>
-                    
                     <div class="flex-1 overflow-y-auto bg-slate-900">
-                        <table class="w-full text-sm text-left border-collapse table-fixed">
+                        <table class="w-full table-fixed-head">
                             <thead>
                                 <tr>
-                                    <th style="width: 50%;">Empresa / Razón Social</th>
-                                    <th style="width: 20%; text-align: right;">Último (GWh)</th>
-                                    <th style="width: 15%; text-align: center;">Trend</th>
-                                    <th style="width: 15%; text-align: center;">Ficha</th>
+                                    <th width="50%">Empresa / Razón Social</th>
+                                    <th width="20%" class="text-right">Último (GWh)</th>
+                                    <th width="15%" class="text-center">Trend</th>
+                                    <th width="15%" class="text-center">Ficha</th>
                                 </tr>
                             </thead>
-                            <tbody id="companies-table-body" class="text-slate-300 divide-y divide-slate-800">
-                                </tbody>
+                            <tbody id="table-body"></tbody>
                         </table>
                     </div>
                     <div class="flex-none p-2 bg-slate-950 border-t border-slate-800 text-center text-[10px] text-slate-500">
-                        <span id="rows-count">0</span> empresas cargadas desde CSV
+                        <span id="rows-count">0</span> registros cargados
                     </div>
                 </div>
 
-                <div class="lg:col-span-4 card-dark flex flex-col overflow-hidden">
+                <div class="col-span-4 card-dark flex flex-col overflow-hidden">
                     <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50">
-                        <h3 class="font-bold text-white text-sm">Evolución Total (GWh)</h3>
+                        <h3 class="font-bold text-white text-sm">Evolución del Mercado</h3>
                     </div>
-                    <div class="flex-1 p-4 flex items-center justify-center relative">
-                        <canvas id="marketChart"></canvas>
+                    <div class="flex-1 p-4 relative flex items-center justify-center">
+                        <canvas id="chart-market"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="view-comparator" class="hidden fade-in flex flex-col h-full">
-            <div class="flex h-full gap-6">
-                <div class="w-1/4 flex flex-col gap-4">
-                    <div class="card-dark p-5 flex-none">
-                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400">1. Selección</h3>
-                        <div class="relative mb-3">
-                            <input type="text" id="comp-search" placeholder="Añadir competidor..." 
-                                class="w-full px-3 py-2 border border-slate-700 bg-slate-950 rounded text-sm outline-none text-white focus:border-emerald-500"
-                                onkeyup="searchCompetitor()">
-                            <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded shadow-xl max-h-40 overflow-y-auto text-slate-300 text-xs"></div>
-                        </div>
-                        <div id="selected-comps" class="space-y-2 max-h-60 overflow-y-auto"></div>
-                        <p class="text-[10px] text-slate-500 italic text-center mt-3">Máximo 5 empresas</p>
+        <div id="view-comparador" class="hidden flex h-full gap-6 transition-opacity duration-300">
+            <div class="w-1/4 flex flex-col gap-4">
+                <div class="card-dark p-5">
+                    <h3 class="font-bold text-white mb-3 text-xs uppercase text-emerald-400">Selección (Max 5)</h3>
+                    <div class="relative mb-3">
+                        <input type="text" id="comp-search" placeholder="Añadir empresa..." class="w-full px-3 py-2 rounded text-sm" onkeyup="logic.searchComp()">
+                        <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded shadow-xl max-h-40 overflow-y-auto text-xs"></div>
                     </div>
-                    
-                    <div class="card-dark p-5 flex-none">
-                        <h3 class="font-bold text-white mb-4 text-xs uppercase tracking-wider text-emerald-400">2. Métrica</h3>
-                        <button onclick="setChartMode('absolute')" class="w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 transition-all" id="mode-abs">
-                            <i class="fa-solid fa-chart-bar mr-2"></i> Volumen Real
-                        </button>
-                        <button onclick="setChartMode('indexed')" class="w-full text-left px-3 py-2 rounded text-xs font-medium bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-800 transition-all" id="mode-idx">
-                            <i class="fa-solid fa-arrow-trend-up mr-2"></i> Crecimiento (%)
-                        </button>
-                    </div>
+                    <div id="comp-chips" class="space-y-2 max-h-60 overflow-y-auto"></div>
                 </div>
-
-                <div class="w-3/4 card-dark p-6 flex flex-col">
-                    <h3 class="font-bold text-white mb-4 text-sm flex justify-between">
-                        <span>Comparativa Estratégica</span>
-                    </h3>
-                    <div class="flex-1 relative w-full h-full">
-                        <canvas id="comparatorChart"></canvas>
-                    </div>
+                <div class="card-dark p-5">
+                    <h3 class="font-bold text-white mb-3 text-xs uppercase text-emerald-400">Modo Gráfico</h3>
+                    <button onclick="logic.setCompMode('abs')" id="btn-mode-abs" class="w-full text-left px-3 py-2 rounded mb-2 text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/50">Volumen Real</button>
+                    <button onclick="logic.setCompMode('idx')" id="btn-mode-idx" class="w-full text-left px-3 py-2 rounded text-xs bg-slate-900 text-slate-400 border border-slate-700">Base 100 (Crecimiento)</button>
+                </div>
+            </div>
+            <div class="w-3/4 card-dark p-6 flex flex-col">
+                <h3 class="font-bold text-white mb-2 text-sm">Comparativa Estratégica</h3>
+                <div class="flex-1 relative w-full h-full">
+                    <canvas id="chart-comp"></canvas>
                 </div>
             </div>
         </div>
@@ -198,36 +154,22 @@ format:
     </div>
 
     <div id="modal" class="fixed inset-0 bg-slate-950/90 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl border border-slate-700 animate-in fade-in zoom-in duration-200">
-            <div class="bg-slate-900 p-4 flex justify-between items-center border-b border-slate-700">
-                <div class="flex items-center gap-3">
-                    <span class="bg-slate-700 text-[10px] px-2 py-0.5 rounded font-mono text-emerald-400 border border-slate-600" id="modal-cif">CIF</span>
-                    <h2 class="text-lg font-bold text-white" id="modal-name">Empresa</h2>
+        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl border border-slate-700">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center">
+                <div>
+                    <span id="modal-cif" class="text-[10px] bg-slate-700 px-2 py-1 rounded font-mono text-emerald-400"></span>
+                    <h2 id="modal-name" class="text-lg font-bold text-white mt-1"></h2>
                 </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times text-lg"></i></button>
+                <button onclick="ui.closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-4 gap-4 mb-6">
-                    <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">Último Año</p>
-                        <p class="text-lg font-bold text-white mt-1" id="modal-sales-last">-</p>
-                    </div>
-                    <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">Crecimiento (1y)</p>
-                        <p class="text-lg font-bold text-white mt-1" id="modal-growth">-</p>
-                    </div>
-                    <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">CAGR Total</p>
-                        <p class="text-lg font-bold text-emerald-400 mt-1" id="modal-cagr">-</p>
-                    </div>
-                    <div class="p-3 bg-slate-900 rounded border border-slate-700">
-                        <p class="text-[10px] text-slate-500 uppercase font-bold">Coste Est. FNEE</p>
-                        <p class="text-lg font-bold text-blue-400 mt-1" id="modal-cost">-</p>
-                    </div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">VENTAS 2024</p><p id="modal-val" class="text-lg font-bold text-white">-</p></div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">CRECIMIENTO</p><p id="modal-gro" class="text-lg font-bold text-white">-</p></div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">CAGR</p><p id="modal-cagr" class="text-lg font-bold text-emerald-400">-</p></div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">COSTE FNEE</p><p id="modal-cost" class="text-lg font-bold text-blue-400">-</p></div>
                 </div>
-                <div class="h-64 relative">
-                    <canvas id="modalChart"></canvas>
-                </div>
+                <div class="h-64 relative"><canvas id="chart-modal"></canvas></div>
             </div>
         </div>
     </div>
@@ -235,324 +177,270 @@ format:
 </div>
 
 <script>
-    // Config ChartJS
-    Chart.defaults.color = '#64748b';
-    Chart.defaults.borderColor = '#334155';
-    Chart.defaults.font.family = "'Segoe UI', sans-serif";
+// --- Configuración Global ---
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = '#334155';
+Chart.defaults.font.family = "'Segoe UI', sans-serif";
 
-    // Variables Globales
-    let DB = [];
-    let YEARS = []; 
-    let marketChartInstance = null;
-    let comparatorChartInstance = null;
-    let modalChartInstance = null;
-    let selectedCompetitors = [];
-    let comparatorMode = 'absolute';
+// --- Estado de la Aplicación ---
+const state = {
+    db: [],
+    years: [],
+    selectedComp: [],
+    compMode: 'abs',
+    charts: {} // Guardar instancias de gráficas
+};
 
-    const fmtNum = (n) => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n);
-    const fmtEur = (n) => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
-    const calcCAGR = (start, end, periods) => (start > 0 && periods > 0) ? ((Math.pow(end / start, 1 / periods) - 1) * 100).toFixed(2) : 0;
+// --- Utilidades ---
+const fmt = {
+    num: n => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n),
+    eur: n => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n)
+};
 
-    // --- CARGA CSV ---
-    async function loadData() {
+// --- Módulos Lógicos ---
+const logic = {
+    async init() {
         try {
-            const response = await fetch('ventas_boe.csv');
-            if (!response.ok) throw new Error("No se encontró ventas_boe.csv");
-            const text = await response.text();
-            
-            const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-            if(lines.length < 2) return;
+            const res = await fetch('ventas_boe.csv');
+            if(!res.ok) throw new Error("No se encontró el CSV");
+            const txt = await res.text();
+            this.processCSV(txt);
+        } catch(e) { console.error(e); }
+    },
 
-            // Detectar cabecera y años
-            const headers = lines[0].split(';');
-            const yearMapping = [];
-            headers.forEach((h, i) => {
-                const match = h.match(/20\d{2}/);
-                if (match) yearMapping.push({ index: i, year: parseInt(match[0]) });
+    processCSV(txt) {
+        const lines = txt.split('\n').map(l => l.trim()).filter(l => l);
+        if(lines.length < 2) return;
+
+        // 1. Detectar Años en Cabecera
+        const headers = lines[0].split(';');
+        const yearMap = [];
+        headers.forEach((h, i) => {
+            const m = h.match(/20\d{2}/);
+            if(m) yearMap.push({ idx: i, year: parseInt(m[0]) });
+        });
+        state.years = [...new Set(yearMap.map(y => y.year))].sort((a,b)=>a-b);
+
+        // 2. Parsear Filas
+        const newDB = [];
+        for(let i=1; i<lines.length; i++) {
+            const cols = lines[i].split(';');
+            if(cols.length < 2) continue;
+            
+            const cif = cols[0].trim().toUpperCase();
+            const name = cols[1].trim();
+            const sales = {};
+            
+            yearMap.forEach(ym => {
+                if(cols[ym.idx]) {
+                    // Limpieza numérica ES -> JS
+                    let v = cols[ym.idx].trim();
+                    if(v.includes('.') && v.includes(',')) v = v.replace(/\./g,'').replace(',','.');
+                    else if(v.includes(',')) v = v.replace(',','.');
+                    sales[ym.year] = parseFloat(v) || 0;
+                }
             });
-
-            if(yearMapping.length > 0) {
-                YEARS = [...new Set(yearMapping.map(y => y.year))].sort((a,b) => a - b);
-            } else {
-                console.error("No se encontraron columnas de años (20xx)");
-                return;
-            }
-
-            const newDB = [];
-            for (let i = 1; i < lines.length; i++) {
-                const cols = lines[i].split(';');
-                if (cols.length < 2) continue;
-                
-                const cif = cols[0].trim().toUpperCase();
-                const name = cols[1].trim();
-                const sales = {};
-                
-                yearMapping.forEach(ym => {
-                    if (cols[ym.index]) {
-                        // Limpieza numérica robusta (1.000,00 o 1000.00)
-                        let valStr = cols[ym.index].trim();
-                        // Si tiene punto y coma, punto es mil, coma es decimal
-                        if(valStr.indexOf(',') > -1 && valStr.indexOf('.') > -1) {
-                             valStr = valStr.replace(/\./g, '').replace(',', '.');
-                        } else if(valStr.indexOf(',') > -1) {
-                             valStr = valStr.replace(',', '.');
-                        }
-                        sales[ym.year] = parseFloat(valStr) || 0;
-                    } else {
-                        sales[ym.year] = 0;
-                    }
-                });
-
-                if (cif && name) newDB.push({ cif, name, sales });
-            }
-            
-            DB = newDB;
-            document.getElementById('rows-count').innerText = DB.length;
-            
-            // Auto-select Top 2 para comparador
-            const lastY = YEARS[YEARS.length-1];
-            const top2 = [...DB].sort((a,b) => (b.sales[lastY]||0) - (a.sales[lastY]||0)).slice(0,2);
-            selectedCompetitors = top2.map(c => c.cif);
-            
-            renderDashboard();
-            renderSelectedChips();
-
-        } catch (err) {
-            console.error("Error cargando CSV:", err);
+            if(cif && name) newDB.push({ cif, name, sales });
         }
-    }
-
-    // --- INTERFAZ ---
-    function switchTab(tabId) {
-        ['dashboard', 'comparator'].forEach(t => {
-            document.getElementById('view-' + t).classList.add('hidden');
-            document.getElementById('btn-' + t).className = 'tab-inactive px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-pointer';
-        });
-        document.getElementById('view-' + tabId).classList.remove('hidden');
-        document.getElementById('btn-' + tabId).className = 'tab-active px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 cursor-default';
-        if(tabId === 'comparator') updateComparatorChart();
-    }
-
-    function renderDashboard() {
-        if(DB.length === 0) return;
+        state.db = newDB;
         
-        const lastYear = YEARS[YEARS.length - 1];
-        const prevYear = YEARS.length > 1 ? YEARS[YEARS.length - 2] : lastYear;
-
-        let totalSalesLast = 0;
-        let topGrower = { name: '-', growth: -Infinity };
-
-        DB.forEach(c => {
-            const sLast = c.sales[lastYear] || 0;
-            const sPrev = c.sales[prevYear] || 0;
-            totalSalesLast += sLast;
-            const growth = sLast - sPrev;
-            if (growth > topGrower.growth) topGrower = { name: c.name, growth: growth };
-        });
-
-        document.getElementById('kpi-companies').innerText = DB.length;
-        document.getElementById('kpi-sales').innerHTML = fmtNum(totalSalesLast) + ' <span class="text-sm text-slate-500">GWh</span>';
-        document.getElementById('kpi-cost').innerText = fmtEur(totalSalesLast * 239000).slice(0,-2) + ' M€';
-        document.getElementById('kpi-leader').innerText = topGrower.name;
+        // Auto-seleccionar Top 2
+        const lastY = state.years[state.years.length-1];
+        state.selectedComp = [...state.db].sort((a,b) => (b.sales[lastY]||0)-(a.sales[lastY]||0)).slice(0,2).map(c=>c.cif);
         
-        renderTable(DB);
-        renderMarketChart();
-    }
+        ui.updateDashboard();
+        ui.renderChips();
+        ui.updateCompChart();
+    },
 
-    function renderTable(data) {
-        const lastYear = YEARS[YEARS.length - 1];
-        const prevYear = YEARS.length > 1 ? YEARS[YEARS.length - 2] : lastYear;
-        const tbody = document.getElementById('companies-table-body');
-        tbody.innerHTML = '';
-        
-        const sorted = [...data].sort((a,b) => (b.sales[lastYear]||0) - (a.sales[lastYear]||0)).slice(0, 100);
-
-        sorted.forEach(c => {
-            const sLast = c.sales[lastYear] || 0;
-            const sPrev = c.sales[prevYear] || 0;
-            const trend = sPrev > 0 ? ((sLast - sPrev)/sPrev * 100).toFixed(1) : 0;
-            const trendClass = trend >= 0 ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400';
-            const icon = trend >= 0 ? 'fa-caret-up' : 'fa-caret-down';
-            
-            const row = `
-                <tr class="border-b border-slate-800 transition-colors">
-                    <td class="truncate" title="${c.name}">
-                        <div class="font-bold text-white truncate">${c.name}</div>
-                        <div class="text-[10px] text-slate-500 font-mono">${c.cif}</div>
-                    </td>
-                    <td class="text-right font-mono text-slate-300 font-bold">${fmtNum(sLast)}</td>
-                    <td class="text-center">
-                        <span class="text-xs font-bold ${trendClass} px-2 py-1 rounded">
-                           <i class="fa-solid ${icon} mr-1"></i>${Math.abs(trend)}%
-                        </span>
-                    </td>
-                    <td class="text-center">
-                        <button onclick="openModal('${c.cif}')" class="text-slate-400 hover:text-blue-400 hover:bg-blue-500/10 p-2 rounded transition">
-                            <i class="fa-solid fa-eye"></i>
-                        </button>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
-        });
-    }
-
-    function renderMarketChart() {
-        const ctx = document.getElementById('marketChart').getContext('2d');
-        const totals = YEARS.map(y => DB.reduce((sum, c) => sum + (c.sales[y]||0), 0));
-
-        if(marketChartInstance) marketChartInstance.destroy();
-
-        marketChartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: YEARS,
-                datasets: [{
-                    label: 'Volumen (GWh)',
-                    data: totals,
-                    backgroundColor: '#2dd4bf',
-                    borderRadius: 4,
-                    barThickness: 40
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, grid: { color: '#1e293b' } }, x: { grid: { display: false } } }
-            }
-        });
-    }
-
-    function filterTable() {
+    filterTable() {
         const term = document.getElementById('search-input').value.toLowerCase();
-        const filtered = DB.filter(c => c.name.toLowerCase().includes(term) || c.cif.toLowerCase().includes(term));
-        renderTable(filtered);
-    }
+        const filtered = state.db.filter(c => c.name.toLowerCase().includes(term) || c.cif.toLowerCase().includes(term));
+        ui.renderTable(filtered);
+    },
 
-    // --- COMPARADOR ---
-    function searchCompetitor() {
+    searchComp() {
         const term = document.getElementById('comp-search').value.toLowerCase();
-        const resultsDiv = document.getElementById('comp-results');
-        resultsDiv.innerHTML = '';
-        if(term.length < 2) { resultsDiv.classList.add('hidden'); return; }
-
-        const matches = DB.filter(c => c.name.toLowerCase().includes(term) && !selectedCompetitors.includes(c.cif)).slice(0, 10);
+        const box = document.getElementById('comp-results');
+        box.innerHTML = '';
+        if(term.length < 2) { box.classList.add('hidden'); return; }
+        
+        const matches = state.db.filter(c => c.name.toLowerCase().includes(term) && !state.selectedComp.includes(c.cif)).slice(0,10);
         if(matches.length > 0) {
-            resultsDiv.classList.remove('hidden');
+            box.classList.remove('hidden');
             matches.forEach(c => {
                 const div = document.createElement('div');
                 div.className = 'p-2 hover:bg-slate-700 cursor-pointer border-b border-slate-700 text-slate-300';
-                div.innerHTML = `<div class="font-bold text-white">${c.name}</div><div class="text-[10px] text-slate-500">${c.cif}</div>`;
-                div.onclick = () => addCompetitor(c.cif);
-                resultsDiv.appendChild(div);
+                div.innerHTML = `<div class="font-bold text-white">${c.name}</div>`;
+                div.onclick = () => {
+                    if(state.selectedComp.length >= 5) alert("Máximo 5");
+                    else { state.selectedComp.push(c.cif); ui.renderChips(); ui.updateCompChart(); }
+                    document.getElementById('comp-search').value = '';
+                    box.classList.add('hidden');
+                };
+                box.appendChild(div);
             });
-        } else { resultsDiv.classList.add('hidden'); }
-    }
+        }
+    },
 
-    function addCompetitor(cif) {
-        if(selectedCompetitors.length >= 5) { alert("Máximo 5"); return; }
-        selectedCompetitors.push(cif);
-        document.getElementById('comp-search').value = '';
-        document.getElementById('comp-results').classList.add('hidden');
-        renderSelectedChips();
-        updateComparatorChart();
+    setCompMode(m) {
+        state.compMode = m;
+        const b1 = document.getElementById('btn-mode-abs');
+        const b2 = document.getElementById('btn-mode-idx');
+        const active = "w-full text-left px-3 py-2 rounded mb-2 text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/50";
+        const inactive = "w-full text-left px-3 py-2 rounded mb-2 text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-800";
+        if(m==='abs') { b1.className=active; b2.className=inactive; }
+        else { b1.className=inactive; b2.className=active; }
+        ui.updateCompChart();
     }
+};
 
-    function removeCompetitor(cif) {
-        selectedCompetitors = selectedCompetitors.filter(c => c !== cif);
-        renderSelectedChips();
-        updateComparatorChart();
-    }
-
-    function renderSelectedChips() {
-        const container = document.getElementById('selected-comps');
-        container.innerHTML = '';
-        const colors = ['#3b82f6', '#ec4899', '#22c55e', '#f97316', '#8b5cf6'];
-        
-        selectedCompetitors.forEach((cif, idx) => {
-            const comp = DB.find(c => c.cif === cif);
-            const div = document.createElement('div');
-            div.className = 'flex items-center justify-between p-2 bg-slate-950 rounded border border-slate-700 text-xs text-white';
-            div.innerHTML = `<div class="flex items-center gap-2 overflow-hidden"><div class="w-2 h-2 rounded-full flex-shrink-0" style="background:${colors[idx]}"></div><span class="truncate">${comp.name}</span></div><button onclick="removeCompetitor('${cif}')" class="text-slate-500 hover:text-rose-500"><i class="fa-solid fa-times"></i></button>`;
-            container.appendChild(div);
+// --- Módulos UI ---
+const ui = {
+    switchTab(t) {
+        ['mercado', 'comparador'].forEach(id => {
+            document.getElementById('view-'+id).classList.add('hidden');
+            document.getElementById('btn-'+id).className = 'tab-btn tab-inactive';
         });
-    }
+        document.getElementById('view-'+t).classList.remove('hidden');
+        document.getElementById('btn-'+t).className = 'tab-btn tab-active';
+        if(t==='comparador') this.updateCompChart();
+    },
 
-    function setChartMode(mode) {
-        comparatorMode = mode;
-        const btnAbs = document.getElementById('mode-abs');
-        const btnIdx = document.getElementById('mode-idx');
-        const activeClass = "w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/50 transition-all";
-        const inactiveClass = "w-full text-left px-3 py-2 rounded mb-2 text-xs font-medium bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-800 transition-all";
+    updateDashboard() {
+        if(state.db.length === 0) return;
+        const lastY = state.years[state.years.length-1];
+        const prevY = state.years[state.years.length-2];
         
-        if(mode === 'absolute') { btnAbs.className = activeClass; btnIdx.className = inactiveClass; }
-        else { btnAbs.className = inactiveClass; btnIdx.className = activeClass; }
-        updateComparatorChart();
-    }
+        let total = 0;
+        let best = {n:'-', g:-Infinity};
+        
+        state.db.forEach(c => {
+            const v1 = c.sales[lastY]||0, v0 = c.sales[prevY]||0;
+            total += v1;
+            if((v1-v0) > best.g) best = {n:c.name, g:v1-v0};
+        });
 
-    function updateComparatorChart() {
-        const ctx = document.getElementById('comparatorChart').getContext('2d');
-        const colors = ['#3b82f6', '#ec4899', '#22c55e', '#f97316', '#8b5cf6'];
+        document.getElementById('kpi-count').innerText = state.db.length;
+        document.getElementById('kpi-volume').innerHTML = fmt.num(total) + ' <span class="text-sm text-slate-500">GWh</span>';
+        document.getElementById('kpi-cost').innerText = fmt.eur(total * 239000).slice(0,-2) + ' M€';
+        document.getElementById('kpi-leader').innerText = best.n;
+        document.getElementById('rows-count').innerText = state.db.length;
+
+        this.renderTable(state.db);
+        this.renderMarketChart(total); // Simplificado por ahora
+    },
+
+    renderTable(data) {
+        const lastY = state.years[state.years.length-1];
+        const prevY = state.years[state.years.length-2];
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
         
-        const datasets = selectedCompetitors.map((cif, idx) => {
-            const comp = DB.find(c => c.cif === cif);
-            let data = YEARS.map(y => comp.sales[y] || 0);
-            if (comparatorMode === 'indexed') {
-                const base = data[0] || 1; 
-                data = data.map(v => (v/base)*100);
+        data.sort((a,b)=>(b.sales[lastY]||0)-(a.sales[lastY]||0)).slice(0,100).forEach(c => {
+            const v1 = c.sales[lastY]||0, v0 = c.sales[prevY]||0;
+            const trend = v0>0 ? ((v1-v0)/v0)*100 : 0;
+            const color = trend>=0 ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10';
+            
+            tbody.innerHTML += `
+            <tr class="border-b border-slate-800 transition-colors hover:bg-slate-800">
+                <td class="truncate" title="${c.name}">
+                    <div class="font-bold text-white truncate w-64">${c.name}</div>
+                    <div class="text-[10px] text-slate-500">${c.cif}</div>
+                </td>
+                <td class="text-right font-mono font-bold text-white">${fmt.num(v1)}</td>
+                <td class="text-center"><span class="text-[10px] font-bold px-2 py-1 rounded ${color}">${trend>0?'+':''}${trend.toFixed(1)}%</span></td>
+                <td class="text-center">
+                    <button onclick="ui.openModal('${c.cif}')" class="text-slate-400 hover:text-blue-400"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>`;
+        });
+    },
+
+    renderMarketChart() {
+        const ctx = document.getElementById('chart-market').getContext('2d');
+        const totals = state.years.map(y => state.db.reduce((s,c)=>s+(c.sales[y]||0),0));
+        
+        if(state.charts.market) state.charts.market.destroy();
+        state.charts.market = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: state.years,
+                datasets: [{ label:'GWh', data:totals, backgroundColor:'#2dd4bf', borderRadius:4 }]
+            },
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                plugins:{legend:{display:false}}, 
+                scales:{y:{beginAtZero:true, grid:{color:'#1e293b'}}, x:{grid:{display:false}}} 
             }
-            return { label: comp.name, data: data, borderColor: colors[idx], backgroundColor: colors[idx], borderWidth: 2, tension: 0.3, pointRadius: 3 };
+        });
+    },
+
+    renderChips() {
+        const div = document.getElementById('comp-chips');
+        div.innerHTML = '';
+        state.selectedComp.forEach((cif, i) => {
+            const c = state.db.find(x=>x.cif===cif);
+            const col = ['#3b82f6','#ec4899','#22c55e','#f97316','#8b5cf6'][i%5];
+            div.innerHTML += `
+            <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-700 text-xs text-white">
+               <div class="flex items-center gap-2 overflow-hidden"><div class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></div><span class="truncate">${c.name}</span></div>
+               <button onclick="state.selectedComp=state.selectedComp.filter(x=>x!=='${cif}'); ui.renderChips(); ui.updateCompChart();" class="text-slate-500 hover:text-red-500"><i class="fa-solid fa-times"></i></button>
+            </div>`;
+        });
+    },
+
+    updateCompChart() {
+        const ctx = document.getElementById('chart-comp').getContext('2d');
+        const colors = ['#3b82f6','#ec4899','#22c55e','#f97316','#8b5cf6'];
+        
+        const datasets = state.selectedComp.map((cif, i) => {
+            const c = state.db.find(x=>x.cif===cif);
+            let d = state.years.map(y=>c.sales[y]||0);
+            if(state.compMode==='idx') { const b=d[0]||1; d=d.map(v=>(v/b)*100); }
+            return { label:c.name, data:d, borderColor:colors[i%5], backgroundColor:colors[i%5], tension:0.3, borderWidth:2 };
         });
 
-        if(comparatorChartInstance) comparatorChartInstance.destroy();
-
-        comparatorChartInstance = new Chart(ctx, {
+        if(state.charts.comp) state.charts.comp.destroy();
+        state.charts.comp = new Chart(ctx, {
             type: 'line',
-            data: { labels: YEARS, datasets: datasets },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: { mode: 'index', intersect: false },
-                scales: { y: { beginAtZero: false, grid: { color: '#1e293b' }, ticks: { color: '#64748b' } }, x: { grid: { display: false }, ticks: { color: '#94a3b8' } } },
-                plugins: { legend: { display: false } }
+            data: { labels: state.years, datasets },
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                interaction:{mode:'index', intersect:false},
+                scales:{y:{beginAtZero:false, grid:{color:'#1e293b'}}, x:{grid:{display:false}}},
+                plugins:{legend:{display:false}}
             }
         });
-    }
+    },
 
-    // --- MODAL ---
-    function openModal(cif) {
-        const comp = DB.find(c => c.cif === cif);
-        if(!comp) return;
-        const lastY = YEARS[YEARS.length-1];
-        const sLast = comp.sales[lastY] || 0;
-        const sPrev = comp.sales[YEARS[0]] || 0;
-        const growth = sPrev > 0 ? ((sLast - sPrev)/sPrev * 100).toFixed(1) + '%' : '-';
-        const cagr = calcCAGR(sPrev, sLast, YEARS.length-1) + '%';
+    openModal(cif) {
+        const c = state.db.find(x=>x.cif===cif);
+        const yL = state.years[state.years.length-1];
+        const yF = state.years[0];
         
         document.getElementById('modal').classList.remove('hidden');
-        document.getElementById('modal-cif').innerText = comp.cif;
-        document.getElementById('modal-name').innerText = comp.name;
-        document.getElementById('modal-sales-last').innerText = fmtNum(sLast);
-        document.getElementById('modal-growth').innerText = growth;
-        document.getElementById('modal-cagr').innerText = cagr;
-        document.getElementById('modal-cost').innerText = fmtEur(sLast * 239000); 
-
-        const ctx = document.getElementById('modalChart').getContext('2d');
-        if(modalChartInstance) modalChartInstance.destroy();
-        modalChartInstance = new Chart(ctx, {
-            type: 'line',
+        document.getElementById('modal-cif').innerText = c.cif;
+        document.getElementById('modal-name').innerText = c.name;
+        document.getElementById('modal-val').innerText = fmt.num(c.sales[yL]);
+        
+        // Chart Modal
+        const ctx = document.getElementById('chart-modal').getContext('2d');
+        if(state.charts.modal) state.charts.modal.destroy();
+        state.charts.modal = new Chart(ctx, {
+            type:'line',
             data: {
-                labels: YEARS,
-                datasets: [{ label: 'Ventas', data: YEARS.map(y => comp.sales[y]||0), borderColor: '#2563eb', backgroundColor: 'rgba(37, 99, 235, 0.1)', fill: true }]
+                labels: state.years,
+                datasets:[{data:state.years.map(y=>c.sales[y]), borderColor:'#2dd4bf', backgroundColor:'rgba(45,212,191,0.1)', fill:true}]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: {color:'#1e293b'} } } }
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'#1e293b'}}} }
         });
-    }
+    },
     
-    function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+    closeModal() { document.getElementById('modal').classList.add('hidden'); }
+};
 
-    // Init
-    loadData();
+// Start
+logic.init();
 </script>
 ```
