@@ -1,472 +1,409 @@
 ---
 title: "SECTOR ANALYTICS"
 page-layout: custom
-execute:
-  echo: false
-  warning: false
 format:
   html:
-    css: styles.css
     toc: false
+    css: styles.css
 ---
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+```{=html}
+<script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+<script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+<link href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)" rel="stylesheet">
 
 <style>
-/* --- ESTILOS BASE (Dark Theme FNEE) --- */
-body {
-  background-color: #0f172a; color: #cbd5e1;
-  font-family: 'Inter', sans-serif; margin: 0; padding: 0;
-  overflow: hidden; /* BLOQUEA EL SCROLL GLOBAL */
-}
-.main-wrapper { 
-  height: 100vh; /* OCUPA TODA LA PANTALLA */
-  max-width: 1600px; 
-  margin: 0 auto; 
-  padding: 20px 40px; 
-  display: flex; 
-  flex-direction: column;
-}
+    /* Estructura Base - Sin Scroll Global */
+    body { 
+        background-color: #0f172a !important; 
+        color: #e2e8f0; 
+        font-family: 'Segoe UI', system-ui, sans-serif; 
+        overflow: hidden; 
+        height: 100vh; margin: 0; 
+    }
+    .app-wrapper {
+        display: flex; flex-direction: column;
+        height: 100vh; width: 100%; max-width: 1800px; margin: 0 auto; padding: 0 25px;
+    }
 
-/* HEADER */
-.header-box {
-  flex: 0 0 auto;
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 25px; border-bottom: 1px solid #334155; padding-bottom: 20px;
-}
-.page-h1 { font-size: 1.8rem; font-weight: 700; color: #fff; margin: 0; letter-spacing: -0.5px; }
-.page-sub { color: #64748b; font-size: 0.9rem; margin-top: 5px; }
+    /* Pestañas */
+    .tab-btn { padding: 8px 16px; border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+    .tab-active { background-color: #1e293b; color: #2dd4bf; border: 1px solid #2dd4bf; }
+    .tab-inactive { background-color: #0f172a; color: #94a3b8; border: 1px solid #334155; }
+    .tab-inactive:hover { background-color: #1e293b; color: #fff; }
 
-/* TABS (Botones) */
-.nav-tabs { display: flex; gap: 8px; background: #1e293b; padding: 4px; border-radius: 8px; border: 1px solid #334155; }
-.nav-item {
-  padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;
-  color: #94a3b8; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
-}
-.nav-item:hover { color: #fff; }
-.nav-item.active {
-  background-color: #0f172a; color: #2dd4bf; border: 1px solid #334155; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
+    /* Tarjetas */
+    .card-dark { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
 
-/* --- GRID DE KPIS --- */
-.kpi-row {
-  flex: 0 0 auto;
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;
-}
-.kpi-card {
-  background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 16px 20px;
-  display: flex; flex-direction: column; justify-content: center; min-height: 100px;
-}
-.kpi-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-.kpi-title { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; white-space: nowrap; }
-.kpi-val { font-size: 1.6rem; font-weight: 700; color: #fff; line-height: 1.1; }
-.kpi-sub { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
-.kpi-icon { color: #2dd4bf; background: rgba(45, 212, 191, 0.1); padding: 5px; border-radius: 4px; font-size: 0.9rem; }
+    /* Tabla Fija (Header Sticky) */
+    .table-fixed-head { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .table-fixed-head thead th { 
+        background-color: #0f172a; color: #94a3b8; position: sticky; top: 0; z-index: 10;
+        border-bottom: 1px solid #2dd4bf; padding: 12px; text-align: left; text-transform: uppercase; font-size: 0.75rem;
+    }
+    .table-fixed-head tbody td { border-bottom: 1px solid #334155; padding: 10px 12px; color: #cbd5e1; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .table-fixed-head tbody tr:hover { background-color: rgba(45, 212, 191, 0.05); }
 
-/* --- GRID PRINCIPAL (70% Directorio - 30% Gráfica) --- */
-.dashboard-split {
-  flex: 1; /* Ocupa el resto de altura */
-  display: grid; grid-template-columns: 70% 28%; justify-content: space-between; gap: 20px; 
-  min-height: 0; /* Permite scroll interno */
-}
-.panel {
-  background: #1e293b; border: 1px solid #334155; border-radius: 12px;
-  display: flex; flex-direction: column; overflow: hidden; height: 100%;
-}
-.panel-header {
-  flex: 0 0 auto;
-  padding: 12px 20px; border-bottom: 1px solid #334155; background: rgba(15, 23, 42, 0.4);
-  display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: #fff; font-size: 0.9rem;
-}
+    /* Scrollbars finas */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    
+    /* Inputs */
+    input { background-color: #0f172a !important; border: 1px solid #334155 !important; color: #fff !important; }
+    input:focus { border-color: #2dd4bf !important; outline: none; }
 
-/* TABLA SCROLLABLE */
-.table-area { overflow-y: auto; flex: 1; padding: 0; }
-.mini-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; table-layout: fixed; }
-/* Anchos Fijos para Alineación Perfecta */
-.col-cif { width: 15%; }
-.col-empresa { width: 45%; }
-.col-dato { width: 15%; text-align: right; }
-.col-trend { width: 10%; text-align: center; }
-.col-action { width: 15%; text-align: center; }
-
-.mini-table th {
-  position: sticky; top: 0; background: #0f172a; color: #94a3b8; z-index: 10;
-  text-align: left; padding: 10px 15px; font-size: 0.75rem; text-transform: uppercase; border-bottom: 1px solid #334155;
-}
-.mini-table td {
-  padding: 10px 15px; border-bottom: 1px solid #334155; color: #cbd5e1;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.mini-table tr:hover { background: rgba(45, 212, 191, 0.05); }
-
-/* UTILIDADES */
-.trend-up { color: #2dd4bf; font-weight: 600; }
-.trend-down { color: #f43f5e; font-weight: 600; }
-.btn-eye {
-  border: 1px solid #334155; background: #0f172a; color: #94a3b8; width: 26px; height: 26px;
-  border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto; transition: all 0.2s;
-}
-.btn-eye:hover { color: #2dd4bf; border-color: #2dd4bf; background: rgba(45, 212, 191, 0.1); }
-input[type="search"] {
-  background: #0f172a !important; border: 1px solid #334155 !important;
-  color: #fff !important; font-size: 0.8rem; padding: 6px 12px !important;
-  width: 220px; border-radius: 6px !important; height: 30px;
-}
-
-/* COMPARADOR ESTILO HTML */
-.comp-layout { display: grid; grid-template-columns: 25% 73%; gap: 2%; height: 100%; }
-.comp-sidebar { display: flex; flex-direction: column; gap: 20px; }
-.comp-main { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; height: 100%; }
-
-.search-box { position: relative; width: 100%; margin-bottom: 10px; }
-.search-input { width: 100%; background: #0f172a; border: 1px solid #334155; color: #fff; padding: 10px; border-radius: 8px; font-size: 0.9rem; outline: none; }
-.search-input:focus { border-color: #2dd4bf; }
-.search-results {
-  position: absolute; top: 100%; left: 0; width: 100%; background: #1e293b; border: 1px solid #334155;
-  border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 50; display: none; margin-top: 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-}
-.search-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #334155; font-size: 0.85rem; }
-.search-item:hover { background: #0f172a; color: #2dd4bf; }
-
-.chip-container { display: flex; flex-direction: column; gap: 8px; min-height: 50px; }
-.comp-chip {
-  background: #0f172a; border: 1px solid #334155; padding: 8px 12px; border-radius: 6px;
-  display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #fff;
-}
-.comp-chip:hover { border-color: #475569; }
-.close-chip { cursor: pointer; color: #94a3b8; font-size: 1rem; margin-left: 10px; }
-.close-chip:hover { color: #f43f5e; }
-
-/* MODAL */
-dialog.chart-modal {
-  background: #0f172a; color: #fff; border: 1px solid #2dd4bf; border-radius: 12px;
-  width: 80%; max-width: 900px; padding: 0; position: fixed; top: 50%; left: 50%;
-  transform: translate(-50%, -50%); box-shadow: 0 50px 100px -20px rgba(0,0,0,0.9);
-}
-dialog.chart-modal::backdrop { background: rgba(0,0,0,0.8); backdrop-filter: blur(2px); }
+    /* Animación */
+    .fade-in { animation: fadeIn 0.3s ease-in; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-```{ojs}
-//| echo: false
-//| output: false
+<div class="app-wrapper">
 
-// 1. DATOS ESTÁTICOS (AQUÍ ESTÁN LOS DATOS QUE SIEMPRE FUNCIONAN)
-rawData = [
-  {NIF: "A81948077", Empresa: "ENDESA ENERGIA, S.A.U.", V2020: 85210, V2021: 75390, V2022: 78328, V2023: 75390, V2024: 68500},
-  {NIF: "A80298896", Empresa: "CEPSA COMERCIAL PETROLEO, S.A.U.", V2020: 71631, V2021: 71796, V2022: 75500, V2023: 74000, V2024: 73200},
-  {NIF: "A95758389", Empresa: "IBERDROLA CLIENTES, S.A.U.", V2020: 51557, V2021: 51557, V2022: 42000, V2023: 39293, V2024: 46500},
-  {NIF: "A61797536", Empresa: "NATURGY IBERIA S.A.", V2020: 30751, V2021: 23978, V2022: 22388, V2023: 21500, V2024: 20100},
-  {NIF: "A28559573", Empresa: "GALP ENERGÍA ESPAÑA, S.A.U.", V2020: 23744, V2021: 22253, V2022: 24500, V2023: 25100, V2024: 26000},
-  {NIF: "A80298839", Empresa: "REPSOL PRODUCTOS PETROLIFEROS", V2020: 119846, V2021: 194426, V2022: 185000, V2023: 175000, V2024: 170000},
-  {NIF: "A28135846", Empresa: "BP OIL ESPAÑA, S.A.U.", V2020: 34795, V2021: 39293, V2022: 38000, V2023: 37500, V2024: 36000},
-  {NIF: "B82846825", Empresa: "ENERGIA XXI (ENDESA REF)", V2020: 12968, V2021: 12673, V2022: 12673, V2023: 12400, V2024: 12300},
-  {NIF: "A95000295", Empresa: "TOTALENERGIES CLIENTES, S.A.U.", V2020: 14518, V2021: 23543, V2022: 23543, V2023: 25000, V2024: 26500},
-  {NIF: "B31737422", Empresa: "ACCIONA GREEN ENERGY", V2020: 4992, V2021: 6349, V2022: 6500, V2023: 6700, V2024: 6900},
-  {NIF: "B83160994", Empresa: "AXPO IBERIA S.L.", V2020: 14727, V2021: 12969, V2022: 14727, V2023: 10500, V2024: 10000},
-  {NIF: "A85908036", Empresa: "FENIE ENERGIA, S.A.", V2020: 2476, V2021: 2127, V2022: 2127, V2023: 2000, V2024: 1950}
-];
-
-years = [2020, 2021, 2022, 2023, 2024];
-
-// Totales para Gráfica de Mercado
-marketData = years.map(y => ({
-  Year: y.toString(), 
-  Vol: rawData.reduce((a,b) => a + (b[`V${y}`] || 0), 0)
-}));
-total2024 = marketData.find(d => d.Year === "2024").Vol;
-total2023 = marketData.find(d => d.Year === "2023").Vol;
-growthPct = ((total2024/total2023 - 1)*100).toFixed(1);
-
-// Datos en formato largo
-dataLong = rawData.flatMap(d => years.map(y => ({
-  Empresa: d.Empresa, NIF: d.NIF, Año: y, Ventas: d[`V${y}`]
-})));
-
-// Estado
-mutable currentTab = "mercado";
-mutable selectedRow = null;
-mutable activeCompetitors = ["A95758389", "B83160994"]; // Iberdrola, Axpo por defecto
-
-// Buscador Tabla Mercado
-searchWidget = Inputs.search(rawData, {placeholder: "Buscar CIF o Nombre...", columns: ["Empresa", "NIF"]});
-searchTerm = Generators.input(searchWidget);
-```
-
-```{ojs}
-//| echo: false
-// INTERFAZ PRINCIPAL
-
-htl.html`
-<div class="main-wrapper">
-  
-  <div class="header-box">
-    <div>
-      <div style="display:flex; align-items:center; gap:10px;">
-         <div style="background:#10b981; color:#0f172a; padding:5px 8px; border-radius:4px;"><i class="fa-solid fa-bolt"></i></div>
-         <div>
-            <h1 class="page-h1" style="font-size:1.5rem; line-height:1;">FNEE Intelligence</h1>
-            <div class="page-sub" style="font-size:0.75rem; color:#34d399; font-weight:700; letter-spacing:1px; text-transform:uppercase;">Strategic Dashboard</div>
-         </div>
-      </div>
-    </div>
-    <div class="nav-tabs">
-      <div class="nav-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}>
-        <i class="fa-solid fa-chart-column"></i> Mercado
-      </div>
-      <div class="nav-item ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable currentTab = 'comparador'}>
-        <i class="fa-solid fa-chart-line"></i> Comparador
-      </div>
-    </div>
-  </div>
-
-  <div style="display: ${currentTab === 'mercado' ? 'flex' : 'none'}; animation: fadeIn 0.3s; flex-direction:column; height:100%;">
-    
-    <div class="kpi-row">
-      <div class="kpi-card" style="background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
-        <div class="kpi-top"><span class="kpi-title">Empresas Monitorizadas</span></div>
-        <div class="kpi-val">${rawData.length}</div>
-        <div class="kpi-sub" style="color:#10b981"><i class="fa-solid fa-check-circle"></i> Base de datos activa</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-top"><span class="kpi-title">Volumen Total 2024</span></div>
-        <div class="kpi-val" style="color:#1e293b; color:#cbd5e1;">${(total2024/1000).toFixed(0)} <span style="font-size:1rem;">GWh</span></div>
-        <div class="kpi-sub">Suma agregada mercado</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-top"><span class="kpi-title">Coste FNEE Est. (2024)</span></div>
-        <div class="kpi-val" style="color:#3b82f6;">${(total2024 * 0.239).toFixed(0)} M€</div>
-        <div class="kpi-sub">Estimado @ ~239k€/GWh</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-top"><span class="kpi-title">Líder Crecimiento '24</span></div>
-        <div class="kpi-val" style="font-size:1rem;">TOTALENERGIES</div>
-        <div class="kpi-sub" style="color:#10b981; font-weight:700;">+2.500 GWh</div>
-      </div>
-    </div>
-
-    <div class="dashboard-split">
-      <div class="panel">
-        <div class="panel-header">
-          <span><i class="fa-solid fa-list" style="margin-right:8px;"></i> Directorio de Empresas</span>
-          <div>${searchWidget}</div>
+    <nav class="flex-none bg-slate-950 text-white border-b border-slate-800 shadow-md z-50 mt-4 mb-6 rounded-xl">
+        <div class="px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-500/10 p-2 rounded text-emerald-400 border border-emerald-500/20"><i class="fa-solid fa-bolt"></i></div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight text-white">FNEE Intelligence</h1>
+                    <p class="text-[10px] text-emerald-400 uppercase tracking-wider font-bold">Strategic Dashboard</p>
+                </div>
+            </div>
+            <div class="flex space-x-2">
+                <button onclick="ui.switchTab('mercado')" id="btn-mercado" class="tab-btn tab-active"><i class="fa-solid fa-chart-column"></i> Mercado</button>
+                <button onclick="ui.switchTab('comparador')" id="btn-comparador" class="tab-btn tab-inactive"><i class="fa-solid fa-chart-line"></i> Comparador</button>
+            </div>
         </div>
-        <div class="table-area">
-          <table class="mini-table">
-            <thead>
-              <tr>
-                <th class="col-cif">CIF</th>
-                <th class="col-empresa">Razón Social</th>
-                <th class="col-dato">Ventas '24</th>
-                <th class="col-trend">Trend</th>
-                <th class="col-action">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${searchTerm.sort((a,b) => b.V2024 - a.V2024).map(row => {
-                const trend = ((row.V2024 - row.V2023)/row.V2023 * 100).toFixed(1);
-                const isPos = trend >= 0;
-                return htl.html`
-                <tr style="border-bottom:1px solid #334155;">
-                  <td class="col-cif" style="font-family:monospace; color:#64748b;">${row.NIF}</td>
-                  <td class="col-empresa" style="font-weight:600; color:#fff;" title="${row.Empresa}">${row.Empresa}</td>
-                  <td class="col-dato" style="font-weight:700; color:#cbd5e1;">${row.V2024.toLocaleString("es-ES")}</td>
-                  <td class="col-trend" style="font-size:0.75rem;">
-                    <span class="${isPos ? 'trend-up' : 'trend-down'}">${isPos ? '+' : ''}${trend}%</span>
-                  </td>
-                  <td class="col-action">
-                    <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
-                      <i class="fa-solid fa-eye"></i>
-                    </button>
-                  </td>
-                </tr>`
-              })}
-            </tbody>
-          </table>
-        </div>
-        <div style="padding:10px; text-align:center; font-size:0.75rem; color:#64748b; background:#1e293b; border-top:1px solid #334155;">
-           Mostrando las primeras 200 coincidencias por rendimiento
-        </div>
-      </div>
+    </nav>
 
-      <div class="panel">
-        <div class="panel-header">Volumen Total Mercado (GWh)</div>
-        <div style="padding:20px; flex:1; display:flex; flex-direction:column;">
-          <div style="flex:1;">
-            ${Plot.plot({
-              style: {background: "transparent", color: "#cbd5e1", fontSize: "12px", width: "100%"},
-              height: 350, marginLeft: 40,
-              y: {grid: true, label: null, tickFormat: "s"},
-              x: {padding: 0.3},
-              marks: [
-                Plot.barY(marketData, {x: "Year", y: "Vol", fill: "#0f172a", stroke:"#2dd4bf", strokeWidth:1, tip: true, rx: 4}),
-              ]
-            })}
-          </div>
-          <div style="margin-top:10px; background:rgba(37,99,235,0.1); color:#60a5fa; padding:10px; border-radius:6px; font-size:0.75rem;">
-            <i class="fa-solid fa-info-circle"></i> Evolución agregada de ventas declaradas.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}; animation: fadeIn 0.3s; height:100%;">
-    <div class="comp-layout">
-      
-      <div class="comp-sidebar">
-        <div class="panel" style="padding:20px; overflow:visible;">
-           <div style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:15px; text-transform:uppercase;">1. Añadir Competidores</div>
-           
-           <div class="search-box">
-             <input type="text" class="search-input" placeholder="Buscar empresa..." id="compSearchInput" 
-               oninput=${(e) => {
-                 const val = e.target.value.toLowerCase();
-                 const res = document.getElementById('compSearchResults');
-                 if(val.length < 2) { res.style.display = 'none'; return; }
-                 
-                 const matches = rawData.filter(c => c.Empresa.toLowerCase().includes(val) && !activeCompetitors.includes(c.NIF));
-                 
-                 res.innerHTML = '';
-                 if(matches.length > 0) {
-                   res.style.display = 'block';
-                   matches.forEach(m => {
-                     const item = document.createElement('div');
-                     item.className = 'search-item';
-                     item.innerHTML = `<strong>${m.Empresa}</strong>`;
-                     item.onclick = () => {
-                       if(activeCompetitors.length >= 5) { alert("Máximo 5 empresas"); return; }
-                       mutable activeCompetitors = [...activeCompetitors, m.NIF];
-                       e.target.value = '';
-                       res.style.display = 'none';
-                     };
-                     res.appendChild(item);
-                   });
-                 } else { res.style.display = 'none'; }
-               }}
-             >
-             <div id="compSearchResults" class="search-results"></div>
-           </div>
-
-           <div class="chip-container">
-             ${activeCompetitors.map(nif => {
-                const comp = rawData.find(c => c.NIF === nif);
-                return htl.html`
-                <div class="comp-chip">
-                   <span style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px;">${comp.Empresa}</span>
-                   <i class="fa-solid fa-times close-chip" onclick=${() => mutable activeCompetitors = activeCompetitors.filter(x => x !== nif)}></i>
-                </div>`
-             })}
-           </div>
-           <div style="font-size:0.75rem; color:#64748b; text-align:center; margin-top:10px; font-style:italic;">Máximo 5 empresas</div>
-        </div>
-
-        <div class="panel" style="padding:20px;">
-           <div style="font-size:0.85rem; font-weight:700; color:#fff; margin-bottom:15px; text-transform:uppercase;">2. Visualización</div>
-           <button style="width:100%; text-align:left; padding:10px; border-radius:6px; background:rgba(37,99,235,0.1); color:#60a5fa; border:1px solid #3b82f6; margin-bottom:10px; cursor:pointer;">
-             <i class="fa-solid fa-chart-bar" style="margin-right:8px;"></i> Volumen Real (GWh)
-           </button>
-           <button style="width:100%; text-align:left; padding:10px; border-radius:6px; background:#0f172a; color:#94a3b8; border:1px solid #334155; cursor:pointer;">
-             <i class="fa-solid fa-arrow-trend-up" style="margin-right:8px;"></i> Base 100 (Crecimiento)
-           </button>
-        </div>
-      </div>
-
-      <div class="comp-main">
-        <div style="font-weight:700; color:#cbd5e1; margin-bottom:20px;">Comparativa Estratégica</div>
-        <div style="flex:1;">
-           ${Plot.plot({
-             style: {background: "transparent", color: "#cbd5e1", fontSize: "14px"},
-             height: 400, marginLeft: 60,
-             color: {legend: true},
-             y: {grid: true, label: "Ventas (GWh)"},
-             marks: [
-               Plot.lineY(dataLong.filter(d => activeCompetitors.includes(d.NIF)), {
-                 x: "Año", y: "Ventas", stroke: "Empresa", strokeWidth: 3, marker: "circle", tip: true
-               })
-             ]
-           })}
-        </div>
+    <div class="flex-1 overflow-hidden relative pb-6">
         
-        <div style="margin-top:20px; overflow-x:auto;">
-           <table class="mini-table" style="font-size:0.8rem;">
-             <thead>
-               <tr style="background:#0f172a;">
-                 <th style="padding:10px;">Empresa</th>
-                 <th style="text-align:right;">2020</th>
-                 <th style="text-align:right;">2024</th>
-                 <th style="text-align:right;">CAGR (4y)</th>
-                 <th style="text-align:right;">Crecimiento Total</th>
-               </tr>
-             </thead>
-             <tbody>
-               ${activeCompetitors.map(nif => {
-                 const c = rawData.find(x => x.NIF === nif);
-                 const cagr = (Math.pow(c.V2024/c.V2020, 1/4) - 1)*100;
-                 const totalGro = ((c.V2024 - c.V2020)/c.V2020)*100;
-                 return htl.html`
-                 <tr style="border-bottom:1px solid #334155;">
-                   <td style="padding:10px; font-weight:700; color:#fff;">${c.Empresa}</td>
-                   <td style="padding:10px; text-align:right; color:#94a3b8;">${c.V2020.toLocaleString()}</td>
-                   <td style="padding:10px; text-align:right; font-weight:700;">${c.V2024.toLocaleString()}</td>
-                   <td style="padding:10px; text-align:right; color:#3b82f6;">${cagr.toFixed(2)}%</td>
-                   <td style="padding:10px; text-align:right; color:${totalGro>=0?'#10b981':'#f43f5e'};">${totalGro.toFixed(1)}%</td>
-                 </tr>`
-               })}
-             </tbody>
-           </table>
+        <div id="view-mercado" class="flex flex-col h-full gap-5 transition-opacity duration-300">
+            <div class="flex-none grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-emerald-500">
+                    <p class="text-emerald-400 text-[10px] font-bold uppercase mb-1">Empresas</p>
+                    <h3 class="text-3xl font-bold text-white" id="kpi-count">0</h3>
+                    <div class="text-[10px] text-slate-500">Base activa</div>
+                </div>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-blue-500">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Volumen Total</p>
+                    <h3 class="text-2xl font-bold text-white" id="kpi-volume">0 <span class="text-sm text-slate-500">GWh</span></h3>
+                </div>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-purple-500">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Coste Estimado</p>
+                    <h3 class="text-2xl font-bold text-blue-400" id="kpi-cost">0 M€</h3>
+                </div>
+                <div class="card-dark p-5 flex flex-col justify-center h-24 border-l-4 border-l-amber-500">
+                    <p class="text-slate-400 text-[10px] font-bold uppercase mb-1">Líder</p>
+                    <h3 class="text-lg font-bold text-white truncate" id="kpi-leader">-</h3>
+                </div>
+            </div>
+
+            <div class="flex-1 grid grid-cols-12 gap-6 min-h-0">
+                <div class="col-span-8 card-dark flex flex-col overflow-hidden">
+                    <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50 flex justify-between items-center">
+                        <h3 class="font-bold text-white text-sm"><i class="fa-solid fa-list text-emerald-500 mr-2"></i> Directorio</h3>
+                        <input type="text" id="search-input" placeholder="Buscar..." class="px-3 py-1.5 rounded text-xs w-56" onkeyup="logic.filterTable()">
+                    </div>
+                    <div class="flex-1 overflow-y-auto bg-slate-900">
+                        <table class="w-full table-fixed-head">
+                            <thead>
+                                <tr>
+                                    <th width="50%">Empresa / Razón Social</th>
+                                    <th width="20%" class="text-right">Último (GWh)</th>
+                                    <th width="15%" class="text-center">Trend</th>
+                                    <th width="15%" class="text-center">Ficha</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body"></tbody>
+                        </table>
+                    </div>
+                    <div class="flex-none p-2 bg-slate-950 border-t border-slate-800 text-center text-[10px] text-slate-500">
+                        <span id="rows-count">0</span> registros visualizados
+                    </div>
+                </div>
+
+                <div class="col-span-4 card-dark flex flex-col overflow-hidden">
+                    <div class="flex-none p-3 border-b border-slate-700 bg-slate-900/50">
+                        <h3 class="font-bold text-white text-sm">Evolución del Mercado</h3>
+                    </div>
+                    <div class="flex-1 p-4 relative flex items-center justify-center">
+                        <canvas id="chart-market"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div id="view-comparador" class="hidden flex h-full gap-6 transition-opacity duration-300">
+            <div class="w-1/4 flex flex-col gap-4">
+                <div class="card-dark p-5">
+                    <h3 class="font-bold text-white mb-3 text-xs uppercase text-emerald-400">Selección (Max 5)</h3>
+                    <div class="relative mb-3">
+                        <input type="text" id="comp-search" placeholder="Añadir empresa..." class="w-full px-3 py-2 rounded text-sm" onkeyup="logic.searchComp()">
+                        <div id="comp-results" class="hidden absolute z-20 w-full mt-1 bg-slate-800 border border-slate-600 rounded shadow-xl max-h-40 overflow-y-auto text-xs"></div>
+                    </div>
+                    <div id="comp-chips" class="space-y-2 max-h-60 overflow-y-auto"></div>
+                </div>
+                <div class="card-dark p-5">
+                    <h3 class="font-bold text-white mb-3 text-xs uppercase text-emerald-400">Modo Gráfico</h3>
+                    <button onclick="logic.setCompMode('abs')" id="btn-mode-abs" class="w-full text-left px-3 py-2 rounded mb-2 text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/50">Volumen Real</button>
+                    <button onclick="logic.setCompMode('idx')" id="btn-mode-idx" class="w-full text-left px-3 py-2 rounded text-xs bg-slate-900 text-slate-400 border border-slate-700">Base 100 (Crecimiento)</button>
+                </div>
+            </div>
+            <div class="w-3/4 card-dark p-6 flex flex-col">
+                <h3 class="font-bold text-white mb-2 text-sm">Comparativa Estratégica</h3>
+                <div class="flex-1 relative w-full h-full">
+                    <canvas id="chart-comp"></canvas>
+                </div>
+            </div>
+        </div>
 
     </div>
-  </div>
 
-</div>`
-```
+    <div id="modal" class="fixed inset-0 bg-slate-950/90 z-[100] hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl border border-slate-700">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center">
+                <div>
+                    <span id="modal-cif" class="text-[10px] bg-slate-700 px-2 py-1 rounded font-mono text-emerald-400"></span>
+                    <h2 id="modal-name" class="text-lg font-bold text-white mt-1"></h2>
+                </div>
+                <button onclick="ui.closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">VENTAS 2024</p><p id="modal-val" class="text-lg font-bold text-white">-</p></div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">CRECIMIENTO</p><p id="modal-gro" class="text-lg font-bold text-white">-</p></div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">CAGR</p><p id="modal-cagr" class="text-lg font-bold text-emerald-400">-</p></div>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-700"><p class="text-[10px] text-slate-500">COSTE FNEE</p><p id="modal-cost" class="text-lg font-bold text-blue-400">-</p></div>
+                </div>
+                <div class="h-64 relative"><canvas id="chart-modal"></canvas></div>
+            </div>
+        </div>
+    </div>
 
-```{ojs}
-//| echo: false
-// MODAL DETALLE
-{
-  if (selectedRow) {
-    const dialog = htl.html`<dialog class="chart-modal" open>
-      <div style="padding:20px; border-bottom:1px solid #334155; display:flex; justify-content:space-between; align-items:start; background:#0f172a;">
-        <div>
-           <span style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-size:0.75rem; font-family:monospace; color:#cbd5e1;">${selectedRow.NIF}</span>
-           <h2 style="margin:5px 0 0 0; font-size:1.5rem; color:#fff;">${selectedRow.Empresa}</h2>
-        </div>
-        <button onclick=${() => mutable selectedRow = null} style="background:none; border:none; color:#64748b; font-size:1.5rem; cursor:pointer;">&times;</button>
-      </div>
-      <div style="padding:30px;">
-        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:30px;">
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8;">Ventas 2024</div>
-              <div style="font-size:1.2rem; font-weight:700; color:#fff;">${selectedRow.V2024.toLocaleString()}</div>
-           </div>
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8;">Crecimiento ('20-'24)</div>
-              <div style="font-size:1.2rem; font-weight:700; color:#fff;">${(((selectedRow.V2024-selectedRow.V2020)/selectedRow.V2020)*100).toFixed(1)}%</div>
-           </div>
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8;">CAGR</div>
-              <div style="font-size:1.2rem; font-weight:700; color:#3b82f6;">${((Math.pow(selectedRow.V2024/selectedRow.V2020, 1/4)-1)*100).toFixed(2)}%</div>
-           </div>
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8;">Coste Est. FNEE</div>
-              <div style="font-size:1.2rem; font-weight:700; color:#cbd5e1;">${(selectedRow.V2024*0.239).toFixed(0)} k€</div>
-           </div>
-        </div>
-        ${Plot.plot({
-          style: {background: "transparent", color: "#cbd5e1"},
-          height: 300, width: 850, grid: true, marginLeft: 60,
-          marks: [
-            Plot.lineY(dataLong.filter(d => d.Empresa === selectedRow.Empresa), {x: "Año", y: "Ventas", stroke: "#3b82f6", strokeWidth: 3}),
-            Plot.areaY(dataLong.filter(d => d.Empresa === selectedRow.Empresa), {x: "Año", y: "Ventas", fill: "#3b82f6", fillOpacity: 0.1})
-          ]
-        })}
-      </div>
-    </dialog>`;
-    return dialog;
-  }
+</div>
+
+<script>
+// Configuración Gráfica
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = '#334155';
+Chart.defaults.font.family = "'Segoe UI', sans-serif";
+
+// Estado Global
+const state = {
+    // Aquí pegamos tus datos "arreglados" para garantizar que funcionan
+    db: [
+        { cif: "A81948077", name: "ENDESA ENERGIA, S.A.U.", sales: {2020: 85210, 2021: 75390, 2022: 78328, 2023: 75390, 2024: 68500} },
+        { cif: "A80298896", name: "CEPSA COMERCIAL PETROLEO, S.A.U.", sales: {2020: 71631, 2021: 71796, 2022: 75500, 2023: 74000, 2024: 73200} },
+        { cif: "A95758389", name: "IBERDROLA CLIENTES, S.A.U.", sales: {2020: 51557, 2021: 51557, 2022: 42000, 2023: 39293, 2024: 46500} },
+        { cif: "A61797536", name: "NATURGY IBERIA S.A.", sales: {2020: 30751, 2021: 23978, 2022: 22388, 2023: 21500, 2024: 20100} },
+        { cif: "A80298839", name: "REPSOL PRODUCTOS PETROLIFEROS", sales: {2020: 119846, 2021: 194426, 2022: 185000, 2023: 175000, 2024: 170000} },
+        { cif: "A28135846", name: "BP OIL ESPAÑA, S.A.U.", sales: {2020: 34795, 2021: 39293, 2022: 38000, 2023: 37500, 2024: 36000} },
+        { cif: "B82846825", name: "ENERGIA XXI (ENDESA REF)", sales: {2020: 12968, 2021: 12673, 2022: 12673, 2023: 12400, 2024: 12300} },
+        { cif: "A95000295", name: "TOTALENERGIES CLIENTES", sales: {2020: 14518, 2021: 23543, 2022: 23543, 2023: 25000, 2024: 26500} },
+        { cif: "B31737422", name: "ACCIONA GREEN ENERGY", sales: {2020: 4992, 2021: 6349, 2022: 6500, 2023: 6700, 2024: 6900} },
+        { cif: "B83160994", name: "AXPO IBERIA S.L.", sales: {2020: 14727, 2021: 12969, 2022: 14727, 2023: 10500, 2024: 10000} }
+    ],
+    years: [2020, 2021, 2022, 2023, 2024],
+    selectedComp: ["A81948077", "A95758389"], // Endesa e Iberdrola
+    compMode: 'abs',
+    charts: {}
+};
+
+// Utilidades
+const fmt = {
+    num: n => new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 }).format(n),
+    eur: n => new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n)
+};
+
+// UI Logic
+const ui = {
+    init() {
+        this.updateDashboard();
+        this.renderChips();
+    },
+
+    switchTab(t) {
+        ['mercado', 'comparador'].forEach(id => {
+            document.getElementById('view-'+id).classList.add('hidden');
+            document.getElementById('btn-'+id).className = 'tab-btn tab-inactive';
+        });
+        document.getElementById('view-'+t).classList.remove('hidden');
+        document.getElementById('btn-'+t).className = 'tab-btn tab-active';
+        if(t==='comparador') this.updateCompChart();
+    },
+
+    updateDashboard() {
+        const lastY = 2024;
+        const prevY = 2023;
+        
+        let total = 0;
+        let best = {n:'-', g:-Infinity};
+        
+        state.db.forEach(c => {
+            const v1 = c.sales[lastY]||0, v0 = c.sales[prevY]||0;
+            total += v1;
+            if((v1-v0) > best.g) best = {n:c.name, g:v1-v0};
+        });
+
+        document.getElementById('kpi-count').innerText = state.db.length;
+        document.getElementById('kpi-volume').innerHTML = fmt.num(total) + ' <span class="text-sm text-slate-500">GWh</span>';
+        document.getElementById('kpi-cost').innerText = fmt.eur(total * 239000).slice(0,-2) + ' M€';
+        document.getElementById('kpi-leader').innerText = best.n;
+        document.getElementById('rows-count').innerText = state.db.length;
+
+        this.renderTable(state.db);
+        this.renderMarketChart(total);
+    },
+
+    renderTable(data) {
+        const tbody = document.getElementById('table-body');
+        tbody.innerHTML = '';
+        const lastY = 2024, prevY = 2023;
+        
+        data.sort((a,b)=>(b.sales[lastY]||0)-(a.sales[lastY]||0)).forEach(c => {
+            const v1 = c.sales[lastY]||0, v0 = c.sales[prevY]||0;
+            const trend = v0>0 ? ((v1-v0)/v0)*100 : 0;
+            const color = trend>=0 ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-400 bg-rose-500/10';
+            
+            tbody.innerHTML += `
+            <tr class="transition-colors border-b border-slate-800 hover:bg-slate-800">
+                <td title="${c.name}">
+                    <div class="font-bold text-white truncate w-64">${c.name}</div>
+                    <div class="text-[10px] text-slate-500">${c.cif}</div>
+                </td>
+                <td class="text-right font-mono font-bold text-white">${fmt.num(v1)}</td>
+                <td class="text-center"><span class="text-[10px] font-bold px-2 py-1 rounded ${color}">${trend>0?'+':''}${trend.toFixed(1)}%</span></td>
+                <td class="text-center">
+                    <button onclick="ui.openModal('${c.cif}')" class="text-slate-400 hover:text-blue-400"><i class="fa-solid fa-eye"></i></button>
+                </td>
+            </tr>`;
+        });
+    },
+
+    renderMarketChart() {
+        const ctx = document.getElementById('chart-market').getContext('2d');
+        const totals = state.years.map(y => state.db.reduce((s,c)=>s+(c.sales[y]||0),0));
+        
+        if(state.charts.market) state.charts.market.destroy();
+        state.charts.market = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: state.years,
+                datasets: [{ label:'GWh', data:totals, backgroundColor:'#2dd4bf', borderRadius:4 }]
+            },
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                plugins:{legend:{display:false}}, 
+                scales:{y:{beginAtZero:true, grid:{color:'#1e293b'}}, x:{grid:{display:false}}} 
+            }
+        });
+    },
+
+    renderChips() {
+        const div = document.getElementById('comp-chips');
+        div.innerHTML = '';
+        state.selectedComp.forEach((cif, i) => {
+            const c = state.db.find(x=>x.cif===cif);
+            const col = ['#3b82f6','#ec4899','#22c55e','#f97316','#8b5cf6'][i%5];
+            div.innerHTML += `
+            <div class="flex justify-between items-center p-2 bg-slate-950 rounded border border-slate-700 text-xs text-white">
+               <div class="flex items-center gap-2 overflow-hidden"><div class="w-2 h-2 rounded-full flex-shrink-0" style="background:${col}"></div><span class="truncate">${c.name}</span></div>
+               <button onclick="state.selectedComp=state.selectedComp.filter(x=>x!=='${cif}'); ui.renderChips(); ui.updateCompChart();" class="text-slate-500 hover:text-red-500"><i class="fa-solid fa-times"></i></button>
+            </div>`;
+        });
+    },
+
+    updateCompChart() {
+        const ctx = document.getElementById('chart-comp').getContext('2d');
+        const colors = ['#3b82f6','#ec4899','#22c55e','#f97316','#8b5cf6'];
+        
+        const datasets = state.selectedComp.map((cif, i) => {
+            const c = state.db.find(x=>x.cif===cif);
+            let d = state.years.map(y=>c.sales[y]||0);
+            if(state.compMode==='idx') { const b=d[0]||1; d=d.map(v=>(v/b)*100); }
+            return { label:c.name, data:d, borderColor:colors[i%5], backgroundColor:colors[i%5], tension:0.3, borderWidth:2 };
+        });
+
+        if(state.charts.comp) state.charts.comp.destroy();
+        state.charts.comp = new Chart(ctx, {
+            type: 'line',
+            data: { labels: state.years, datasets },
+            options: { 
+                responsive: true, maintainAspectRatio: false, 
+                interaction:{mode:'index', intersect:false},
+                scales:{y:{beginAtZero:false, grid:{color:'#1e293b'}}, x:{grid:{display:false}}},
+                plugins:{legend:{display:false}}
+            }
+        });
+    },
+
+    openModal(cif) {
+        const c = state.db.find(x=>x.cif===cif);
+        const yL = 2024, yF = 2020;
+        
+        document.getElementById('modal').classList.remove('hidden');
+        document.getElementById('modal-cif').innerText = c.cif;
+        document.getElementById('modal-name').innerText = c.name;
+        document.getElementById('modal-val').innerText = fmt.num(c.sales[yL]);
+        
+        const ctx = document.getElementById('chart-modal').getContext('2d');
+        if(state.charts.modal) state.charts.modal.destroy();
+        state.charts.modal = new Chart(ctx, {
+            type:'line',
+            data: {
+                labels: state.years,
+                datasets:[{data:state.years.map(y=>c.sales[y]), borderColor:'#2dd4bf', backgroundColor:'rgba(45,212,191,0.1)', fill:true}]
+            },
+            options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{grid:{color:'#1e293b'}}} }
+        });
+    },
+    
+    closeModal() { document.getElementById('modal').classList.add('hidden'); }
+};
+
+const logic = {
+    filterTable() {
+        const term = document.getElementById('search-input').value.toLowerCase();
+        const filtered = state.db.filter(c => c.name.toLowerCase().includes(term) || c.cif.toLowerCase().includes(term));
+        ui.renderTable(filtered);
+    },
+    searchComp() {
+        const term = document.getElementById('comp-search').value.toLowerCase();
+        const box = document.getElementById('comp-results');
+        box.innerHTML = '';
+        if(term.length < 2) { box.classList.add('hidden'); return; }
+        
+        const matches = state.db.filter(c => c.name.toLowerCase().includes(term) && !state.selectedComp.includes(c.cif)).slice(0,10);
+        if(matches.length > 0) {
+            box.classList.remove('hidden');
+            matches.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'p-2 hover:bg-slate-700 cursor-pointer border-b border-slate-700 text-slate-300';
+                div.innerHTML = `<div class="font-bold text-white">${c.name}</div>`;
+                div.onclick = () => {
+                    if(state.selectedComp.length >= 5) alert("Máximo 5");
+                    else { state.selectedComp.push(c.cif); ui.renderChips(); ui.updateCompChart(); }
+                    document.getElementById('comp-search').value = '';
+                    box.classList.add('hidden');
+                };
+                box.appendChild(div);
+            });
+        }
+    },
+    setCompMode(m) {
+        state.compMode = m;
+        const b1 = document.getElementById('btn-mode-abs');
+        const b2 = document.getElementById('btn-mode-idx');
+        const active = "w-full text-left px-3 py-2 rounded mb-2 text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/50";
+        const inactive = "w-full text-left px-3 py-2 rounded mb-2 text-xs bg-slate-900 text-slate-400 border border-slate-700 hover:bg-slate-800";
+        if(m==='abs') { b1.className=active; b2.className=inactive; }
+        else { b1.className=inactive; b2.className=active; }
+        ui.updateCompChart();
+    }
 }
+
+// Start
+ui.init();
+</script>
 ```
