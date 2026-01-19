@@ -1,0 +1,159 @@
+```{ojs}
+//| echo: false
+// COMPONENTE: INTERFAZ VISUAL (VISTA) - CORREGIDO
+
+htl.html`
+<div class="main-wrapper">
+  
+  <div class="header-box">
+    <div>
+      <div style="display:flex; align-items:center; gap:10px;">
+         <div style="background:#10b981; color:#0f172a; padding:5px 8px; border-radius:4px;"><i class="fa-solid fa-bolt"></i></div>
+         <div>
+            <h1 class="page-h1" style="font-size:1.5rem; line-height:1;">FNEE Intelligence</h1>
+            <div class="page-sub" style="font-size:0.75rem; color:#34d399; font-weight:700; letter-spacing:1px; text-transform:uppercase;">Strategic Dashboard</div>
+         </div>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <div class="nav-item ${currentTab === 'mercado' ? 'active' : ''}" onclick=${() => mutable currentTab = 'mercado'}><i class="fa-solid fa-chart-column"></i> Mercado</div>
+      <div class="nav-item ${currentTab === 'comparador' ? 'active' : ''}" onclick=${() => mutable currentTab = 'comparador'}><i class="fa-solid fa-chart-line"></i> Comparador</div>
+    </div>
+  </div>
+
+  <div style="display: ${currentTab === 'mercado' ? 'flex' : 'none'}; animation: fadeIn 0.3s; flex-direction:column; width:100%;">
+    
+    <div class="kpi-row">
+      <div class="kpi-card" style="background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+        <div class="kpi-top"><span class="kpi-title">Empresas Monitorizadas</span></div>
+        <div class="kpi-val">${db.length}</div>
+        <div class="kpi-sub" style="color:#10b981"><i class="fa-solid fa-check-circle"></i> Activo</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top"><span class="kpi-title">Volumen Total 2024</span></div>
+        <div class="kpi-val" style="color:#cbd5e1;">${(total2024/1000).toLocaleString('es-ES',{maximumFractionDigits:0})} <span style="font-size:1rem;">GWh</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top"><span class="kpi-title">Coste FNEE Est.</span></div>
+        <div class="kpi-val" style="color:#3b82f6;">${((total2024 * 0.239)/1000).toLocaleString('es-ES',{maximumFractionDigits:0})} M€</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-top"><span class="kpi-title">Líder Crecimiento</span></div>
+        <div class="kpi-val" style="font-size:1rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${topGrower.name}</div>
+        <div class="kpi-sub" style="color:#10b981; font-weight:700;">+${(topGrower.growth/1000).toFixed(1)} GWh</div>
+      </div>
+    </div>
+
+    <div class="dashboard-split">
+      
+      <div class="panel">
+        <div class="panel-header">
+            <span><i class="fa-solid fa-list"></i> Directorio</span> 
+            <div>${viewof searchWidget}</div>
+        </div>
+        <div class="table-area">
+          <table class="mini-table">
+            <thead>
+              <tr><th class="col-cif">CIF</th><th class="col-empresa">Empresa</th><th class="col-dato">Ventas '24</th><th class="col-trend">Trend</th><th class="col-action">Ver</th></tr>
+            </thead>
+            <tbody>
+              ${filteredTableData.sort((a,b) => (b.V2024||0) - (a.V2024||0)).map(row => {
+                // CORRECCIÓN AQUÍ: No usamos toFixed() todavía para mantenerlo como número
+                const trend = row.V2023 > 0 ? ((row.V2024 - row.V2023)/row.V2023 * 100) : 0;
+                
+                return htl.html`<tr style="border-bottom:1px solid #334155;">
+                  <td class="col-cif" style="font-family:monospace; color:#64748b;">${row.NIF}</td>
+                  <td class="col-empresa" style="font-weight:600; color:#fff;" title="${row.Empresa}">${row.Empresa}</td>
+                  <td class="col-dato" style="font-weight:700; color:#cbd5e1;">${(row.V2024||0).toLocaleString("es-ES")}</td>
+                  <td class="col-trend"><span class="${trend>=0?'trend-up':'trend-down'}">${trend > 0 ? '+' : ''}${trend.toFixed(1)}%</span></td>
+                  <td class="col-action">
+                    <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
+                      <i class="fa-solid fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>`
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">Evolución Agregada</div>
+        <div style="padding:20px; flex:1; display:flex; flex-direction:column; justify-content: flex-end;">
+          ${Plot.plot({
+            style: {background: "transparent", color: "#cbd5e1", fontSize: "12px", width: "100%"},
+            height: 350,
+            marginLeft: 40,
+            y: {grid: true, label: null, tickFormat: "s"},
+            marks: [ Plot.barY(marketData, {x: "Year", y: "Vol", fill: "#0f172a", stroke:"#2dd4bf", strokeWidth:1, tip: true, rx: 4}) ]
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: ${currentTab === 'comparador' ? 'block' : 'none'}; animation: fadeIn 0.3s; width:100%;">
+    <div class="comp-layout">
+      
+      <div class="comp-sidebar">
+        <div class="panel" style="padding:20px; overflow:visible;">
+           <div style="font-weight:700; color:#fff; margin-bottom:15px; text-transform:uppercase;">1. Añadir</div>
+           <div class="search-box">
+             <input type="text" class="search-input" placeholder="Buscar empresa..." 
+               oninput=${(e) => {
+                 const val = e.target.value.toLowerCase();
+                 const res = document.getElementById('compRes');
+                 if(val.length < 2) { res.style.display = 'none'; return; }
+                 const matches = db.filter(c => c.Empresa.toLowerCase().includes(val) && !activeCompetitors.includes(c.NIF)).slice(0,10);
+                 res.innerHTML = '';
+                 if(matches.length) {
+                   res.style.display = 'block';
+                   matches.forEach(m => {
+                     const item = document.createElement('div');
+                     item.className = 'search-item';
+                     item.innerHTML = `<strong>${m.Empresa}</strong>`;
+                     item.onclick = () => { if(activeCompetitors.length<5) mutable activeCompetitors=[...activeCompetitors, m.NIF]; res.style.display='none'; e.target.value=''; };
+                     res.appendChild(item);
+                   });
+                 } else res.style.display = 'none';
+               }}
+             >
+             <div id="compRes" class="search-results"></div>
+           </div>
+           
+           <div>
+             ${activeCompetitors.map(nif => htl.html`<div class="comp-chip">
+               <span style="overflow:hidden; text-overflow:ellipsis; max-width:180px;">${db.find(c=>c.NIF===nif)?.Empresa || nif}</span>
+               <i class="fa-solid fa-times" style="cursor:pointer;" onclick=${() => mutable activeCompetitors = activeCompetitors.filter(x => x !== nif)}></i>
+             </div>`)}
+           </div>
+        </div>
+
+        <div class="panel" style="padding:20px;">
+           <div style="font-weight:700; color:#fff; margin-bottom:15px; text-transform:uppercase;">2. Modo Gráfico</div>
+           <button class="btn-action ${chartMode==='absolute'?'active':''}" onclick=${()=>mutable chartMode='absolute'}>Volumen (GWh)</button>
+           <button class="btn-action ${chartMode==='indexed'?'active':''}" onclick=${()=>mutable chartMode='indexed'}>Base 100</button>
+        </div>
+      </div>
+
+      <div class="panel" style="padding:20px;">
+        <div style="font-weight:700; color:#cbd5e1; margin-bottom:20px;">Comparativa</div>
+        <div style="flex:1;">
+           ${Plot.plot({
+             style: {background: "transparent", color: "#cbd5e1", fontSize: "14px", width: "100%"},
+             height: 400, marginLeft: 60,
+             color: {legend: true, scheme: "tableau10"},
+             y: {grid: true, label: chartMode === 'indexed' ? "Índice" : "GWh"},
+             marks: [
+               Plot.lineY(compData, {x: "Año", y: "Ventas", stroke: "Empresa", strokeWidth: 3, marker: "circle", tip: true}),
+               Plot.dot(compData, {x: "Año", y: "Ventas", fill: "Empresa", tip: true}),
+               chartMode === 'indexed' ? Plot.ruleY([100], {stroke: "#475569", strokeDasharray: "4"}) : null
+             ]
+           })}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`
+```

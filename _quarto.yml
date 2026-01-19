@@ -1,7 +1,10 @@
 project:
   type: website
   output-dir: docs
-  resources: ["VideoFractales.mp4"]
+  resources: 
+    - "VideoFractales.mp4"
+    - "logic.js"      # IMPORTANTE: Para que funcionen los datos del dashboard
+    - "custom.css"    # IMPORTANTE: Para que se copien los estilos del dashboard
 
 website:
   title: "SAMUEL GAMITO"
