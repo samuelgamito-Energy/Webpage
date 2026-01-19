@@ -1,75 +1,73 @@
 ```{ojs}
 //| echo: false
-// COMPONENTE: MODAL DE DETALLE
+// COMPONENTE: MODAL DE DETALLE (VERSIÓN DIV)
 
 {
   if (selectedRow) {
-    // 1. CÁLCULOS DINÁMICOS PARA LA EMPRESA SELECCIONADA
+    // 1. CÁLCULOS
     const s20 = selectedRow.V2020 || 0;
     const s24 = selectedRow.V2024 || 0;
-    // Cálculo de crecimiento total
     const growth = s20 > 0 ? ((s24 - s20)/s20 * 100) : 0;
-    // Cálculo de CAGR (Tasa de crecimiento anual compuesto) 4 años
     const cagr = s20 > 0 ? (Math.pow(s24/s20, 1/4) - 1)*100 : 0;
     
-    // Filtramos el histórico de datos solo para esta empresa
+    // Filtramos datos
     const chartData = dataLong.filter(d => d.NIF === selectedRow.NIF);
 
-    // 2. ESTRUCTURA HTML DEL MODAL
-    const dialog = htl.html`<dialog class="chart-modal" open>
+    // 2. ESTRUCTURA (Usamos div.modal-overlay en vez de dialog)
+    return htl.html`
+    <div class="modal-overlay" onclick=${(e) => {
+        // Cierra si haces clic en el fondo oscuro
+        if(e.target.className === 'modal-overlay') mutable selectedRow = null;
+    }}>
       
-      <div style="padding:20px; border-bottom:1px solid #334155; display:flex; justify-content:space-between; background:#0f172a; align-items: flex-start;">
-        <div>
-            <span style="background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px; font-size:0.75rem; font-family:monospace; color:#cbd5e1;">${selectedRow.NIF}</span>
-            <h2 style="margin:5px 0 0 0; font-size:1.5rem; color:#fff; font-weight: 700;">${selectedRow.Empresa}</h2>
-        </div>
-        <button onclick=${() => mutable selectedRow = null} style="background:none; border:none; color:#64748b; font-size:2rem; cursor:pointer; line-height: 1;">&times;</button>
-      </div>
-
-      <div style="padding:30px;">
+      <div class="modal-content">
         
-        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:30px;">
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8; text-transform: uppercase;">Ventas 2024</div>
-              <div style="font-size:1.4rem; font-weight:700; color:#fff;">${s24.toLocaleString('es-ES')}</div>
-           </div>
-           
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8; text-transform: uppercase;">Crecimiento ('20-'24)</div>
-              <div style="font-size:1.4rem; font-weight:700; color:${growth>=0?'#10b981':'#f43f5e'}">${growth > 0 ? '+' : ''}${growth.toFixed(1)}%</div>
-           </div>
-           
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8; text-transform: uppercase;">CAGR (4y)</div>
-              <div style="font-size:1.4rem; font-weight:700; color:#3b82f6;">${cagr.toFixed(2)}%</div>
-           </div>
-           
-           <div style="background:#1e293b; padding:15px; border-radius:8px; border:1px solid #334155;">
-              <div style="font-size:0.75rem; color:#94a3b8; text-transform: uppercase;">Coste Est. FNEE</div>
-              <div style="font-size:1.4rem; font-weight:700; color:#cbd5e1;">${(s24*0.239).toLocaleString('es-ES', {maximumFractionDigits: 0})} k€</div>
-           </div>
+        <div style="padding:20px; border-bottom:1px solid #334155; display:flex; justify-content:space-between; align-items:center; background:#1e293b;">
+            <div>
+                <span style="background:rgba(59,130,246,0.2); color:#60a5fa; padding:2px 8px; border-radius:4px; font-size:0.75rem; font-family:monospace; border:1px solid rgba(59,130,246,0.4);">${selectedRow.NIF}</span>
+                <h2 style="margin:8px 0 0 0; font-size:1.5rem; color:#fff; font-weight:700;">${selectedRow.Empresa}</h2>
+            </div>
+            <button onclick=${() => mutable selectedRow = null} style="background:none; border:none; color:#94a3b8; font-size:2rem; cursor:pointer; padding:0 10px;">&times;</button>
         </div>
 
-        <div style="width: 100%;">
-            ${Plot.plot({
-              style: {background: "transparent", color: "#cbd5e1", fontSize: "14px", width: "100%"},
-              height: 350,
-              grid: true,
-              marginLeft: 50,
-              y: {label: "Ventas (GWh)"},
-              x: {tickFormat: "d"}, // Formato año sin comas (2,024 -> 2024)
-              marks: [
-                Plot.lineY(chartData, {x: "Año", y: "Ventas", stroke: "#3b82f6", strokeWidth: 3}),
-                Plot.areaY(chartData, {x: "Año", y: "Ventas", fill: "#3b82f6", fillOpacity: 0.15}),
-                Plot.dot(chartData, {x: "Año", y: "Ventas", fill: "#3b82f6", r: 5, tip: true})
-              ]
-            })}
-        </div>
+        <div style="padding:30px;">
+            
+            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:30px;">
+                <div style="background:#0f172a; padding:15px; border-radius:8px; border:1px solid #334155;">
+                    <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Ventas 2024</div>
+                    <div style="font-size:1.4rem; font-weight:700; color:#fff;">${s24.toLocaleString('es-ES')}</div>
+                </div>
+                <div style="background:#0f172a; padding:15px; border-radius:8px; border:1px solid #334155;">
+                    <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Crecimiento</div>
+                    <div style="font-size:1.4rem; font-weight:700; color:${growth>=0?'#10b981':'#f43f5e'}">${growth > 0 ? '+' : ''}${growth.toFixed(1)}%</div>
+                </div>
+                <div style="background:#0f172a; padding:15px; border-radius:8px; border:1px solid #334155;">
+                    <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">CAGR (4y)</div>
+                    <div style="font-size:1.4rem; font-weight:700; color:#3b82f6;">${cagr.toFixed(2)}%</div>
+                </div>
+                <div style="background:#0f172a; padding:15px; border-radius:8px; border:1px solid #334155;">
+                    <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Coste Est.</div>
+                    <div style="font-size:1.4rem; font-weight:700; color:#cbd5e1;">${(s24*0.239).toLocaleString('es-ES', {maximumFractionDigits: 0})} k€</div>
+                </div>
+            </div>
 
+            <div style="width: 100%;">
+                ${Plot.plot({
+                style: {background: "transparent", color: "#cbd5e1", fontSize: "14px", width: "100%"},
+                height: 350,
+                grid: true,
+                marginLeft: 50,
+                x: {tickFormat: "d"},
+                marks: [
+                    Plot.lineY(chartData, {x: "Año", y: "Ventas", stroke: "#3b82f6", strokeWidth: 3}),
+                    Plot.areaY(chartData, {x: "Año", y: "Ventas", fill: "#3b82f6", fillOpacity: 0.15}),
+                    Plot.dot(chartData, {x: "Año", y: "Ventas", fill: "#3b82f6", r: 5, tip: true})
+                ]
+                })}
+            </div>
+        </div>
       </div>
-    </dialog>`;
-    
-    return dialog;
+    </div>`;
   }
 }
 ```

@@ -69,4 +69,38 @@ input[type="text"] { color: white !important; background: transparent; }
 .search-results { position: absolute; top: 100%; left: 0; width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 50; display: none; margin-top: 5px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 .search-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #334155; font-size: 0.85rem; }
 .search-item:hover { background: #0f172a; color: #2dd4bf; }
-.comp-chip { background: #0f172a; border: 1px solid #334155; padding: 8px 12px; border-radius: 6
+.comp-chip { background: #0f172a; border: 1px solid #334155; padding: 8px 12px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #fff; margin-bottom: 5px; }
+
+/* --- NUEVO: MODAL OVERLAY (ESTO ES LO QUE TE FALTABA) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 9999; /* ¡Encima de todo! */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: #0f172a;
+  color: #fff;
+  border: 1px solid #3b82f6;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
