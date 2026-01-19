@@ -1,6 +1,6 @@
 ```{ojs}
 //| echo: false
-// COMPONENTE: INTERFAZ VISUAL (VISTA) - CORREGIDO
+// COMPONENTE: INTERFAZ VISUAL (VISTA)
 
 htl.html`
 <div class="main-wrapper">
@@ -58,14 +58,16 @@ htl.html`
             </thead>
             <tbody>
               ${filteredTableData.sort((a,b) => (b.V2024||0) - (a.V2024||0)).map(row => {
-                // CORRECCIÓN AQUÍ: No usamos toFixed() todavía para mantenerlo como número
-                const trend = row.V2023 > 0 ? ((row.V2024 - row.V2023)/row.V2023 * 100) : 0;
+                // CORRECCIÓN: Aseguramos que trend sea un número
+                const val23 = row.V2023 || 0;
+                const val24 = row.V2024 || 0;
+                const trend = val23 > 0 ? ((val24 - val23)/val23 * 100) : 0;
                 
                 return htl.html`<tr style="border-bottom:1px solid #334155;">
                   <td class="col-cif" style="font-family:monospace; color:#64748b;">${row.NIF}</td>
                   <td class="col-empresa" style="font-weight:600; color:#fff;" title="${row.Empresa}">${row.Empresa}</td>
-                  <td class="col-dato" style="font-weight:700; color:#cbd5e1;">${(row.V2024||0).toLocaleString("es-ES")}</td>
-                  <td class="col-trend"><span class="${trend>=0?'trend-up':'trend-down'}">${trend > 0 ? '+' : ''}${trend.toFixed(1)}%</span></td>
+                  <td class="col-dato" style="font-weight:700; color:#cbd5e1;">${val24.toLocaleString("es-ES")}</td>
+                  <td class="col-trend"><span class="${trend>=0?'trend-up':'trend-down'}">${trend > 0 ? '+' : ''}${Number(trend).toFixed(1)}%</span></td>
                   <td class="col-action">
                     <button class="btn-eye" onclick=${() => mutable selectedRow = row}>
                       <i class="fa-solid fa-eye"></i>
